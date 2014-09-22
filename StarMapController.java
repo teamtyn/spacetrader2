@@ -181,12 +181,6 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     @FXML
-    private void generateButtonAction(ActionEvent event) {
-        demoM4();
-        System.exit(0);
-    }
-
-    @FXML
     private void monarchyButtonAction(ActionEvent event) {
         System.out.println("pressed for monarchy");
     }
@@ -209,6 +203,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         systems = new StarSystem[]{new StarSystem("test1"), new StarSystem("test2")};
+        demoM4();
         this.viewUniverse(systems);
     }
 
