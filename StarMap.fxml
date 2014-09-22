@@ -6,8 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.StarMapController">
+<AnchorPane id="AnchorPane" prefHeight="580.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.StarMapController">
    <children>
-      <Button id="monarchyButton" layoutX="258.0" layoutY="188.0" mnemonicParsing="false" onAction="#monarchyButtonAction" text="Take Control" />
+      <Button id="monarchyButton" layoutX="109.0" layoutY="41.0" mnemonicParsing="false" onAction="#monarchyButtonAction" text="Take Control" />
+      <Pane fx:id="systemPane" layoutX="9.0" layoutY="66.0" prefHeight="500.0" prefWidth="796.0" style="-fx-background-color: black;" />
    </children>
 </AnchorPane>

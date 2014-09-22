@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CircleBuilder;
@@ -25,30 +27,28 @@ import spacetrader.star_system.StarSystem;
  */
 public class StarMapController implements Initializable, ControlledScreen {
     @FXML
+    private Pane systemPane;
+    
+    @FXML
     private Button monarchyButton;
 
     @FXML
     private Button revolutionButton;
 
     @FXML
-    private Button backButton;
+    private Button toUniverseButton;
+    
+    @FXML
+    private Button toSystemButton;
 
     @FXML
     private Button viewButton;
 
     private ScreensController parentController;
+    
+    private StarSystem[] systems;
 
-    public void start(Stage primaryStage) {
-        StarSystem[] systems = {new StarSystem("Sys 1"),new StarSystem("Sys 2"),new StarSystem("Sys 3"),
-                                new StarSystem("Sys 4"),new StarSystem("Sys 5"),new StarSystem("Sys 6")};
-        Group root = new Group();
-        Scene scene = new Scene(root, 1400, 700, Color.BLACK);
-        viewUniverse(root, systems);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public void viewUniverse(Group root, StarSystem[] systems) {
+    public void viewUniverse(StarSystem[] systems) {
         for(StarSystem sys : systems){
             Circle star = CircleBuilder.create()
                 .centerX(sys.getCoordinateX())
@@ -58,15 +58,15 @@ public class StarMapController implements Initializable, ControlledScreen {
                 .build();
             //Circle star = Circle(sys.getCoordinateX(), sys.getCoordinateY(), 10, Color.YELLOW);
             star.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                root.getChildren().removeAll(root.getChildren());
-                viewSystem(root, sys, systems);
+                systemPane.getChildren().removeAll(systemPane.getChildren());
+                viewSystem(sys, systems);
             });         
-            root.getChildren().add(star);
+            systemPane.getChildren().add(star);
 
             Text systemText = new Text(sys.getCoordinateX() - 30, sys.getCoordinateY() - 30, sys.getName());
             systemText.setFont(Font.font ("Verdana", 20));
             systemText.setFill(Color.WHITE);
-            root.getChildren().add(systemText);
+            systemPane.getChildren().add(systemText);
 
             int planets = sys.getPlanets().length;
             int degrees = 0;
@@ -77,30 +77,30 @@ public class StarMapController implements Initializable, ControlledScreen {
                 .radius(planet.getSize())
                 .fill(planet.getColor())
                 .build();
-                root.getChildren().add(planetCircle);
+                systemPane.getChildren().add(planetCircle);
                 degrees += 360 / planets;
             }
         }
     }
 
-    public void viewSystem(Group root, StarSystem system, StarSystem[] systems) {
+    public void viewSystem(StarSystem system, StarSystem[] systems) {
         Text systemText = new Text(600, 50, system.getName());
         systemText.setFont(Font.font("Verdana", 40));
         systemText.setFill(Color.WHITE);
-        root.getChildren().add(systemText);
+        systemPane.getChildren().add(systemText);
         Circle star = CircleBuilder.create()
             .centerX(600)
             .centerY(300)
             .radius(50)
             .fill(Color.YELLOW)
             .build();
-        root.getChildren().add(star);
+        systemPane.getChildren().add(star);
         Button button = new Button("GO BACK");
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                root.getChildren().removeAll(root.getChildren());
-                viewUniverse(root, systems);
+                systemPane.getChildren().removeAll(systemPane.getChildren());
+                viewUniverse(systems);
             });
-        root.getChildren().add(button);
+        systemPane.getChildren().add(button);
         int planets = system.getPlanets().length;
         int degrees = 0;
         for(Planet planet : system.getPlanets()){
@@ -111,23 +111,23 @@ public class StarMapController implements Initializable, ControlledScreen {
             .fill(planet.getColor())
             .build();
             planetCircle.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                root.getChildren().removeAll(root.getChildren());
-                viewPlanet(root, planet, system, systems);
+                systemPane.getChildren().removeAll(systemPane.getChildren());
+                viewPlanet(planet, system, systems);
             }); 
-            root.getChildren().add(planetCircle);
+            systemPane.getChildren().add(planetCircle);
             Text planetText = new Text(planetCircle.getCenterX() - planet.getName().length() * 3, planetCircle.getCenterY() - 30, planet.getName());
             planetText.setFont(Font.font ("Verdana", 20));
             planetText.setFill(Color.WHITE);
-            root.getChildren().add(planetText);
+            systemPane.getChildren().add(planetText);
             degrees += 360 / planets;
         }
     }
 
-    public void viewPlanet(Group root, Planet planet, StarSystem system, StarSystem[] systems) {
+    public void viewPlanet(Planet planet, StarSystem system, StarSystem[] systems) {
         Text planetTitle = new Text(600, 50, planet.getName());
         planetTitle.setFont(Font.font ("Verdana", 40));
         planetTitle.setFill(Color.WHITE);
-        root.getChildren().add(planetTitle);
+        systemPane.getChildren().add(planetTitle);
 
         Circle planetCircle = CircleBuilder.create()
             .centerX(600)
@@ -135,19 +135,19 @@ public class StarMapController implements Initializable, ControlledScreen {
             .radius(50)
             .fill(planet.getColor())
             .build();
-        root.getChildren().add(planetCircle);
+        systemPane.getChildren().add(planetCircle);
 
         Text planetText = new Text(planetCircle.getCenterX() - 60, planetCircle.getCenterY() + 100, planet.toString());
         planetText.setFont(Font.font ("Verdana", 20));
         planetText.setFill(Color.WHITE);
-        root.getChildren().add(planetText);
+        systemPane.getChildren().add(planetText);
 
         Button button = new Button("GO BACK");
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                root.getChildren().removeAll(root.getChildren());
-                viewSystem(root, system, systems);
+                systemPane.getChildren().removeAll(systemPane.getChildren());
+                viewSystem(system, systems);
             });
-        root.getChildren().add(button);
+        systemPane.getChildren().add(button);
 
         Button revolt = new Button("Sponsor Revolution");
         revolt.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
@@ -156,7 +156,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         });
         revolt.setLayoutX(250);
         revolt.setLayoutY(225);
-        root.getChildren().add(revolt);
+        systemPane.getChildren().add(revolt);
 
         Button monarch = new Button("Take control");
         monarch.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
@@ -165,12 +165,12 @@ public class StarMapController implements Initializable, ControlledScreen {
         });
         monarch.setLayoutX(250);
         monarch.setLayoutY(250);
-        root.getChildren().add(monarch);
+        systemPane.getChildren().add(monarch);
     }
 
     @FXML
     private void monarchyButtonAction(ActionEvent event) {
-        System.out.println("pressed for monarchy");
+        System.out.println(systemPane);
     }
 
     @FXML
@@ -190,7 +190,8 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //TODO
+        systems = new StarSystem[]{new StarSystem("test1"), new StarSystem("test2")};
+        this.viewUniverse(systems);
     }
 
     @Override

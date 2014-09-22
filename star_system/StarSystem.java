@@ -17,9 +17,9 @@ public class StarSystem {
     public StarSystem(String name) {
         this.name = name;
         // Ryan - wut
-        coordinates = new Point2D(random.nextDouble() * 1300 + 50, random.nextDouble() * 600 + 50); //Range <-50.0, -50.0> - <50.0,50.0>
+        coordinates = new Point2D(random.nextDouble() * 130 + 50, random.nextDouble() * 60 + 50);
         planets = new Planet[random.nextInt(6) + 4];
-        for (int i = 0; i < planets.length - 1; i++) {
+        for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet(names[i % 10]);
         }
     }

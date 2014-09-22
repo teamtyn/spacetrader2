@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  */
 public class Planet {
     private final String name;
-    private final int orbitDistance;
+    private int orbitDistance;
     private Government government;
     private enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIVAL, RENAISSANCE, 
