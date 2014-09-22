@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Source.MenuController">
+    <children>
+      <BorderPane prefHeight="600.0" prefWidth="800.0">
+         <center>
+            <VBox prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField alignment="CENTER" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="77.0" prefWidth="236.0" text="Space Trader">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="200.0" />
+                     </VBox.margin>
+                  </TextField>
+                    <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" onAction="#startButtonAction" prefWidth="200.0" text="Start Game" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="40.0" left="300.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitButtonAction" prefWidth="200.0" text="Exit Game" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets left="300.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+    </children>
+</AnchorPane>

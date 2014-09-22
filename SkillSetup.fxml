@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Source.SkillSetupController">
+    <stylesheets>
+        <URL value="@skillsetup.css" />
+    </stylesheets>
+   <children>
+      <BorderPane layoutX="11.0" layoutY="14.0" prefHeight="279.0" prefWidth="400.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
+         <center>
+            <VBox fx:id="barBox" alignment="CENTER" prefHeight="149.0" prefWidth="494.0" BorderPane.alignment="TOP_CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="50.0" text="Name:" />
+                        <TextField fx:id="nameField" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="50.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="container4" layoutX="35.0" layoutY="-136.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="skill4" prefHeight="25.0" prefWidth="115.0" text="skill" />
+                        <Button fx:id="minus4" mnemonicParsing="false" onAction="#minusButtonAction" prefHeight="43.0" prefWidth="80.0" text="-" />
+                        <ProgressBar fx:id="bar4" prefHeight="45.0" prefWidth="200.0" progress="0.4" />
+                        <Button fx:id="plus4" mnemonicParsing="false" onAction="#plusButtonAction" prefHeight="25.0" prefWidth="80.0" text="+" />
+                        <Label fx:id="points4" prefHeight="31.0" prefWidth="87.0" text="points" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="container" layoutY="-111.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="skill0" prefHeight="25.0" prefWidth="115.0" text="skill" />
+                        <Button fx:id="minus0" mnemonicParsing="false" onAction="#minusButtonAction" prefHeight="43.0" prefWidth="80.0" text="-" />
+                        <ProgressBar fx:id="bar0" prefHeight="45.0" prefWidth="200.0" progress="0.4" />
+                        <Button fx:id="plus0" mnemonicParsing="false" onAction="#plusButtonAction" prefHeight="42.0" prefWidth="80.0" text="+" />
+                        <Label fx:id="points0" prefHeight="31.0" prefWidth="87.0" text="points" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="container1" layoutY="-86.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="skill1" prefHeight="43.0" prefWidth="115.0" text="skill" />
+                        <Button fx:id="minus1" mnemonicParsing="false" onAction="#minusButtonAction" prefHeight="43.0" prefWidth="80.0" text="-" />
+                        <ProgressBar fx:id="bar1" prefHeight="45.0" prefWidth="200.0" progress="0.4" />
+                        <Button fx:id="plus1" mnemonicParsing="false" onAction="#plusButtonAction" prefHeight="42.0" prefWidth="80.0" text="+" />
+                        <Label fx:id="points1" prefHeight="31.0" prefWidth="87.0" text="points" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="container2" layoutY="-61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="skill2" prefHeight="43.0" prefWidth="115.0" text="skill" />
+                        <Button fx:id="minus2" mnemonicParsing="false" onAction="#minusButtonAction" prefHeight="43.0" prefWidth="80.0" text="-" />
+                        <ProgressBar fx:id="bar2" prefHeight="45.0" prefWidth="200.0" progress="0.4" />
+                        <Button fx:id="plus2" mnemonicParsing="false" onAction="#plusButtonAction" prefHeight="42.0" prefWidth="80.0" text="+" />
+                        <Label fx:id="points2" prefHeight="31.0" prefWidth="87.0" text="points" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="container3" layoutY="-36.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="skill3" prefHeight="43.0" prefWidth="115.0" text="skill" />
+                        <Button fx:id="minus3" mnemonicParsing="false" onAction="#minusButtonAction" prefHeight="43.0" prefWidth="80.0" text="-" />
+                        <ProgressBar fx:id="bar3" prefHeight="45.0" prefWidth="200.0" progress="0.4" />
+                        <Button fx:id="plus3" mnemonicParsing="false" onAction="#plusButtonAction" prefHeight="42.0" prefWidth="80.0" text="+" />
+                        <Label fx:id="points3" prefHeight="31.0" prefWidth="87.0" text="points" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutY="-36.0" prefHeight="25.0" prefWidth="350.0">
+                     <children>
+                        <ProgressBar fx:id="totalBar" prefHeight="45.0" prefWidth="200.0" progress="0.01" />
+                        <Label fx:id="totalLabel" alignment="CENTER" prefHeight="34.0" prefWidth="43.0" text="total" textAlignment="CENTER" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+         <left>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#resetButtonAction" prefWidth="80.0" text="Reset">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#cancelButtonAction" prefWidth="80.0" text="Cancel">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#doneButtonAction" prefHeight="27.0" prefWidth="80.0" text="Done">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="20.0" top="50.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <top>
+            <TextField alignment="CENTER" editable="false" prefHeight="100.0" text="Choose wisely!" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </TextField>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
