@@ -5,30 +5,26 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CircleBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.StarSystem;
 
 /**
- * 
+ * FXML Controller for the generation of the universe
  * @author David Purcell
  */
 public class StarMapController implements Initializable, ControlledScreen {
     @FXML
     private Pane systemPane;
-    
+
     @FXML
     private Button monarchyButton;
 
@@ -37,16 +33,32 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     @FXML
     private Button toUniverseButton;
-    
+
     @FXML
     private Button toSystemButton;
+
+    @FXML
+    private Button generateButton;
 
     @FXML
     private Button viewButton;
 
     private ScreensController parentController;
-    
     private StarSystem[] systems;
+
+    // Just for M4 demo, dumps star system data in console
+    public void demoM4() {
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+        for (StarSystem system: systems) {
+            str += system + "\n";
+        }
+        return str;
+    }
 
     public void viewUniverse(StarSystem[] systems) {
         for(StarSystem sys : systems){
@@ -169,8 +181,14 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     @FXML
+    private void generateButtonAction(ActionEvent event) {
+        demoM4();
+        System.exit(0);
+    }
+
+    @FXML
     private void monarchyButtonAction(ActionEvent event) {
-        System.out.println(systemPane);
+        System.out.println("pressed for monarchy");
     }
 
     @FXML

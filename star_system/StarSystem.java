@@ -9,14 +9,13 @@ import javafx.geometry.Point2D;
  */
 public class StarSystem {
     private final String name;
-    private Point2D coordinates;
+    private final Point2D coordinates;
     private Planet[] planets;
     private Random random = new Random();
     private String[] names = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     public StarSystem(String name) {
         this.name = name;
-        // Ryan - wut
         coordinates = new Point2D(random.nextDouble() * 130 + 50, random.nextDouble() * 60 + 50);
         planets = new Planet[random.nextInt(6) + 4];
         for (int i = 0; i < planets.length; i++) {
