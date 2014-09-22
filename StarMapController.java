@@ -16,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import spacetrader.*;
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.StarSystem;
 
@@ -25,6 +24,18 @@ import spacetrader.star_system.StarSystem;
  * @author David Purcell
  */
 public class StarMapController implements Initializable, ControlledScreen {
+    @FXML
+    private Button monarchyButton;
+
+    @FXML
+    private Button revolutionButton;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button viewButton;
+
     private ScreensController parentController;
 
     public void start(Stage primaryStage) {
@@ -160,6 +171,21 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML
     private void monarchyButtonAction(ActionEvent event) {
         System.out.println("pressed for monarchy");
+    }
+
+    @FXML
+    private void revolutionButtonAction(ActionEvent event) {
+        System.out.println("pressed for revolution");
+    }
+
+    @FXML
+    private void backButtonAction(ActionEvent event) {
+        System.out.println("pressed for back");
+    }
+
+    @FXML
+    private void viewButtonAction(ActionEvent event) {
+        System.out.println("pressed for planet viewing");
     }
 
     @Override
