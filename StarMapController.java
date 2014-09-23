@@ -89,11 +89,6 @@ public class StarMapController implements Initializable, ControlledScreen {
             });         
             systemPane.getChildren().add(star);
 
-            Text systemText = new Text(system.getCoordinateX() - 30, system.getCoordinateY() - 30, system.getName());
-            systemText.setFont(Font.font ("Verdana", 20));
-            systemText.setFill(Color.WHITE);
-            systemPane.getChildren().add(systemText);
-
             int numPlanets = system.getPlanets().length;
             int degrees = 0;
             for (Planet planet : system.getPlanets()) {
@@ -103,6 +98,13 @@ public class StarMapController implements Initializable, ControlledScreen {
                 systemPane.getChildren().add(planetCircle);
                 degrees += 360 / numPlanets;
             }
+        }
+        
+        for (StarSystem system : systems) {
+            Text systemText = new Text(system.getCoordinateX() - 30, system.getCoordinateY() - 30, system.getName());
+            systemText.setFont(Font.font ("Verdana", 20));
+            systemText.setFill(Color.WHITE);
+            systemPane.getChildren().add(systemText);
         }
     }
 
