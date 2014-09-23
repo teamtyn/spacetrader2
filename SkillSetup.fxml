@@ -11,9 +11,6 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.SkillSetupController">
-    <stylesheets>
-        <URL value="@skillsetup.css" />
-    </stylesheets>
    <children>
       <BorderPane layoutX="11.0" layoutY="14.0" prefHeight="279.0" prefWidth="400.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <center>
