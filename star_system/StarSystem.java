@@ -14,9 +14,9 @@ public class StarSystem {
     private Random random = new Random();
     private String[] names = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-    public StarSystem(String name) {
+    public StarSystem(String name, Point2D coordinates) {
         this.name = name;
-        coordinates = new Point2D(random.nextDouble() * 130 + 50, random.nextDouble() * 60 + 50);
+        this.coordinates = coordinates;
         planets = new Planet[random.nextInt(6) + 4];
         for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet(names[i % 10]);

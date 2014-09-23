@@ -1,10 +1,15 @@
 package spacetrader;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -12,9 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.StarSystem;
+import spacetrader.star_system.StarSystemNames;
 
 /**
  * FXML Controller for the generation of the universe
@@ -57,6 +62,22 @@ public class StarMapController implements Initializable, ControlledScreen {
             str += system + "\n";
         }
         return str;
+    }
+    
+    private void generateSystems() {
+        Random random = new Random();
+        List<Point2D> positions = new ArrayList<>();
+        for (int x = 100; x <= 700; x += 200) {
+            for (int y = 100; y <= 500; y += 200) {
+                positions.add(new Point2D(x + random.nextInt(100) - 50, y + random.nextInt(100) - 50));
+            }
+        }
+        Collections.shuffle(positions, random);
+        
+        systems = new StarSystem[random.nextInt(5) + 5];
+        for (int i = 0; i < systems.length; i++) {
+            systems[i] = new StarSystem(StarSystemNames.getName(), positions.remove(0));
+        }
     }
 
     public void viewUniverse(StarSystem[] systems) {
@@ -184,7 +205,7 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        systems = new StarSystem[]{new StarSystem("test1"), new StarSystem("test2")};
+        generateSystems();
         demoM4();
         this.viewUniverse(systems);
     }

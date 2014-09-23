@@ -9,10 +9,8 @@ import java.util.List;
  * @author Ryan Burns
  */
 public class StarSystemNames {
-    private final List<String> nameSet;
-
-    public StarSystemNames() {
-        nameSet = new ArrayList<>();
+    private static final List<String> nameSet = new ArrayList<>();
+    static {
         nameSet.add("Acamar");
         nameSet.add("Adahn");
         nameSet.add("Aldea");
@@ -142,7 +140,7 @@ public class StarSystemNames {
         Collections.shuffle(nameSet);
     }
 
-    public String getName() {
+    public static String getName() {
         if (!nameSet.isEmpty()) {
             return nameSet.remove(0);
         } else {
