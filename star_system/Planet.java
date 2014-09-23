@@ -12,16 +12,16 @@ public class Planet {
     private final String name;
     private final int orbitDistance;
     private Government government;
-    private enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
+    public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIVAL, RENAISSANCE, 
                            EARLYINDUSTRY, INDUSTRIAL, 
                            POSTINDUSTRIAL, HIGHTECH};
-    private enum ResourceLevel {NOSPECIALRESOURCES, MINERALRICH, MINERALPOOR,
+    public enum ResourceLevel {NOSPECIALRESOURCES, MINERALRICH, MINERALPOOR,
                           DESERT, LOTSOFWATER, RICHSOIL,
                           POORSOIL, RICHFAUNA, LIFELESS,
                           WEIRDMUSHROOMS, LOTSOFHERBS,
                           ARTISTIC, WARLIKE};
-    private enum Circumstance {NONE, DROUGHT, COLDWAVE, HEATWAVE,
+    public enum Circumstance {NONE, DROUGHT, COLDWAVE, HEATWAVE,
                                 CROPFAIL, WAR, BOREDOM, PLAGUE,
                                 LACKOFWORKERS, MORALCRISIS};
     private Circumstance circumstance;
