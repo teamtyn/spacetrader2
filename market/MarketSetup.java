@@ -3,7 +3,7 @@ package spacetrader.market;
 import spacetrader.star_system.*;
 
 /**
- *
+ * 
  * @author Ryan Burns
  */
 public class MarketSetup {
@@ -14,9 +14,9 @@ public class MarketSetup {
     private Integer[] quantities = new Integer[goods.length];
     private Integer[] prices = new Integer[goods.length];
     private Government gov;
-    private Circumstance circ;
-    private TechLevel tech;
-    private ResourceLevel resource;
+    private Planet.Circumstance circ;
+    private Planet.TechLevel tech;
+    private Planet.ResourceLevel resource;
 
     public MarketSetup(Planet planet) {
         gov = planet.getGovernment();

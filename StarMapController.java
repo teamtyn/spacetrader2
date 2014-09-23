@@ -10,7 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.CircleBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -61,36 +60,27 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     public void viewUniverse(StarSystem[] systems) {
-        for(StarSystem sys : systems){
-            Circle star = CircleBuilder.create()
-                .centerX(sys.getCoordinateX())
-                .centerY(sys.getCoordinateY())
-                .radius(10)
-                .fill(Color.YELLOW)
-                .build();
-            //Circle star = Circle(sys.getCoordinateX(), sys.getCoordinateY(), 10, Color.YELLOW);
+        for (StarSystem system : systems) {
+            Circle star = new Circle(system.getCoordinateX(), system.getCoordinateY(), 10, Color.YELLOW);
             star.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 systemPane.getChildren().removeAll(systemPane.getChildren());
-                viewSystem(sys, systems);
+                viewSystem(system, systems);
             });         
             systemPane.getChildren().add(star);
 
-            Text systemText = new Text(sys.getCoordinateX() - 30, sys.getCoordinateY() - 30, sys.getName());
+            Text systemText = new Text(system.getCoordinateX() - 30, system.getCoordinateY() - 30, system.getName());
             systemText.setFont(Font.font ("Verdana", 20));
             systemText.setFill(Color.WHITE);
             systemPane.getChildren().add(systemText);
 
-            int planets = sys.getPlanets().length;
+            int numPlanets = system.getPlanets().length;
             int degrees = 0;
-            for(Planet planet : sys.getPlanets()){
-                Circle planetCircle = CircleBuilder.create()
-                .centerX(sys.getCoordinateX() + (planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925)))
-                .centerY(sys.getCoordinateY() + (planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925)))
-                .radius(planet.getSize())
-                .fill(planet.getColor())
-                .build();
+            for (Planet planet : system.getPlanets()) {
+                double planetX = system.getCoordinateX() + (planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
+                double planetY = system.getCoordinateY() + (planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
+                Circle planetCircle = new Circle(planetX, planetY, planet.getSize(), planet.getColor());
                 systemPane.getChildren().add(planetCircle);
-                degrees += 360 / planets;
+                degrees += 360 / numPlanets;
             }
         }
     }
@@ -100,38 +90,35 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemText.setFont(Font.font("Verdana", 40));
         systemText.setFill(Color.WHITE);
         systemPane.getChildren().add(systemText);
-        Circle star = CircleBuilder.create()
-            .centerX(600)
-            .centerY(300)
-            .radius(50)
-            .fill(Color.YELLOW)
-            .build();
+
+        Circle star = new Circle(600, 300, 50, Color.YELLOW);
         systemPane.getChildren().add(star);
+
         Button button = new Button("GO BACK");
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 systemPane.getChildren().removeAll(systemPane.getChildren());
                 viewUniverse(systems);
             });
         systemPane.getChildren().add(button);
-        int planets = system.getPlanets().length;
+
+        int numPlanets = system.getPlanets().length;
         int degrees = 0;
-        for(Planet planet : system.getPlanets()){
-            Circle planetCircle = CircleBuilder.create()
-            .centerX(star.getCenterX() + (5 * planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925)))
-            .centerY(star.getCenterY() + (5 * planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925)))
-            .radius(planet.getSize() * Math.sqrt(5))
-            .fill(planet.getColor())
-            .build();
+        for (Planet planet : system.getPlanets()) {
+            double planetX = star.getCenterX() + (5 * planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
+            double planetY = star.getCenterY() + (5 * planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
+            Circle planetCircle = new Circle(planetX, planetY, planet.getSize() * Math.sqrt(5), planet.getColor());
             planetCircle.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 systemPane.getChildren().removeAll(systemPane.getChildren());
                 viewPlanet(planet, system, systems);
             }); 
             systemPane.getChildren().add(planetCircle);
+
             Text planetText = new Text(planetCircle.getCenterX() - planet.getName().length() * 3, planetCircle.getCenterY() - 30, planet.getName());
             planetText.setFont(Font.font ("Verdana", 20));
             planetText.setFill(Color.WHITE);
             systemPane.getChildren().add(planetText);
-            degrees += 360 / planets;
+
+            degrees += 360 / numPlanets;
         }
     }
 
@@ -141,12 +128,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         planetTitle.setFill(Color.WHITE);
         systemPane.getChildren().add(planetTitle);
 
-        Circle planetCircle = CircleBuilder.create()
-            .centerX(600)
-            .centerY(300)
-            .radius(50)
-            .fill(planet.getColor())
-            .build();
+        Circle planetCircle = new Circle(600, 300, 50, planet.getColor());
         systemPane.getChildren().add(planetCircle);
 
         Text planetText = new Text(planetCircle.getCenterX() - 60, planetCircle.getCenterY() + 100, planet.toString());
