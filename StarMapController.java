@@ -57,11 +57,11 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     @Override
     public String toString() {
-        String str = "";
-        for (StarSystem system: systems) {
-            str += system + "\n";
+        StringBuilder builder = new StringBuilder();
+        for (StarSystem system : systems) {
+            builder.append(system).append("\n");
         }
-        return str;
+        return builder.toString();
     }
     
     private void generateSystems() {
@@ -102,7 +102,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         
         for (StarSystem system : systems) {
             Text systemText = new Text(system.getCoordinateX() - 30, system.getCoordinateY() - 30, system.getName());
-            systemText.setFont(Font.font ("Verdana", 20));
+            systemText.setFont(Font.font("Verdana", 20));
             systemText.setFill(Color.WHITE);
             systemPane.getChildren().add(systemText);
         }
@@ -155,7 +155,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemPane.getChildren().add(planetCircle);
 
         Text planetText = new Text(planetCircle.getCenterX() - 60, planetCircle.getCenterY() + 100, planet.toString());
-        planetText.setFont(Font.font ("Verdana", 20));
+        planetText.setFont(Font.font("Verdana", 20));
         planetText.setFill(Color.WHITE);
         systemPane.getChildren().add(planetText);
 

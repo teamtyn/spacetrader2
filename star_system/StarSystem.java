@@ -54,11 +54,14 @@ public class StarSystem {
 
     @Override
     public String toString() {
-        String str = "System: " + name + "\nStar System Coordinates:\n"
-                        + coordinates + "\nPlanets: \n";
+        StringBuilder builder = new StringBuilder("System: ");
+        builder.append(name)
+            .append("\nStar System Coordinates:\n")
+            .append(coordinates)
+            .append("\nPlanets: \n");
         for(Planet planet : planets) {
-            str = str + planet + "\n";
+            builder.append(planet).append("\n");
         }
-        return str;
+        return builder.toString();
     }
 }
