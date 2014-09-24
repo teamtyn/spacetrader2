@@ -29,7 +29,6 @@ public class PlanetNames {
             }
             anarchicNames.add(new String(nameChars));
         }
-        
         nameLists.put(Government.Type.ANARCHY, anarchicNames);
         
         List<String> capitalistCorporateNames = new ArrayList<>();
@@ -74,13 +73,13 @@ public class PlanetNames {
         capitalistCorporateNames.add("Zimmer");
         capitalistCorporateNames.add("Zoetis");
         Collections.shuffle(capitalistCorporateNames, random);
-        
         nameLists.put(Government.Type.CAPITALIST, capitalistCorporateNames);
         nameLists.put(Government.Type.CORPORATE, capitalistCorporateNames);
     }
 
-    public static String getName(Government.Type governmentType) {
+    public static String getName(Government government) {
         Random random = new Random();
+        Government.Type governmentType = government.getType();
         while (nameLists.get(governmentType) == null || nameLists.get(governmentType).isEmpty()) {
             governmentType = Government.Type.values()[random.nextInt(Government.Type.values().length)];
         }
