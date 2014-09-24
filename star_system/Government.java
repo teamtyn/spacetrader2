@@ -8,36 +8,36 @@ import java.util.Random;
  * @author David Purcell
  */
 public class Government {
-    public enum GovernmentType {ANARCHY, ARISTOCRACY, CAPITALIST, COMMUNIST,
-                                  CORPORATE, DEMOCRACY, FASCIST, MERITOCRACY,
-                                  MONARCHY, OLIGARCHY, TECHNOCRACY, THEOCRACY};
-    private HashMap<GovernmentType, String> leaders;
-    private GovernmentType type;
+    public enum Type {ANARCHY, ARISTOCRACY, CAPITALIST, COMMUNIST,
+                          CORPORATE, DEMOCRACY, FASCIST, MERITOCRACY,
+                          MONARCHY, OLIGARCHY, TECHNOCRACY, THEOCRACY};
+    private HashMap<Type, String> leaders;
+    private Type type;
     private String leader;
     private int anger;
     private Random random = new Random();
 
     public Government() {
-        type = GovernmentType.values()[random.nextInt(GovernmentType.values().length)];
-        //leader = leaders.get(type);
-        leader = "wtf";
-        anger = 0;
+        type = Type.values()[random.nextInt(Type.values().length)];
         //setUpLeaderMap();
+        //leader = leaders.get(type);
+        leader = "THE PEOPLE";
+        anger = 0;
     }
 
     public void setUpLeaderMap() {
-        leaders.put(GovernmentType.ANARCHY, "No One");
-        leaders.put(GovernmentType.ARISTOCRACY, "The Snobs");
-        leaders.put(GovernmentType.CAPITALIST, "The Money");
-        leaders.put(GovernmentType.COMMUNIST, "The State");
-        leaders.put(GovernmentType.CORPORATE, "The Businesses");
-        leaders.put(GovernmentType.DEMOCRACY, "The People");
-        leaders.put(GovernmentType.FASCIST, "One Mean Guy");
-        leaders.put(GovernmentType.MERITOCRACY, "The Qualified");
-        leaders.put(GovernmentType.MONARCHY, "One Nice Guy");
-        leaders.put(GovernmentType.OLIGARCHY, "The Few");
-        leaders.put(GovernmentType.TECHNOCRACY, "The Experts");
-        leaders.put(GovernmentType.THEOCRACY, "God");
+        leaders.put(Type.ANARCHY, "No One");
+        leaders.put(Type.ARISTOCRACY, "The Snobs");
+        leaders.put(Type.CAPITALIST, "The Money");
+        leaders.put(Type.COMMUNIST, "The State");
+        leaders.put(Type.CORPORATE, "The Businesses");
+        leaders.put(Type.DEMOCRACY, "The People");
+        leaders.put(Type.FASCIST, "One Mean Guy");
+        leaders.put(Type.MERITOCRACY, "The Qualified");
+        leaders.put(Type.MONARCHY, "One Nice Guy");
+        leaders.put(Type.OLIGARCHY, "The Few");
+        leaders.put(Type.TECHNOCRACY, "The Experts");
+        leaders.put(Type.THEOCRACY, "God");
     }
 
     public String getLeader() {
@@ -48,11 +48,11 @@ public class Government {
         leader = newLeader;
     }
 
-    public GovernmentType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(GovernmentType newType) {
+    public void setType(Type newType) {
         type = newType;
     }
 
@@ -65,7 +65,8 @@ public class Government {
     }
 
     public void revolution() {
-        type = GovernmentType.ANARCHY;
+        type = Type.ANARCHY;
+        leader = null;
         //leader = leaders.get(type);
         anger = Integer.MAX_VALUE;
     }
@@ -78,7 +79,7 @@ public class Government {
     }
 
     public void toMonarchy(String name) {
-        type = GovernmentType.MONARCHY;
+        type = Type.MONARCHY;
         leader = name;
         anger = 0;
     }
