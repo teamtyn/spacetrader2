@@ -14,7 +14,7 @@ public class Planet {
     private final int orbitDistance;
     private Government government;
     public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
-                           MEDIVAL, RENAISSANCE, 
+                           MEDIEVAL, RENAISSANCE, 
                            EARLYINDUSTRY, INDUSTRIAL, 
                            POSTINDUSTRIAL, HIGHTECH};
     public enum ResourceLevel {NOSPECIALRESOURCES, MINERALRICH, MINERALPOOR,

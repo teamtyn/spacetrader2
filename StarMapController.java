@@ -57,8 +57,8 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     private ScreensController parentController;
     private StarSystem[] systems;
+    //Temporary player until we figure out how we are passing the actual player around.
     private Player tempPlayer;
-    private Rectangle playerRectangle;
 
     // Just for M4 demo, dumps star system data in console
     //Remove?
@@ -86,7 +86,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         }
         Collections.shuffle(positions, random);
         
-        systems = new StarSystem[random.nextInt(5) + 5];
+        systems = new StarSystem[random.nextInt(5) + 7];
         for (int i = 0; i < systems.length; i++) {
             systems[i] = new StarSystem(StarSystemNames.getName(), positions.remove(0));
         }
@@ -271,12 +271,23 @@ public class StarMapController implements Initializable, ControlledScreen {
         monarch.setLayoutX(100);
         monarch.setLayoutY(250);
         systemPane.getChildren().add(monarch);
+        
+        //Button to goto market  
+        //TODO: add market?
+        Button market = new Button("BUY THINGS");
+        market.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+            //TODO: Make it not break?
+            parentController.setScreen("Market");
+        });
+        market.setLayoutX(100);
+        market.setLayoutY(275);
+        systemPane.getChildren().add(market);
     }
     
     //Method to draw the player on the screen at given coordinates
     //TODO: Make better? 3D?
     public void drawPlayer(double x, double y){
-        playerRectangle = new Rectangle(x, y,5,5);
+        Rectangle playerRectangle = new Rectangle(x, y,5,5);
         playerRectangle.setFill(Color.AQUA);
         Text playerText = new Text(x - 30, y - 10, "Player");
         playerText.setFont(Font.font("Verdana", 20));
