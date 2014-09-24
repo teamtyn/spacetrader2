@@ -1,5 +1,6 @@
 package spacetrader.star_system;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -7,12 +8,10 @@ import java.util.Random;
  * @author David Purcell
  */
 public class Government {
-    public enum GovernmentType {ANARCHY, CAPITALIST, COMMUNIST,
-                        CONFEDERACY, CORPORATE, CYBERNETIC,
-                        DEMOCRACY, DICTATORSHIP, FASCIST,
-                        FEUDAL, MILITARY, MONARCHY,
-                        PACIFIST, SOCIALIST, STATEOFSATORI,
-                        TECHNOCRACY, THEOCRACY};
+    public enum GovernmentType {ANARCHY, ARISTOCRACY, CAPITALIST, COMMUNIST,
+                                  CORPORATE, DEMOCRACY, FASCIST, MERITOCRACY,
+                                  MONARCHY, OLIGARCHY, TECHNOCRACY, THEOCRACY};
+    private HashMap<GovernmentType, String> leaders;
     private GovernmentType type;
     private String leader;
     private int anger;
@@ -20,8 +19,25 @@ public class Government {
 
     public Government() {
         type = GovernmentType.values()[random.nextInt(GovernmentType.values().length)];
-        leader = "THE PEOPLE";
+        //leader = leaders.get(type);
+        leader = "wtf";
         anger = 0;
+        //setUpLeaderMap();
+    }
+
+    public void setUpLeaderMap() {
+        leaders.put(GovernmentType.ANARCHY, "No One");
+        leaders.put(GovernmentType.ARISTOCRACY, "The Snobs");
+        leaders.put(GovernmentType.CAPITALIST, "The Money");
+        leaders.put(GovernmentType.COMMUNIST, "The State");
+        leaders.put(GovernmentType.CORPORATE, "The Businesses");
+        leaders.put(GovernmentType.DEMOCRACY, "The People");
+        leaders.put(GovernmentType.FASCIST, "One Mean Guy");
+        leaders.put(GovernmentType.MERITOCRACY, "The Qualified");
+        leaders.put(GovernmentType.MONARCHY, "One Nice Guy");
+        leaders.put(GovernmentType.OLIGARCHY, "The Few");
+        leaders.put(GovernmentType.TECHNOCRACY, "The Experts");
+        leaders.put(GovernmentType.THEOCRACY, "God");
     }
 
     public String getLeader() {
@@ -50,7 +66,7 @@ public class Government {
 
     public void revolution() {
         type = GovernmentType.ANARCHY;
-        leader = null;
+        //leader = leaders.get(type);
         anger = Integer.MAX_VALUE;
     }
 
@@ -61,7 +77,7 @@ public class Government {
         return str;
     }
 
-    public void toMonarchy(String name){
+    public void toMonarchy(String name) {
         type = GovernmentType.MONARCHY;
         leader = name;
         anger = 0;

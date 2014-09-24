@@ -86,10 +86,6 @@ public class Planet {
         this.circumstance = circumstance;
     }
 
-    public void setGovernment(Government newGov) {
-        government = newGov;
-    }
-
     public void revolt() {
         government.revolution();
     }
