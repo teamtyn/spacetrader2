@@ -12,14 +12,13 @@ public class StarSystem {
     private final Point2D coordinates;
     private Planet[] planets;
     private Random random = new Random();
-    private String[] names = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     public StarSystem(String name, Point2D coordinates) {
         this.name = name;
         this.coordinates = coordinates;
         planets = new Planet[random.nextInt(6) + 4];
         for (int i = 0; i < planets.length; i++) {
-            planets[i] = new Planet(names[i % 10]);
+            planets[i] = new Planet();
         }
     }
 

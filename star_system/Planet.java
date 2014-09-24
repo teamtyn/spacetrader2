@@ -31,8 +31,7 @@ public class Planet {
     private final Color color;
     private final int size;
 
-    public Planet(String name) {
-        this.name = name;
+    public Planet() {
         resourceLevel = ResourceLevel.values()[random.nextInt(ResourceLevel.values().length)];
         techLevel = TechLevel.values()[random.nextInt(TechLevel.values().length)];
         circumstance = Circumstance.values()[random.nextInt(Circumstance.values().length)];
@@ -40,6 +39,7 @@ public class Planet {
         color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // TODO: Josh make fancier
         orbitDistance = random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
         government = new Government();
+        name = PlanetNames.getName(government);
     }
 
     public Color getColor() {
