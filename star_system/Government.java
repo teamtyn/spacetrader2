@@ -7,19 +7,19 @@ import java.util.Random;
  * @author David Purcell
  */
 public class Government {
-    public enum GovernmentType {ANARCHY, CAPITALIST, COMMUNIST,
+    public enum Type {ANARCHY, CAPITALIST, COMMUNIST,
                         CONFEDERACY, CORPORATE, CYBERNETIC,
                         DEMOCRACY, DICTATORSHIP, FASCIST,
                         FEUDAL, MILITARY, MONARCHY,
                         PACIFIST, SOCIALIST, STATEOFSATORI,
                         TECHNOCRACY, THEOCRACY};
-    private GovernmentType type;
+    private Type type;
     private String leader;
     private int anger;
     private Random random = new Random();
 
     public Government() {
-        type = GovernmentType.values()[random.nextInt(GovernmentType.values().length)];
+        type = Type.values()[random.nextInt(Type.values().length)];
         leader = "THE PEOPLE";
         anger = 0;
     }
@@ -32,11 +32,11 @@ public class Government {
         leader = newLeader;
     }
 
-    public GovernmentType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(GovernmentType newType) {
+    public void setType(Type newType) {
         type = newType;
     }
 
@@ -49,7 +49,7 @@ public class Government {
     }
 
     public void revolution() {
-        type = GovernmentType.ANARCHY;
+        type = Type.ANARCHY;
         leader = null;
         anger = Integer.MAX_VALUE;
     }
@@ -62,7 +62,7 @@ public class Government {
     }
 
     public void toMonarchy(String name){
-        type = GovernmentType.MONARCHY;
+        type = Type.MONARCHY;
         leader = name;
         anger = 0;
     }
