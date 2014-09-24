@@ -3,11 +3,15 @@ package spacetrader.player;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
+import spacetrader.star_system.*;
 
 public class Player {
     private String name;
     private List<Skill> skills;
+    //Used to determine player's location in the universe as a whole.
     private Point2D playerCoord;
+    private StarSystem system;
+    private Planet planet;
 
     // Empty constructor
     public Player() {
@@ -39,6 +43,14 @@ public class Player {
     public void setPlayerCoordinates(Point2D newLoc) {
         playerCoord = newLoc;
     }
+    
+    public void setPlayerSyetem(StarSystem system){
+        this.system = system;
+    }
+    
+    public void setPlayerPlanet(Planet planet){
+        this.planet = planet;
+    }
 
     // Increase the level of a skill by the specified value
     public void increaseSkill(String type, int value) {
@@ -62,6 +74,22 @@ public class Player {
     // Getter for coordinates
     public Point2D getPlayerCoordinates() {
         return playerCoord;
+    }
+    
+    public double getPlayerCoordinateX() {
+        return playerCoord.getX();
+    }
+    
+    public double getPlayerCoordinateY() {
+        return playerCoord.getY();
+    }
+    
+    public StarSystem getPlayerSystem() {
+        return system;
+    }
+    
+    public Planet getPlayerPlanet() {
+        return planet;
     }
 
     // Getter for an individual skill

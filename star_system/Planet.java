@@ -1,6 +1,7 @@
 package spacetrader.star_system;
 
 import java.util.Random;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 /**
@@ -30,6 +31,7 @@ public class Planet {
     private Random random = new Random();
     private final Color color;
     private final int size;
+    public boolean hasPlayer;
 
     public Planet() {
         resourceLevel = ResourceLevel.values()[random.nextInt(ResourceLevel.values().length)];
@@ -40,6 +42,7 @@ public class Planet {
         orbitDistance = random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
         government = new Government();
         name = PlanetNames.getName(government);
+        hasPlayer = false;
     }
 
     public Color getColor() {
