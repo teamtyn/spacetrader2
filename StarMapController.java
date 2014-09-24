@@ -114,7 +114,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemText.setFill(Color.WHITE);
         systemPane.getChildren().add(systemText);
 
-        Circle star = new Circle(600, 300, 50, Color.YELLOW);
+        Circle star = new Circle(450, 300, 50, Color.YELLOW);
         systemPane.getChildren().add(star);
 
         Button button = new Button("GO BACK");
@@ -151,7 +151,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         planetTitle.setFill(Color.WHITE);
         systemPane.getChildren().add(planetTitle);
 
-        Circle planetCircle = new Circle(600, 300, 50, planet.getColor());
+        Circle planetCircle = new Circle(300, 300, 50, planet.getColor());
         systemPane.getChildren().add(planetCircle);
 
         Text planetText = new Text(planetCircle.getCenterX() - 60, planetCircle.getCenterY() + 100, planet.toString());
@@ -171,7 +171,7 @@ public class StarMapController implements Initializable, ControlledScreen {
             planet.revolt();
             planetText.setText(planet.toString());
         });
-        revolt.setLayoutX(250);
+        revolt.setLayoutX(100);
         revolt.setLayoutY(225);
         systemPane.getChildren().add(revolt);
 
@@ -180,7 +180,7 @@ public class StarMapController implements Initializable, ControlledScreen {
             planet.becomeMonarchy(SkillSetupController.player.getName());
             planetText.setText(planet.toString());
         });
-        monarch.setLayoutX(250);
+        monarch.setLayoutX(100);
         monarch.setLayoutY(250);
         systemPane.getChildren().add(monarch);
     }
