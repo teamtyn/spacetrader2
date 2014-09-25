@@ -34,10 +34,13 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML private Label fuelLabel;
     @FXML private Label rangeLabel;
     @FXML private Label hullLabel;
+    @FXML private Rectangle playerRectangle;
+    @FXML private Text playerText;
     @FXML private Button viewShipButton;
     @FXML private Button damageShipButton;
     @FXML private Button repairShipButton;
-
+    @FXML private Button viewPlayerCardButton;
+    
     private ScreensController parentController;
     private StarSystem[] systems;
     // Temporary player until we figure out how we are passing the actual player around
@@ -147,7 +150,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void viewSystem(StarSystem system) {
         systemPane.getChildren().removeAll(systemPane.getChildren());
 
-        // If the player is in the system, but has not travelled to a planet yet, draw player at arbitrary point
+        // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
         if (system.hasPlayer && tempPlayer.getPlayerPlanet() == null) {
             drawPlayer(100,100);
         }
@@ -196,7 +199,7 @@ public class StarMapController implements Initializable, ControlledScreen {
                 // Button to travel to this planet from inside system
                 Button travelButton = new Button("Travel to " + planet.getName());
                 travelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                    travelToPlanet(planet, system, planetX - 10, planetY - 10);
+                    travelToPlanet(planet, system);
                 });
                 travelButton.setLayoutX(planetX - 50);
                 travelButton.setLayoutY(planetY - 75);
@@ -282,16 +285,16 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemPane.getChildren().add(market);
     }
 
-    //TODO: Make better? 3D?
+    // TODO: Make better? 3D?
     /**
      * Method to draw the player on the screen at given coordinates
-     * @param x
-     * @param y 
+     * @param x Horizontal component of the player
+     * @param y Vertical component of the player
      */
     public void drawPlayer(double x, double y) {
-        Rectangle playerRectangle = new Rectangle(x, y, 5, 5);
+        playerRectangle = new Rectangle(x, y, 5, 5);
         playerRectangle.setFill(Color.AQUA);
-        Text playerText = new Text(x - 30, y - 10, "Player");
+        playerText = new Text(x - 30, y - 10, tempPlayer.getName());
         playerText.setFont(Font.font("Verdana", 20));
         playerText.setFill(Color.WHITE);
         systemPane.getChildren().add(playerRectangle);
@@ -300,8 +303,8 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     /**
      * Calculate integer distance from the player's coordinates to the given system
-     * @param system
-     * @return 
+     * @param system The system in question
+     * @return  The distance between the player and the system
      */
     public int getDistanceToSystem(StarSystem system) {
         double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getPlayerCoordinateX(),2) +
@@ -309,51 +312,57 @@ public class StarMapController implements Initializable, ControlledScreen {
         return (int)distance;
     }
 
-    //TODO: Animations?
-    //TODO: Fuel costs?
-    //TODO: Random Encounters (pirates / police)?
+    // TODO: Animations?
+    // TODO: Fuel costs?
+    // TODO: Random Encounters (pirates / police)?
     /**
      * Method for the player to travel to a given system
-     * @param system 
+     * @param system The system to be traveled to
      */
     public void travelToSystem(StarSystem system) {
+
         //Only travel if you can
-        if(tempPlayer.getShip().travelDistance(getDistanceToSystem(system))){
+        if (tempPlayer.getShip().ableToTravelDistance(getDistanceToSystem(system))) {
             //Update player ship display
             fuelLabel.setText("" + tempPlayer.getShip().getFuel());
             rangeLabel.setText("" + tempPlayer.getShip().getRange());
-            //Make sure past planet and system no longer have player
-            if(tempPlayer.getPlayerSystem() != null)
-                tempPlayer.getPlayerSystem().hasPlayer = false;
-            if(tempPlayer.getPlayerPlanet() != null)
-                tempPlayer.getPlayerPlanet().hasPlayer = false;
 
-            //System you are travellinig to has player
+            // Make sure past planet and system no longer have player
+            if (tempPlayer.getPlayerSystem() != null) {
+                tempPlayer.getPlayerSystem().hasPlayer = false;
+            }
+            if (tempPlayer.getPlayerPlanet() != null) {
+                tempPlayer.getPlayerPlanet().hasPlayer = false;
+            }
+
+            // System you are traveling to has player
             system.hasPlayer = true;
-            //Set system to target system and null planet.  Travel to planet later.
+            // Set system to target system and null planet.  Travel to planet later.
             tempPlayer.setPlayerSyetem(system);
             tempPlayer.setPlayerPlanet(null);
-            //Set new player coordinates, only currently used for distance calculations from system to system
+
+            // Set new player coordinates, only currently used for distance calculations from system to system
             tempPlayer.setPlayerCoordinates(new Point2D(system.getCoordinateX(),system.getCoordinateY()));
             viewSystem(system);
         }
     }
 
-    //TODO: Animations?
-    //TODO: Fuel costs?  Much smaller scale than system to system
-    //TODO: Random Encounters (pirates / police)?
+    // TODO: Animations?
+    // TODO: Fuel costs?  Much smaller scale than system to system
+    // TODO: Random Encounters (pirates / police)?
     /**
      * Method for the player to travel to a given planet
-     * @param planet
-     * @param system
-     * @param x
-     * @param y 
+     * @param planet The planet to be traveled to
+     * @param system The system that planet resides in
      */
-    public void travelToPlanet(Planet planet, StarSystem system, double x, double y){
-        //Make sure past planet no longer has player.  System shouldn't change.
-        if(tempPlayer.getPlayerPlanet() != null)
+    public void travelToPlanet(Planet planet, StarSystem system) {
+
+        // Make sure past planet no longer has player.  System shouldn't change
+        if (tempPlayer.getPlayerPlanet() != null) {
             tempPlayer.getPlayerPlanet().hasPlayer = false;
-        //Planet you are travellinig to has player
+        }
+
+        // Planet you are traveling to has player
         planet.hasPlayer = true;
         tempPlayer.setPlayerPlanet(planet);
         viewPlanet(planet, system);
@@ -366,18 +375,29 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     @FXML
+    private void viewPlayerCardButtonAction(ActionEvent event) {
+        System.out.println("Viewing player card now.");
+    }
+
+    @FXML
+    private void viewShipButtonAction(ActionEvent event) {
+        System.out.println("Viewing ship now.");
+    }
+
+    @FXML
     private void repairShipButtonAction(ActionEvent event) {
         tempPlayer.getShip().repairHull(10);
         hullLabel.setText("" + tempPlayer.getShip().getHull());
     }
 
-    // Initialize the systems and then view the universe
+    // Initialize the systems and then views the universe
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         generateSystems();
+
         // Replace with overall player
         tempPlayer = new Player();
-        tempPlayer.setPlayerCoordinates(new Point2D(100,100));
+        tempPlayer.setPlayerCoordinates(new Point2D(100, 100));
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
         hullLabel.setText("" + tempPlayer.getShip().getHull());

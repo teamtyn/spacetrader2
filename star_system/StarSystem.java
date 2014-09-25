@@ -3,7 +3,6 @@ package spacetrader.star_system;
 import java.util.Random;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import spacetrader.player.Player;
 
 /**
  * StarSystem contains an array of planets, and resides at some coordinates

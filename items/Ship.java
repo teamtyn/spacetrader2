@@ -200,7 +200,7 @@ public class Ship {
 
     // Other functionality
 
-    public boolean travelDistance(int distance) {
+    public boolean ableToTravelDistance(int distance) {
         boolean success = false;
         if (distance <= getRange()) {
             fuel = Math.round(fuel - distance / type.fuelEfficiency);

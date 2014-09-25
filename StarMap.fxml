@@ -7,64 +7,65 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.StarMapController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.StarMapController">
    <children>
-      <Pane fx:id="systemPane" prefHeight="584.0" prefWidth="900.0" style="-fx-background-color: black;" />
-      <Pane fx:id="shipDataPane" layoutX="1.0" layoutY="586.0" prefHeight="153.0" prefWidth="900.0" style="-fx-background-color: grey;">
+      <Pane fx:id="systemPane" prefHeight="600.0" prefWidth="960.0" style="-fx-background-color: black;" />
+      <Pane fx:id="shipDataPane" layoutY="600.0" prefHeight="120.0" prefWidth="960.0" style="-fx-background-color: grey;">
          <children>
-            <Label layoutX="29.0" layoutY="27.0" prefHeight="32.0" prefWidth="49.0" text="Fuel:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label fx:id="fuelLabel" layoutX="78.0" layoutY="28.0" prefHeight="31.0" prefWidth="107.0">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label fx:id="rangeLabel" layoutX="97.0" layoutY="54.0" prefHeight="31.0" prefWidth="107.0">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="29.0" layoutY="53.0" prefHeight="32.0" prefWidth="68.0" text="Range:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Button fx:id="viewShipButton" layoutX="29.0" layoutY="114.0" mnemonicParsing="false" text="View Ship" />
-            <Label layoutX="221.0" layoutY="20.0" prefHeight="32.0" prefWidth="89.0" text="Gadgets">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="386.0" layoutY="20.0" prefHeight="32.0" prefWidth="89.0" text="Shields">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="713.0" layoutY="20.0" prefHeight="32.0" prefWidth="124.0" text="Cargo Bays">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="548.0" layoutY="20.0" prefHeight="32.0" prefWidth="98.0" text="Weapons">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="29.0" layoutY="82.0" prefHeight="32.0" prefWidth="49.0" text="Hull:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Label fx:id="hullLabel" layoutX="78.0" layoutY="82.0" prefHeight="17.0" prefWidth="107.0">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Button fx:id="damageShipButton" layoutX="106.0" layoutY="114.0" mnemonicParsing="false" onAction="#damageShipButtonAction" text="Damage" />
-            <Button fx:id="repairShipButton" layoutX="179.0" layoutY="114.0" mnemonicParsing="false" onAction="#repairShipButtonAction" text="Repair" />
+            <VBox layoutX="20.0" prefHeight="120.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="40.0" prefWidth="180.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="80.0" text="Fuel:">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="fuelLabel" layoutX="60.0" prefHeight="40.0" prefWidth="100.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="180.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="80.0" text="Range:">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="rangeLabel" prefHeight="40.0" prefWidth="100.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="180.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="80.0" text="Hull:">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="hullLabel" prefHeight="40.0" prefWidth="100.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox layoutX="300.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="viewShipButton" mnemonicParsing="false" onAction="#viewShipButtonAction" text="View Ship" />
+                  <Button fx:id="damageShipButton" mnemonicParsing="false" onAction="#damageShipButtonAction" text="Damage" />
+                  <Button fx:id="repairShipButton" mnemonicParsing="false" onAction="#repairShipButtonAction" text="Repair" />
+                  <Button fx:id="viewPlayerCardButton" mnemonicParsing="false" onAction="#viewPlayerCardButtonAction" text="View Player Card" />
+               </children>
+            </HBox>
          </children></Pane>
    </children>
 </AnchorPane>

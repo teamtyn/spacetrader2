@@ -9,17 +9,16 @@ import spacetrader.star_system.*;
 public class Player {
     private String name;
     private List<Skill> skills;
-    //Used to determine player's location in the universe as a whole.
+    // Used to determine player's location in the universe as a whole
     private Point2D playerCoord;
     private StarSystem system;
     private Planet planet;
     private Ship ship;
 
-    // Empty constructor
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
-        playerCoord = new Point2D(0,0);
+        playerCoord = new Point2D(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
     }
 
@@ -51,11 +50,11 @@ public class Player {
         playerCoord = newLoc;
     }
     
-    public void setPlayerSyetem(StarSystem system){
+    public void setPlayerSyetem(StarSystem system) {
         this.system = system;
     }
     
-    public void setPlayerPlanet(Planet planet){
+    public void setPlayerPlanet(Planet planet) {
         this.planet = planet;
     }
 
