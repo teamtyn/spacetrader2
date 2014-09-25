@@ -266,6 +266,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         //TODO: Remove later, replace with better buttons
         Button monarch = new Button("Take control");
         monarch.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+            planet.becomeMonarchy(tempPlayer.getName());
             planetText.setText(planet.toString());
         });
         monarch.setLayoutX(100);
