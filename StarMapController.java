@@ -34,46 +34,14 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML private Label fuelLabel;
     @FXML private Label rangeLabel;
     @FXML private Label hullLabel;
-    @FXML private Button viewShip;
-    @FXML private Button damageShip;
-    @FXML private Button repairShip;
-    
-    
-
-    //Remove?
-    @FXML
-    private Button monarchyButton;
-
-    //Remove?
-    @FXML
-    private Button revolutionButton;
-
-    //Remove?
-    @FXML
-    private Button toUniverseButton;
-
-    //Remove?
-    @FXML
-    private Button toSystemButton;
-
-    //Remove?
-    @FXML
-    private Button generateButton;
-
-    //Remove?
-    @FXML
-    private Button viewButton;
+    @FXML private Button viewShipButton;
+    @FXML private Button damageShipButton;
+    @FXML private Button repairShipButton;
 
     private ScreensController parentController;
     private StarSystem[] systems;
-    //Temporary player until we figure out how we are passing the actual player around.
+    // Temporary player until we figure out how we are passing the actual player around
     private Player tempPlayer;
-
-    // Just for M4 demo, dumps star system data in console
-    //Remove?
-    public void demoM4() {
-        System.out.println(toString());
-    }
 
     @Override
     public String toString() {
@@ -83,8 +51,10 @@ public class StarMapController implements Initializable, ControlledScreen {
         }
         return builder.toString();
     }
-    
-    //Generate new systems to avoid collisions (Nico give better docs?)
+
+    /**
+     * Generates the star systems to avoid collisions
+     */
     private void generateSystems() {
         Random random = new Random();
         List<Point2D> positions = new ArrayList<>();
@@ -101,38 +71,42 @@ public class StarMapController implements Initializable, ControlledScreen {
         }
     }
 
-    //Overall view of all systems and other enteties
+    /**
+     * Overall view of all systems and other entities in the universe
+     */
     public void viewUniverse() {
-        //Clear all old stuff.
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        
-        //If the player doesn't have a system or planet, just draw them somewhere.  
-        //Should only matter on startup.
-        //Create starting system?
-        if(tempPlayer.getPlayerSystem() == null && tempPlayer.getPlayerPlanet() == null){
+
+        // If the player doesn't have a system or planet, just draw them somewhere
+        // TODO: Randomize start location or pick a noob spot
+        if (tempPlayer.getPlayerSystem() == null && tempPlayer.getPlayerPlanet() == null) {
             drawPlayer(100,100);
         }
-        
-        //Adding systems to map
+
+        // Adding systems to map
         for (StarSystem system : systems) {
-            //Draw a yellow circle to represent star at center of system
+
+            // Draw a yellow circle to represent star at center of system
             Circle star = new Circle(system.getCoordinateX(), system.getCoordinateY(), 10, system.getColor());
             star.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 viewSystem(system);
             });         
             systemPane.getChildren().add(star);
-            
-            //If player is in this system, draw them.
-            if(system.hasPlayer && tempPlayer.getPlayerPlanet() == null){
+
+            // If player is in this system, draw them
+            if (system.hasPlayer && tempPlayer.getPlayerPlanet() == null) {
                 drawPlayer(system.getCoordinateX() - 50, system.getCoordinateY() - 25);
             }
-            
-            //Loop through planets, adding them at equal intervals around the star
+
+            // Loop through planets, adding them at equal intervals around the star
             int numPlanets = system.getPlanets().length;
             int degrees = 0;
+
+            // Adding planets to map
             for (Planet planet : system.getPlanets()) {
-                //Draw circle for planet
-                //TODO: Make better? 3D?
+
+                // Draw circle for planet
+                // TODO: Make better? 3D?
                 double planetX = system.getCoordinateX() + (planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
                 double planetY = system.getCoordinateY() + (planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
                 Circle planetCircle = new Circle(planetX, planetY, planet.getSize(), planet.getColor());
@@ -142,19 +116,21 @@ public class StarMapController implements Initializable, ControlledScreen {
                 }
                 degrees += 360 / numPlanets;
             }
-            
-            //Text displaying the system's name
+
+            // Text displaying the system's name
             Text systemText = new Text(system.getCoordinateX() - 30, system.getCoordinateY() - 30, system.getName());
             systemText.setFont(Font.font("Verdana", 20));
             systemText.setFill(Color.WHITE);
             systemPane.getChildren().add(systemText);
-            
-            //If the player is not already in the system, allow travel to the system
-            if(!system.hasPlayer){
-                //Button to travel to system, displays distance to system
+
+            // If the player is not already in the system, allow travel to the system
+            if (!system.hasPlayer) {
+
+                // Button to travel to system, displays distance to system
                 Button travelButton = new Button("Travel to " + system.getName() + "\nDistance " + getDistanceToSystem(system));
                 travelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                    //Method that handles traveling to the system
+
+                    // Method that handles traveling to the system
                     travelToSystem(system);
                 });
                 travelButton.setLayoutX(system.getCoordinateX() - 50);
@@ -164,37 +140,42 @@ public class StarMapController implements Initializable, ControlledScreen {
         }
     }
 
-    //View of a specific system within the universe
+    /**
+     * View of a specific system within the universe
+     * @param system The system to be viewed
+     */
     public void viewSystem(StarSystem system) {
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        //If the player is in the system, but has not travelled to a planet yet,
-        //draw player at arbitrary point
-        if(system.hasPlayer && tempPlayer.getPlayerPlanet() == null){
+
+        // If the player is in the system, but has not travelled to a planet yet, draw player at arbitrary point
+        if (system.hasPlayer && tempPlayer.getPlayerPlanet() == null) {
             drawPlayer(100,100);
         }
-        //Name of system
+
+        // Name of system
         Text systemText = new Text(600, 50, system.getName());
         systemText.setFont(Font.font("Verdana", 40));
         systemText.setFill(Color.WHITE);
         systemPane.getChildren().add(systemText);
 
-        //Draw circle to represent star at middle of system
+        // Draw circle to represent star at middle of system
         Circle star = new Circle(450, 300, 50, system.getColor());
         systemPane.getChildren().add(star);
 
-        //Go back to the 
+        // Go back to the universe view
         Button backButton = new Button("GO BACK");
         backButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 viewUniverse();
             });
         systemPane.getChildren().add(backButton);
 
-        //Loop through planets, adding them at equal intervals around the star
+        // Loop through planets, adding them at equal intervals around the star
         int numPlanets = system.getPlanets().length;
         int degrees = 0;
         for (Planet planet : system.getPlanets()) {
-            //Draw circle for planet
-            //TODO: Make better? 3D?
+
+            // Draw circle for planet
+            // TODO: Make better? 3D?
             double planetX = star.getCenterX() + (5 * planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
             double planetY = star.getCenterY() + (5 * planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
             Circle planetCircle = new Circle(planetX, planetY, planet.getSize() * Math.sqrt(5), planet.getColor());
@@ -203,15 +184,16 @@ public class StarMapController implements Initializable, ControlledScreen {
             }); 
             systemPane.getChildren().add(planetCircle);
 
-            //Write name of planet aboove planet
+            // Write name of planet above the planet's circle
             Text planetText = new Text(planetCircle.getCenterX() - planet.getName().length() * 3, planetCircle.getCenterY() - 30, planet.getName());
             planetText.setFont(Font.font ("Verdana", 20));
             planetText.setFill(Color.WHITE);
             systemPane.getChildren().add(planetText);
 
-            //If the player is in this system and not already at this planet, allow travel to this planet
-            if(system.hasPlayer && !planet.hasPlayer){
-                //Button to travel to this planet from inside system.
+            // If the player is in this system and not already at this planet, allow travel to this planet
+            if (system.hasPlayer && !planet.hasPlayer) {
+
+                // Button to travel to this planet from inside system
                 Button travelButton = new Button("Travel to " + planet.getName());
                 travelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                     travelToPlanet(planet, system, planetX - 10, planetY - 10);
@@ -220,48 +202,54 @@ public class StarMapController implements Initializable, ControlledScreen {
                 travelButton.setLayoutY(planetY - 75);
                 systemPane.getChildren().add(travelButton);
             }
-            //If the player is at this planet, draw the player
+
+            // If the player is at this planet, draw the player
             if(planet.hasPlayer){
                 drawPlayer(planetX - (planet.getSize() + 3) *Math.sqrt(5), planetY - (planet.getSize() + 3) *Math.sqrt(5));
             }
-            
             degrees += 360 / numPlanets;
         }
     }
 
-    //View for a specific planet
+    /**
+     * View a specific planet
+     * @param planet The planet to be viewed
+     * @param system The system that the planet resides in
+     */
     public void viewPlanet(Planet planet, StarSystem system) {
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        //If the player is at this planet, draw them in.
-        if(planet.hasPlayer){
+
+        // If the player is at this planet, draw them in
+        if (planet.hasPlayer) {
             drawPlayer(100,100);
         }
-        //Write the name of the planet
+
+        // Write the name of the planet
         Text planetTitle = new Text(600, 50, planet.getName());
         planetTitle.setFont(Font.font ("Verdana", 40));
         planetTitle.setFill(Color.WHITE);
         systemPane.getChildren().add(planetTitle);
 
-        //Draw a circle to represent the planet
-        //TODO: Make better? 3D?
+        // Draw a circle to represent the planet
+        // TODO: Make better? 3D?
         Circle planetCircle = new Circle(300, 300, 50, planet.getColor());
         systemPane.getChildren().add(planetCircle);
 
-        //Write some more details about the planet such as government and circumstances
+        // Write some more details about the planet such as government and circumstance
         Text planetText = new Text(planetCircle.getCenterX() - 60, planetCircle.getCenterY() + 100, planet.toString());
         planetText.setFont(Font.font("Verdana", 20));
         planetText.setFill(Color.WHITE);
         systemPane.getChildren().add(planetText);
 
-        //Button to return to system view
+        // Button to return to system view
         Button button = new Button("GO BACK");
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 viewSystem(system);
             });
         systemPane.getChildren().add(button);
 
-        //Button to instantiate an anarchy government.  
-        //TODO: Remove later, replace with better buttons
+        // Button to instantiate an anarchy government
+        // TODO: Remove later, replace with better buttons
         Button revolt = new Button("Sponsor Revolution");
         revolt.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             planet.revolt();
@@ -271,8 +259,8 @@ public class StarMapController implements Initializable, ControlledScreen {
         revolt.setLayoutY(225);
         systemPane.getChildren().add(revolt);
 
-        //Button to instantiate a monarchy government.  
-        //TODO: Remove later, replace with better buttons
+        // Button to instantiate a monarchy government
+        // TODO: Remove later, replace with better buttons
         Button monarch = new Button("Take control");
         monarch.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             planet.becomeMonarchy(tempPlayer.getName());
@@ -281,9 +269,9 @@ public class StarMapController implements Initializable, ControlledScreen {
         monarch.setLayoutX(100);
         monarch.setLayoutY(250);
         systemPane.getChildren().add(monarch);
-        
-        //Button to goto market  
-        //TODO: add market?
+
+        // Button to go to the market  
+        // TODO: Add market GUI
         Button market = new Button("BUY THINGS");
         market.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             //TODO: Make it not break?
@@ -293,11 +281,15 @@ public class StarMapController implements Initializable, ControlledScreen {
         market.setLayoutY(275);
         systemPane.getChildren().add(market);
     }
-    
-    //Method to draw the player on the screen at given coordinates
+
     //TODO: Make better? 3D?
-    public void drawPlayer(double x, double y){
-        Rectangle playerRectangle = new Rectangle(x, y,5,5);
+    /**
+     * Method to draw the player on the screen at given coordinates
+     * @param x
+     * @param y 
+     */
+    public void drawPlayer(double x, double y) {
+        Rectangle playerRectangle = new Rectangle(x, y, 5, 5);
         playerRectangle.setFill(Color.AQUA);
         Text playerText = new Text(x - 30, y - 10, "Player");
         playerText.setFont(Font.font("Verdana", 20));
@@ -305,19 +297,26 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemPane.getChildren().add(playerRectangle);
         systemPane.getChildren().add(playerText);
     }
-    
-    //Calculate integer distance from the player's coordinates to the given system.
-    public int getDistanceToSystem(StarSystem system){
+
+    /**
+     * Calculate integer distance from the player's coordinates to the given system
+     * @param system
+     * @return 
+     */
+    public int getDistanceToSystem(StarSystem system) {
         double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getPlayerCoordinateX(),2) +
                                     Math.pow(system.getCoordinateY() - tempPlayer.getPlayerCoordinateY(),2));
         return (int)distance;
     }
-    
-    //Method for the player to travel to a given system
+
     //TODO: Animations?
     //TODO: Fuel costs?
     //TODO: Random Encounters (pirates / police)?
-    public void travelToSystem(StarSystem system){
+    /**
+     * Method for the player to travel to a given system
+     * @param system 
+     */
+    public void travelToSystem(StarSystem system) {
         //Only travel if you can
         if(tempPlayer.getShip().travelDistance(getDistanceToSystem(system))){
             //Update player ship display
@@ -339,11 +338,17 @@ public class StarMapController implements Initializable, ControlledScreen {
             viewSystem(system);
         }
     }
-    
-    //Method for the player to travel to a given planet
+
     //TODO: Animations?
-    //TODO: Fuel costs?  Much smaller scale than system to system.
+    //TODO: Fuel costs?  Much smaller scale than system to system
     //TODO: Random Encounters (pirates / police)?
+    /**
+     * Method for the player to travel to a given planet
+     * @param planet
+     * @param system
+     * @param x
+     * @param y 
+     */
     public void travelToPlanet(Planet planet, StarSystem system, double x, double y){
         //Make sure past planet no longer has player.  System shouldn't change.
         if(tempPlayer.getPlayerPlanet() != null)
@@ -354,49 +359,23 @@ public class StarMapController implements Initializable, ControlledScreen {
         viewPlanet(planet, system);
     }
 
-    //Remove?
     @FXML
-    private void monarchyButtonAction(ActionEvent event) {
-        System.out.println("pressed for monarchy");
-    }
-
-    //Remove?
-    @FXML
-    private void revolutionButtonAction(ActionEvent event) {
-        System.out.println("pressed for revolution");
-    }
-
-    //Remove?
-    @FXML
-    private void backButtonAction(ActionEvent event) {
-        System.out.println("pressed for back");
-    }
-
-    //Remove?
-    @FXML
-    private void viewButtonAction(ActionEvent event) {
-        System.out.println("pressed for planet viewing");
-    }
-    
-    @FXML
-    private void damageShip(ActionEvent event) {
+    private void damageShipButtonAction(ActionEvent event) {
         tempPlayer.getShip().takeDamage(10);
         hullLabel.setText("" + tempPlayer.getShip().getHull());
     }
-    
+
     @FXML
-    private void repairShip(ActionEvent event) {
+    private void repairShipButtonAction(ActionEvent event) {
         tempPlayer.getShip().repairHull(10);
         hullLabel.setText("" + tempPlayer.getShip().getHull());
     }
 
-    //Initialize the systems and then view the universe
+    // Initialize the systems and then view the universe
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         generateSystems();
-        //Remove?
-        demoM4();
-        //Replace with overall player
+        // Replace with overall player
         tempPlayer = new Player();
         tempPlayer.setPlayerCoordinates(new Point2D(100,100));
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());

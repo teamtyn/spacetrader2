@@ -3,12 +3,10 @@ package spacetrader.items;
 import javafx.scene.paint.Color;
 
 /**
- * //Ship class, what the player travels around and transports cargo in.
+ * Ship class, what the player travels around and transports cargo in
  * @author David Purcell
  */
 public class Ship {
-    // Standard ship names from original game, can be added to later
-    //Ship type contains TYPE(hullStrength, gadgetSlots, shieldSlots, weaponSlots, cargoBaySlots, fuelCapacity)
     private ShipType type;
     private Gadget[] gadgets;
     private Shield[] shields;
@@ -19,20 +17,23 @@ public class Ship {
     private int hull;
     private Color color;
     private double fuel;
-    
+
+    /**
+     * ShipType contains TYPE(hullStrength, gadgetSlots, shieldSlots, weaponSlots, cargoBaySlots, fuelCapacity)
+     */
     public enum ShipType {
-        //TODO: Make numbers more better?
-        Flea (100, 4, 4,4,4,4,4, Color.BLUE), 
-        Gnat (100, 100, 4,4,4,4,10, Color.RED), 
-        Firefly (100, 4, 4,4,4,4,4, Color.GREEN), 
-        Mosquito (100, 4, 4,4,4,4,4, Color.ORANGE), 
-        Bumblebee (100, 4, 4,4,4,4,4, Color.YELLOW),
-        Beetle (100, 4, 4,4,4,4,4, Color.PURPLE), 
-        Hornet (100, 4, 4,4,4,4,4, Color.BROWN), 
-        Grasshopper (100, 4, 4,4,4,4,4, Color.GREY), 
-        Termite (100, 4, 4,4,4,4,4, Color.WHITE), 
-        Wasp (100, 4, 4,4,4,4,4, Color.ALICEBLUE);
-        
+        // TODO: Make numbers more better?
+        Flea (100, 4, 4, 4, 4, 4, 4, Color.BLUE), 
+        Gnat (100, 100, 4, 4, 4, 4, 10, Color.RED), 
+        Firefly (100, 4, 4, 4, 4, 4, 4, Color.GREEN), 
+        Mosquito (100, 4, 4, 4, 4, 4, 4, Color.ORANGE), 
+        Bumblebee (100, 4, 4, 4, 4, 4, 4, Color.YELLOW),
+        Beetle (100, 4, 4, 4, 4, 4, 4, Color.PURPLE), 
+        Hornet (100, 4, 4, 4, 4, 4, 4, Color.BROWN), 
+        Grasshopper (100, 4, 4, 4, 4, 4, 4, Color.GREY), 
+        Termite (100, 4, 4, 4, 4, 4, 4, Color.WHITE), 
+        Wasp (100, 4, 4, 4, 4, 4, 4, Color.ALICEBLUE);
+
         private int hullStrength;
         private double fuelCapacity;
         private int gadgetSlots;
@@ -41,7 +42,7 @@ public class Ship {
         private int cargoBaySlots;
         private double fuelEfficiency;
         private Color color;
-        
+
         ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, Color color){
             this.hullStrength = hullStrength;
             this.fuelCapacity = fuelCapacity;
@@ -65,64 +66,66 @@ public class Ship {
         this.escapePod = escapePod;
         this.insurance = insurance;
     }
-    
+
     //Add things to ship
-    public boolean addGadget(Gadget newGadget){
+
+    public boolean addGadget(Gadget newGadget) {
         boolean success = false;
-        for(Gadget gadget : gadgets){
-            if(gadget == null && !success){
+        for (Gadget gadget: gadgets) {
+            if (gadget == null && !success) {
                 gadget = newGadget;
                 success = true;
             }
         }
         return success;
     }
-    public boolean addShield(Shield newShield){
+    public boolean addShield(Shield newShield) {
         boolean success = false;
-        for(Shield shield : shields){
-            if(shield == null && !success){
+        for (Shield shield: shields) {
+            if (shield == null && !success) {
                 shield = newShield;
                 success = true;
             }
         }
         return success;
     }
-    public boolean addWeapon(Weapon newWeapon){
+    public boolean addWeapon(Weapon newWeapon) {
         boolean success = false;
-        for(Weapon weapon : weapons){
-            if(weapon == null && !success){
+        for (Weapon weapon: weapons) {
+            if (weapon == null && !success) {
                 weapon = newWeapon;
                 success = true;
             }
         }
         return success;
     }
-    public boolean addCargoBay(CargoBay newCargoBay){
+    public boolean addCargoBay(CargoBay newCargoBay) {
         boolean success = false;
-        for(CargoBay cargoBay : cargoBays){
-            if(cargoBay == null && !success){
+        for (CargoBay cargoBay: cargoBays) {
+            if (cargoBay == null && !success) {
                 cargoBay = newCargoBay;
                 success = true;
             }
         }
         return success;
     }
-    public void addEscapePod(EscapePod escapePod){
+    public void addEscapePod(EscapePod escapePod) {
         this.escapePod = escapePod;
     }
-    public void addInsurance(Insurance insurance){
+    public void addInsurance(Insurance insurance) {
         this.insurance = insurance;
     }
-    public double addField(double newFuel){
+    public double addFuel(double newFuel) {
         fuel += newFuel;
-        if(fuel > type.fuelCapacity){
+        if(fuel > type.fuelCapacity) {
             fuel = type.fuelCapacity;
         }
         return fuel;
     }
  
     //Remove things from ship
-    public Gadget removeGadget(int position){
+
+    public Gadget removeGadget(int position) {
         Gadget removed = null;
         if(position < gadgets.length){
             removed = gadgets[position];
@@ -130,7 +133,7 @@ public class Ship {
         }
         return removed;
     }   
-    public Shield removeShield(int position){
+    public Shield removeShield(int position) {
         Shield removed = null;
         if(position < shields.length){
             removed = shields[position];
@@ -138,7 +141,7 @@ public class Ship {
         }
         return removed;
     }   
-    public Weapon removeWeapon(int position){
+    public Weapon removeWeapon(int position) {
         Weapon removed = null;
         if(position < weapons.length){
             removed = weapons[position];
@@ -146,7 +149,7 @@ public class Ship {
         }
         return removed;
     }   
-    public CargoBay removeCargoBay(int position){
+    public CargoBay removeCargoBay(int position) {
         CargoBay removed = null;
         if(position < cargoBays.length){
             removed = cargoBays[position];
@@ -154,66 +157,73 @@ public class Ship {
         }
         return removed;
     }
-    public EscapePod removeEscapePod(){
+    public EscapePod removeEscapePod() {
         EscapePod removed = escapePod;
         escapePod = null;
         return removed;
     }
-    public Insurance removeInsurance(){
+    public Insurance removeInsurance() {
         Insurance removed = insurance;
         insurance = null;
         return removed;
     }
     
-    //Getters
-    public Gadget[] getGadgets(){
+    // Getters
+
+    public Gadget[] getGadgets() {
         return gadgets;
     }
-    public Shield[] getShields(){
+    public Shield[] getShields() {
         return shields;
     }
-    public Weapon[] getWeapons(){
+    public Weapon[] getWeapons() {
         return weapons;
     }
-    public CargoBay[] getCargoBays(){
+    public CargoBay[] getCargoBays() {
         return cargoBays;
     }
-    public EscapePod getEscapePod(){
+    public EscapePod getEscapePod() {
         return escapePod;
     }
-    public Insurance getInsurance(){
+    public Insurance getInsurance() {
         return insurance;
     }
-    public int getHull(){
+    public int getHull() {
         return hull;
     }
-    public double getFuel(){
+    public double getFuel() {
         return fuel;
     }
-    public int getRange(){
+    public int getRange() {
         return (int)(fuel * type.fuelEfficiency);
     }
-    
-    //Other functionality
-    public boolean travelDistance(int distance){
+
+    // Other functionality
+
+    public boolean travelDistance(int distance) {
         boolean success = false;
-        if(distance <= getRange()){
+        if (distance <= getRange()) {
             fuel = Math.round(fuel - distance / type.fuelEfficiency);
             success = true;
         }
         return success;
     }
-    public int takeDamage(int damage){
-        //Shields???
-        hull -= damage;
-        if(hull <= 0){
-            //Kertsplode
+    public int takeDamage(int damage) {
+        // Shields???
+        if (hull - damage >= 0) {
+            hull -= damage;
+        } else {
+            hull = 0;
+        }
+        if (hull == 0) {
+            System.out.println("YOU DEAD");
+            // Kertsplode
         }
         return hull;
     }
-    public int repairHull(int repairs){
+    public int repairHull(int repairs) {
         hull += repairs;
-        if(hull >= type.hullStrength){
+        if (hull >= type.hullStrength) {
             hull = type.hullStrength;
         }
         return hull;
