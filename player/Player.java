@@ -3,6 +3,7 @@ package spacetrader.player;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
+import spacetrader.items.*;
 import spacetrader.star_system.*;
 
 public class Player {
@@ -12,12 +13,14 @@ public class Player {
     private Point2D playerCoord;
     private StarSystem system;
     private Planet planet;
+    private Ship ship;
 
     // Empty constructor
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
         playerCoord = new Point2D(0,0);
+        ship = new Ship(Ship.ShipType.Gnat, null, null);
     }
 
     // Setter for name
@@ -39,6 +42,10 @@ public class Player {
         }
     }
 
+    public void setPlayerShip(Ship ship){
+        this.ship = ship;
+    }
+    
     // Setter for coordinates
     public void setPlayerCoordinates(Point2D newLoc) {
         playerCoord = newLoc;
@@ -69,6 +76,10 @@ public class Player {
     // Getter for skills
     public List<Skill> getSkills() {
         return this.skills;
+    }
+    
+    public Ship getShip(){
+        return ship;
     }
 
     // Getter for coordinates
