@@ -50,7 +50,7 @@ public class Player {
         playerCoord = newLoc;
     }
     
-    public void setPlayerSyetem(StarSystem system) {
+    public void setPlayerSystem(StarSystem system) {
         this.system = system;
     }
     
