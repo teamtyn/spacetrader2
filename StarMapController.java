@@ -33,7 +33,10 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML private Pane shipDataPane;
     @FXML private Label fuelLabel;
     @FXML private Label rangeLabel;
+    @FXML private Label hullLabel;
     @FXML private Button viewShip;
+    @FXML private Button damageShip;
+    @FXML private Button repairShip;
     
     
 
@@ -374,6 +377,18 @@ public class StarMapController implements Initializable, ControlledScreen {
     private void viewButtonAction(ActionEvent event) {
         System.out.println("pressed for planet viewing");
     }
+    
+    @FXML
+    private void damageShip(ActionEvent event) {
+        tempPlayer.getShip().takeDamage(10);
+        hullLabel.setText("" + tempPlayer.getShip().getHull());
+    }
+    
+    @FXML
+    private void repairShip(ActionEvent event) {
+        tempPlayer.getShip().repairHull(10);
+        hullLabel.setText("" + tempPlayer.getShip().getHull());
+    }
 
     //Initialize the systems and then view the universe
     @Override
@@ -386,6 +401,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         tempPlayer.setPlayerCoordinates(new Point2D(100,100));
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
+        hullLabel.setText("" + tempPlayer.getShip().getHull());
         this.viewUniverse();
     }
 

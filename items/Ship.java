@@ -16,6 +16,7 @@ public class Ship {
     private CargoBay[] cargoBays;
     private EscapePod escapePod;
     private Insurance insurance;
+    private int hull;
     private Color color;
     private double fuel;
     
@@ -59,6 +60,7 @@ public class Ship {
         shields = new Shield[type.shieldSlots];
         weapons = new Weapon[type.weaponSlots];
         cargoBays = new CargoBay[type.cargoBaySlots];
+        hull = type.hullStrength;
         fuel = type.fuelCapacity;
         this.escapePod = escapePod;
         this.insurance = insurance;
@@ -182,6 +184,9 @@ public class Ship {
     public Insurance getInsurance(){
         return insurance;
     }
+    public int getHull(){
+        return hull;
+    }
     public double getFuel(){
         return fuel;
     }
@@ -197,5 +202,20 @@ public class Ship {
             success = true;
         }
         return success;
+    }
+    public int takeDamage(int damage){
+        //Shields???
+        hull -= damage;
+        if(hull <= 0){
+            //Kertsplode
+        }
+        return hull;
+    }
+    public int repairHull(int repairs){
+        hull += repairs;
+        if(hull >= type.hullStrength){
+            hull = type.hullStrength;
+        }
+        return hull;
     }
 }
