@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -8,6 +9,30 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.StarMapController">
    <children>
-      <Pane fx:id="systemPane" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: black;" />
+      <Pane fx:id="systemPane" prefHeight="584.0" prefWidth="900.0" style="-fx-background-color: black;" />
+      <Pane fx:id="shipDataPane" layoutX="1.0" layoutY="586.0" prefHeight="153.0" prefWidth="900.0" style="-fx-background-color: Grey;">
+         <children>
+            <Label layoutX="29.0" layoutY="27.0" prefHeight="32.0" prefWidth="49.0" text="Fuel:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="fuelLabel" layoutX="78.0" layoutY="28.0" prefHeight="31.0" prefWidth="107.0">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="rangeLabel" layoutX="97.0" layoutY="61.0" prefHeight="31.0" prefWidth="107.0">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="61.0" prefHeight="32.0" prefWidth="68.0" text="Range:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Button fx:id="viewShip" layoutX="28.0" layoutY="93.0" mnemonicParsing="false" text="View Ship" />
+         </children></Pane>
    </children>
 </AnchorPane>

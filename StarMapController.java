@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -28,8 +29,13 @@ import spacetrader.star_system.StarSystemNames;
  * @author David Purcell
  */
 public class StarMapController implements Initializable, ControlledScreen {
-    @FXML
-    private Pane systemPane;
+    @FXML private Pane systemPane;
+    @FXML private Pane shipDataPane;
+    @FXML private Label fuelLabel;
+    @FXML private Label rangeLabel;
+    @FXML private Button viewShip;
+    
+    
 
     //Remove?
     @FXML
@@ -309,20 +315,26 @@ public class StarMapController implements Initializable, ControlledScreen {
     //TODO: Fuel costs?
     //TODO: Random Encounters (pirates / police)?
     public void travelToSystem(StarSystem system){
-        //Make sure past planet and system no longer have player
-        if(tempPlayer.getPlayerSystem() != null)
-            tempPlayer.getPlayerSystem().hasPlayer = false;
-        if(tempPlayer.getPlayerPlanet() != null)
-            tempPlayer.getPlayerPlanet().hasPlayer = false;
-        
-        //System you are travellinig to has player
-        system.hasPlayer = true;
-        //Set system to target system and null planet.  Travel to planet later.
-        tempPlayer.setPlayerSyetem(system);
-        tempPlayer.setPlayerPlanet(null);
-        //Set new player coordinates, only currently used for distance calculations from system to system
-        tempPlayer.setPlayerCoordinates(new Point2D(system.getCoordinateX(),system.getCoordinateY()));
-        viewSystem(system);
+        //Only travel if you can
+        if(tempPlayer.getShip().travelDistance(getDistanceToSystem(system))){
+            //Update player ship display
+            fuelLabel.setText("" + tempPlayer.getShip().getFuel());
+            rangeLabel.setText("" + tempPlayer.getShip().getRange());
+            //Make sure past planet and system no longer have player
+            if(tempPlayer.getPlayerSystem() != null)
+                tempPlayer.getPlayerSystem().hasPlayer = false;
+            if(tempPlayer.getPlayerPlanet() != null)
+                tempPlayer.getPlayerPlanet().hasPlayer = false;
+
+            //System you are travellinig to has player
+            system.hasPlayer = true;
+            //Set system to target system and null planet.  Travel to planet later.
+            tempPlayer.setPlayerSyetem(system);
+            tempPlayer.setPlayerPlanet(null);
+            //Set new player coordinates, only currently used for distance calculations from system to system
+            tempPlayer.setPlayerCoordinates(new Point2D(system.getCoordinateX(),system.getCoordinateY()));
+            viewSystem(system);
+        }
     }
     
     //Method for the player to travel to a given planet
@@ -372,6 +384,8 @@ public class StarMapController implements Initializable, ControlledScreen {
         //Replace with overall player
         tempPlayer = new Player();
         tempPlayer.setPlayerCoordinates(new Point2D(100,100));
+        fuelLabel.setText("" + tempPlayer.getShip().getFuel());
+        rangeLabel.setText("" + tempPlayer.getShip().getRange());
         this.viewUniverse();
     }
 
