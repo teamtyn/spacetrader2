@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -343,7 +342,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void travelToSystem(StarSystem system) {
 
         //Only travel if you can
-        if (tempPlayer.getShip().ableToTravelDistance(getDistanceToSystem(system))) {
+        if (tempPlayer.getShip().travelDistance(getDistanceToSystem(system))) {
 
             //Update player ship display
             fuelLabel.setText("" + tempPlayer.getShip().getFuel());
