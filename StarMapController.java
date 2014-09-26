@@ -60,6 +60,7 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     /**
      * Generates the star systems to avoid collisions
+     * TODO: Factor out, put into MAP / Model / whatever
      */
     private void generateSystems() {
         Random random = new Random();
@@ -344,6 +345,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     // TODO: Random Encounters (pirates / police)?
     /**
      * Method for the player to travel to a given system
+     * TODO: Here or model?
      * @param system The system to be traveled to
      */
     public void travelToSystem(StarSystem system) {
@@ -380,6 +382,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     // TODO: Random Encounters (pirates / police)?
     /**
      * Method for the player to travel to a given planet
+     * TODO: Here or model?
      * @param planet The planet to be traveled to
      * @param system The system that planet resides in
      */
@@ -437,6 +440,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         // Replace with overall player
         tempPlayer = new Player();
         tempPlayer.setPlayerCoordinates(new Point2D(100, 100));
+        
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
         hullLabel.setText("" + tempPlayer.getShip().getHull());
