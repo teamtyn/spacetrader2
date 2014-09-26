@@ -10,11 +10,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.SkillSetupController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="960.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.SkillSetupController">
    <children>
-      <BorderPane layoutX="11.0" layoutY="14.0" prefHeight="279.0" prefWidth="400.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
+      <BorderPane layoutX="11.0" layoutY="14.0" prefHeight="720.0" prefWidth="960.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox fx:id="barBox" alignment="CENTER" prefHeight="149.0" prefWidth="494.0" BorderPane.alignment="TOP_CENTER">
+            <VBox fx:id="barBox" alignment="CENTER" prefHeight="600.0" prefWidth="800.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="25.0" prefWidth="350.0">
                      <children>
@@ -83,33 +83,33 @@
             </VBox>
          </center>
          <left>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="600.0" prefWidth="160.0" BorderPane.alignment="CENTER">
                <children>
                   <Button mnemonicParsing="false" onAction="#resetButtonAction" prefWidth="80.0" text="Reset">
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="40.0" />
                      </VBox.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#cancelButtonAction" prefWidth="80.0" text="Cancel">
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets />
                      </VBox.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#doneButtonAction" prefHeight="27.0" prefWidth="80.0" text="Done">
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets top="40.0" />
                      </VBox.margin>
                   </Button>
                </children>
                <BorderPane.margin>
-                  <Insets left="20.0" top="50.0" />
+                  <Insets />
                </BorderPane.margin>
             </VBox>
          </left>
          <top>
-            <TextField alignment="CENTER" editable="false" prefHeight="100.0" text="Choose wisely!" BorderPane.alignment="CENTER">
+            <TextField alignment="CENTER" editable="false" prefHeight="120.0" prefWidth="960.0" text="Choose wisely!" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="24.0" />
+                  <Font size="36.0" />
                </font>
             </TextField>
          </top>

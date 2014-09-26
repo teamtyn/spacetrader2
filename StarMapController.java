@@ -322,6 +322,13 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     /**
+     * 
+     */
+    private void showPlayerCard() {
+        
+    }
+
+    /**
      * Calculate integer distance from the player's coordinates to the given system
      * @param system The system in question
      * @return  The distance between the player and the system
@@ -398,6 +405,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML
     private void viewPlayerCardButtonAction(ActionEvent event) {
         System.out.println("Viewing player card now.");
+        showPlayerCard();
     }
 
     @FXML
@@ -432,7 +440,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
         hullLabel.setText("" + tempPlayer.getShip().getHull());
-        this.viewUniverse();
+        viewUniverse();
     }
 
     @Override
