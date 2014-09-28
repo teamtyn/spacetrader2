@@ -7,7 +7,6 @@ import spacetrader.star_system.*;
  * @author Ryan Burns
  */
 public class MarketSetup {
-    // Standard goods list from original game, can be added to later
     private String[] goods = {"Water", "Furs", "Food", "Ore", "Games",
                                 "Firearms", "Medicine", "Machines",
                                 "Narcotics", "Robots"};

@@ -14,16 +14,15 @@ public class Planet {
     private Government government;
     public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIEVAL, RENAISSANCE, 
-                           EARLYINDUSTRY, INDUSTRIAL, 
+                           EARLYINDUSTRIAL, INDUSTRIAL, 
                            POSTINDUSTRIAL, HIGHTECH};
     public enum ResourceLevel {NOSPECIALRESOURCES, MINERALRICH, MINERALPOOR,
-                          DESERT, LOTSOFWATER, RICHSOIL,
-                          POORSOIL, RICHFAUNA, LIFELESS,
-                          WEIRDMUSHROOMS, LOTSOFHERBS,
-                          ARTISTIC, WARLIKE};
-    public enum Circumstance {NONE, DROUGHT, COLDWAVE, HEATWAVE,
-                                CROPFAIL, WAR, BOREDOM, PLAGUE,
-                                LACKOFWORKERS, MORALCRISIS};
+                               DESERT, LOTSOFWATER, RICHSOIL,
+                               POORSOIL, RICHFAUNA, LIFELESS,
+                               WEIRDMUSHROOMS, LOTSOFHERBS,
+                               ARTISTIC, WARLIKE};
+    public enum Circumstance {NONE, DROUGHT, COLD, CROPFAIL, WAR,
+                              BOREDOM, PLAGUE, LACKOFWORKERS};
     private Circumstance circumstance;
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
