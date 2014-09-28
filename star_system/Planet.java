@@ -71,6 +71,10 @@ public class Planet {
         return techLevel;
     }
 
+    public int getTechLevelOrdinality() {
+        return techLevel.ordinal();
+    }
+
     public Circumstance getCircumstance() {
         return circumstance;
     }

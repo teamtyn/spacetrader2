@@ -1,7 +1,9 @@
 package spacetrader.market;
 
 import java.util.HashMap;
+import java.util.Random;
 import spacetrader.star_system.Government;
+import spacetrader.star_system.Planet;
 
 /**
  * MTLP = Minimum Tech Level to Produce this resource (You can't buy on planets below this level)
@@ -31,38 +33,38 @@ import spacetrader.star_system.Government;
  */
 public class TradeGood {
     private GoodType type;
-    private Government.Type gov;
+    private Planet planet;
     // Price multipliers from government type of the planet
     private static HashMap<Government.Type, Integer> govPrice;
     static {
-        govPrice.put(Government.Type.ANARCHY, 0);
-        govPrice.put(Government.Type.ARISTOCRACY, 0);
-        govPrice.put(Government.Type.CAPITALIST, 0);
-        govPrice.put(Government.Type.COMMUNIST, 0);
-        govPrice.put(Government.Type.CORPORATE, 0);
-        govPrice.put(Government.Type.DEMOCRACY, 0);
-        govPrice.put(Government.Type.FASCIST, 0);
-        govPrice.put(Government.Type.MERITOCRACY, 0);
-        govPrice.put(Government.Type.MONARCHY, 0);
-        govPrice.put(Government.Type.OLIGARCHY, 0);
-        govPrice.put(Government.Type.TECHNOCRACY, 0);
-        govPrice.put(Government.Type.THEOCRACY, 0);
+        govPrice.put(Government.Type.ANARCHY, 1);
+        govPrice.put(Government.Type.ARISTOCRACY, 1);
+        govPrice.put(Government.Type.CAPITALIST, 1);
+        govPrice.put(Government.Type.COMMUNIST, 1);
+        govPrice.put(Government.Type.CORPORATE, 1);
+        govPrice.put(Government.Type.DEMOCRACY, 1);
+        govPrice.put(Government.Type.FASCIST, 1);
+        govPrice.put(Government.Type.MERITOCRACY, 1);
+        govPrice.put(Government.Type.MONARCHY, 1);
+        govPrice.put(Government.Type.OLIGARCHY, 1);
+        govPrice.put(Government.Type.TECHNOCRACY, 1);
+        govPrice.put(Government.Type.THEOCRACY, 1);
     }
     // Quantity multipliers from government type of the planet
     private static HashMap<Government.Type, Integer> govQuantity;
     static {
-        govQuantity.put(Government.Type.ANARCHY, 0);
-        govQuantity.put(Government.Type.ARISTOCRACY, 0);
-        govQuantity.put(Government.Type.CAPITALIST, 0);
-        govQuantity.put(Government.Type.COMMUNIST, 0);
-        govQuantity.put(Government.Type.CORPORATE, 0);
-        govQuantity.put(Government.Type.DEMOCRACY, 0);
-        govQuantity.put(Government.Type.FASCIST, 0);
-        govQuantity.put(Government.Type.MERITOCRACY, 0);
-        govQuantity.put(Government.Type.MONARCHY, 0);
-        govQuantity.put(Government.Type.OLIGARCHY, 0);
-        govQuantity.put(Government.Type.TECHNOCRACY, 0);
-        govQuantity.put(Government.Type.THEOCRACY, 0);
+        govQuantity.put(Government.Type.ANARCHY, 1);
+        govQuantity.put(Government.Type.ARISTOCRACY, 1);
+        govQuantity.put(Government.Type.CAPITALIST, 1);
+        govQuantity.put(Government.Type.COMMUNIST, 1);
+        govQuantity.put(Government.Type.CORPORATE, 1);
+        govQuantity.put(Government.Type.DEMOCRACY, 1);
+        govQuantity.put(Government.Type.FASCIST, 1);
+        govQuantity.put(Government.Type.MERITOCRACY, 1);
+        govQuantity.put(Government.Type.MONARCHY, 1);
+        govQuantity.put(Government.Type.OLIGARCHY, 1);
+        govQuantity.put(Government.Type.TECHNOCRACY, 1);
+        govQuantity.put(Government.Type.THEOCRACY, 1);
     }
 
     public enum GoodType {
@@ -88,6 +90,7 @@ public class TradeGood {
         public int er;
         public int mtl;
         public int mhl;
+        private Random rando = new Random();
 
         GoodType(int mtlp, int mtlu, int ttp, int basePrice, int ipl, int var, int ie, int cr, int er, int mtl, int mhl) {
             this.mtlp = mtlp;
@@ -95,7 +98,7 @@ public class TradeGood {
             this.ttp = ttp;
             this.basePrice = basePrice;
             this.ipl = ipl;
-            this.var = var;
+            this.var = 1 + (((rando.nextInt((2 * var) + 1)) - var) / 100);
             this.ie = ie;
             this.cr = cr;
             this.er = er;
@@ -103,10 +106,25 @@ public class TradeGood {
             this.mhl = mhl;
         }
     };
-    
-    public TradeGood(GoodType type, Government.Type gov) {
+
+    public TradeGood(GoodType type, Planet planet) {
         this.type = type;
-        this.gov = gov;
+        this.planet = planet;
+    }
+
+    public int getPrice() {
+        // Price calculation from the wiki
+        int price = (type.basePrice + (type.ipl * (planet.getTechLevelOrdinality() - type.mtlp))) * type.var;
+        return price;
+    }
+
+    public int getQuantity() {
+        // Distance from ideal tech level to produce
+        int a = Math.abs(planet.getTechLevelOrdinality() - type.ttp);
+        // Inverse of the variation in price (minorly accounts for S&D)
+        int b = 200 - type.var;
+        int quantity = 0;
+        return quantity;
     }
     
 }
