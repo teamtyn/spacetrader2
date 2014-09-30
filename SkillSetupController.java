@@ -255,7 +255,6 @@ public class SkillSetupController implements Initializable, ControlledScreen {
         for(Skill skill : player.getSkills()) {
             closingMessage = closingMessage + skill.getType() + " - " + skill.getValue() + "\n";
         }
-        System.out.println("This is the end of our game. Look out for the sequel: '" + player.getName() + " Clicks Buttons II: Even More Buttons!'");
         System.out.println(closingMessage);
         parentController.setScreen("StarMap");
     }

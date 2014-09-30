@@ -20,6 +20,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import spacetrader.market.MarketSetup;
 import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.StarSystem;
@@ -281,14 +282,16 @@ public class StarMapController implements Initializable, ControlledScreen {
 
         // Button to go to the market  
         // TODO: Add market GUI
-        Button market = new Button("BUY THINGS");
-        market.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+        Button marketButton = new Button("BUY THINGS");
+        marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             // TODO: Make it not break?
-            parentController.setScreen("Market");
+            //parentController.setScreen("Market");
+            MarketSetup market = new MarketSetup(planet);
+            System.out.println(market.toString());
         });
-        market.setLayoutX(100);
-        market.setLayoutY(300);
-        systemPane.getChildren().add(market);
+        marketButton.setLayoutX(100);
+        marketButton.setLayoutY(300);
+        systemPane.getChildren().add(marketButton);
     }
 
     // TODO: Make better? 3D?

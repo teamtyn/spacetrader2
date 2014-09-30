@@ -67,6 +67,10 @@ public class Planet {
         return resourceLevel;
     }
 
+    public int getResourceLevelOrdinality() {
+        return resourceLevel.ordinal();
+    }
+
     public TechLevel getTechLevel() {
         return techLevel;
     }
@@ -77,6 +81,10 @@ public class Planet {
 
     public Circumstance getCircumstance() {
         return circumstance;
+    }
+
+    public int getCircumstanceOrdinality() {
+        return circumstance.ordinal();
     }
 
     public void setResourceLevel(ResourceLevel newRes) {

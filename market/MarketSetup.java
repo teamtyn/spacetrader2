@@ -1,39 +1,56 @@
 package spacetrader.market;
 
-import spacetrader.star_system.*;
+import java.util.ArrayList;
+import spacetrader.star_system.Planet;
 
 /**
  * 
  * @author Ryan Burns
  */
 public class MarketSetup {
-    private String[] goods = {"Water", "Furs", "Food", "Ore", "Games",
-                                "Firearms", "Medicine", "Machines",
-                                "Narcotics", "Robots"};
-    private Integer[] quantities = new Integer[goods.length];
-    private Integer[] prices = new Integer[goods.length];
-    private Government gov;
-    private Planet.Circumstance circ;
-    private Planet.TechLevel tech;
-    private Planet.ResourceLevel resource;
+    private ArrayList<TradeGood> goods;
+    private ArrayList<TradeGood> buyable;
+    private ArrayList<TradeGood> sellable;
+    private final Planet planet;
 
     public MarketSetup(Planet planet) {
-        gov = planet.getGovernment();
-        circ = planet.getCircumstance();
-        tech = planet.getTechLevel();
-        resource = planet.getResourceLevel();
+        this.planet = planet;
+        goods = new ArrayList<>();
+        buyable = new ArrayList<>();
+        sellable = new ArrayList<>();
+        for (TradeGood.GoodType type: TradeGood.GoodType.values()) {
+            goods.add(new TradeGood(type, planet));
+        }
+        for (TradeGood good: goods) {
+            if (good.type.mtlp <= planet.getTechLevelOrdinality()) {
+                buyable.add(good);
+            }
+            if (good.type.mtlu <= planet.getTechLevelOrdinality()) {
+                sellable.add(good);
+            }
+        }
     }
 
-    public String[] getGoods() {
+    public ArrayList<TradeGood> getGoods() {
         return goods;
     }
     
-    public Integer[] getQuantities()  {
-        return quantities;
+    public ArrayList<TradeGood> getBuyable() {
+        return buyable;
     }
 
-    public Integer[] getPrices()  {
-        return prices;
+    public ArrayList<TradeGood> getSellable() {
+        return sellable;
     }
 
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (TradeGood good: goods) {
+            str.append(good.type);
+            str.append(": ");
+            str.append(good.getPrice());
+            str.append("\n");
+        }
+        return str.toString();
+    }
 }
