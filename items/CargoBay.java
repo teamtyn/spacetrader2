@@ -19,6 +19,7 @@ class CargoBay {
     public CargoBay(int capacity){
         this.capacity = capacity;
         this.currentSize = 0;
+        this.contents = new ArrayList<TradeGood>();
     }
     
     //Is the cargo hold big enough to accept new stuffs?
@@ -30,9 +31,9 @@ class CargoBay {
     public void addTradeGood(TradeGood good){
         boolean added = false;
         if(canAddQuantity(good.getQuantity())){
-            for(TradeGood content : contents){
-                if(content.type == good.type){
-                    content = new TradeGood(content.type, content.getQuantity() + good.getQuantity());
+            for(int i = 0; i<contents.size(); i++){
+                if(contents.get(i).type == good.type){
+                    contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() + good.getQuantity()));
                     currentSize += good.getQuantity();
                     added = true;
                 }
@@ -44,19 +45,21 @@ class CargoBay {
     }
     
     //If that kind of good exists in the hold, remove X of them, where X is as many goods as possible up to specified quantity.
-    public TradeGood removeTradeGood(TradeGood good, int quantity){
+    public TradeGood removeTradeGood(TradeGood good){
         TradeGood removedGood = null;
-        for(TradeGood content : contents){
-            if(content.type == good.type){
-                if(content.getQuantity() > quantity){
-                    content = new TradeGood(content.type, content.getQuantity() - quantity);   
-                } else if(content.getQuantity() == quantity){
-                    removedGood = content;
-                    content = null;
+        for(int i = 0; i<contents.size(); i++){
+            if(contents.get(i).type == good.type){
+                if(contents.get(i).getQuantity() > good.getQuantity()){
+                    contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() - good.getQuantity()));   
+                } else if(contents.get(i).getQuantity() == good.getQuantity()){
+                    removedGood = contents.get(i);
+                    contents.remove(i);
+                    i--;
                 } else {
                     System.out.println("Not enough, but here is what you have");
-                    removedGood = content;
-                    content = null;
+                    removedGood = contents.get(i);
+                    contents.remove(i);
+                    i--;
                 }
             }
         }
@@ -64,6 +67,10 @@ class CargoBay {
             currentSize -= removedGood.getQuantity();
         }
         return removedGood;
+    }
+    
+    public ArrayList<TradeGood> getContents(){
+        return contents;
     }
     
     @Override

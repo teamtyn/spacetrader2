@@ -158,4 +158,8 @@ public class TradeGood {
     public int getQuantity() {
         return quantity;
     }
+    
+    public String toString(){
+        return this.type.name + " " + quantity;
+    }
 }

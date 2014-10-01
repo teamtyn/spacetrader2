@@ -1,5 +1,6 @@
 package spacetrader.items;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Color;
 import spacetrader.market.TradeGood;
 
@@ -234,15 +235,30 @@ public class Ship {
     
     //Only using one cargoBay for now
     //TODO: More than one cargobay
-    public boolean canStoreGoods(int quantity){
+    public boolean canStoreTradeGood(int quantity){
         return cargoBays[0].canAddQuantity(quantity);
     }
     
     //Only using one cargoBay for now
     //TODO: More than one cargobay
-    public void storeGoods(TradeGood goods){
-        if(canStoreGoods(goods.getQuantity())){
+    public void storeTradeGood(TradeGood goods){
+        if(canStoreTradeGood(goods.getQuantity())){
             cargoBays[0].addTradeGood(goods);
         }
+    }
+    
+    //Only using one cargoBay for now
+    //TODO: More than one cargobay
+    public TradeGood removeTradeGood(TradeGood good){
+        return cargoBays[0].removeTradeGood(good);
+    }
+    
+    //Add up and return all the stuff in all the cargo holds.
+    public ArrayList<TradeGood> getCargo(){
+        ArrayList<TradeGood> cargo = new ArrayList<TradeGood>();
+        for(CargoBay cargobay : cargoBays){
+            cargo.addAll(cargobay.getContents());
+        }
+        return cargo;
     }
 }
