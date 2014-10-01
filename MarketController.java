@@ -106,22 +106,6 @@ public class MarketController implements Initializable, ControlledScreen {
         parentController.setScreen("StarMap");
     }
 
-//    public ArrayList<TradeGood> specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
-//        ArrayList<TradeGood> newList = new ArrayList<>();
-//        TradeGood tg;
-//        for(TradeGood tgm: marketList) {
-//            for(TradeGood tgp: playerList) {
-//                if(tgm.type == tgp.type) {
-//                    
-//                    tg = new TradeGood(tgm.type, Math.min(tgm.getQuantity(), tgp.getQuantity()));
-//                    tg.setPrice(tgm.getPrice());
-//                    newList.add(tg);
-//                }
-//            }
-//        }
-//        return newList;
-//    }
-
     public static void setMarket(MarketSetup newMarket) {
         market = newMarket;
     }

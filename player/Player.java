@@ -14,12 +14,19 @@ public class Player {
     private StarSystem system;
     private Planet planet;
     private Ship ship;
+    private int money;
 
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
         playerCoord = new Point2D(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
+        money = 1000;
+    }
+
+    // Setter for money
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     // Setter for name
@@ -76,7 +83,13 @@ public class Player {
     public List<Skill> getSkills() {
         return this.skills;
     }
-    
+
+    // Getter for money
+    public int getMoney() {
+        return money;
+    }
+
+    // Getter for ship
     public Ship getShip(){
         return ship;
     }
@@ -85,19 +98,20 @@ public class Player {
     public Point2D getPlayerCoordinates() {
         return playerCoord;
     }
-    
+
     public double getPlayerCoordinateX() {
         return playerCoord.getX();
     }
-    
+
     public double getPlayerCoordinateY() {
         return playerCoord.getY();
     }
-    
+
     public StarSystem getPlayerSystem() {
         return system;
     }
-    
+
+    // Getter for planet
     public Planet getPlayerPlanet() {
         return planet;
     }
