@@ -1,0 +1,44 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    -fx-background-color:transparent;
+}
+#goods-row {
+    -fx-background-color:cadetblue;
+    -fx-fill:black;
+    -fx-border-style:solid;
+    -fx-padding: 10;
+    -fx-background-radius:5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    //-fx-padding:10;
+}
+#chart {
+    -fx-border-style:solid;
+    -fx-background-color:transparent;
+}
+#background {
+    -fx-background-color:black;
+    -fx-fill:black;
+}
+#tabPane {
+    -fx-background-color: gainsboro;
+    -fx-padding:3;
+}
+#row-button {
+    -fx-hgap:10;
+}
+#buyLabel {
+    -fx-font-scale:6;
+    -fx-font-size:15;
+    -fx-text-alignment:center;
+    -fx-text-fill:red;
+}
+#sellLabel {
+    -fx-font-scale:6;
+    -fx-font-size:15;
+    -fx-text-fill:green;
+    -fx-font-color:green;
+    -fx-text-alignment:center;
+}

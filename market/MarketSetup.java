@@ -22,9 +22,9 @@ public class MarketSetup {
             goods.add(new TradeGood(type, planet));
         }
         for (TradeGood good: goods) {
-            if (good.type.mtlp <= planet.getTechLevelOrdinality()) {
+                       if (good.type.mtlp <= planet.getTechLevelOrdinality()) {
                 buyable.add(good);
-            }
+ }
             if (good.type.mtlu <= planet.getTechLevelOrdinality()) {
                 sellable.add(good);
             }
@@ -37,6 +37,15 @@ public class MarketSetup {
     
     public ArrayList<TradeGood> getBuyable() {
         return buyable;
+    }
+    
+    public void decreaseQuantity(String good, int decrease) {
+        TradeGood.GoodType type = TradeGood.GoodType.valueOf(good);
+        for (TradeGood tg: sellable) {
+            if(tg.type == type) {
+                tg.setQuantity(tg.getQuantity() - decrease);
+            }
+        }
     }
 
     public ArrayList<TradeGood> getSellable() {

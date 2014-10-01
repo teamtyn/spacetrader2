@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1">
-    
+<AnchorPane id="AnchorPane" fx:id="background" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.MarketController">
+    <stylesheets>
+        <URL value="@market.css" />
+    </stylesheets>
+   <children>
+      <TabPane fx:id="tabPane" layoutX="475.0" layoutY="4.0" prefHeight="478.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="buyTab" text="BUY">
+               <content>
+                  <VBox fx:id="buyGoodsVBox" pickOnBounds="false" prefHeight="437.0" prefWidth="314.0" />
+               </content>
+          </Tab>
+          <Tab fx:id="sellTab" text="SELL">
+               <content>
+                  <VBox fx:id="sellGoodsVBox" pickOnBounds="false" prefHeight="400.0" prefWidth="306.0" />
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <AnchorPane layoutX="14.0" layoutY="300.0" prefHeight="216.0" prefWidth="286.0">
+         <children>
+            <Label fx:id="sellLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="446.0" text="Label" />
+            <Label fx:id="buyLabel" alignment="CENTER" layoutY="68.0" prefHeight="68.0" prefWidth="446.0" text="Label" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLabel" alignment="CENTER" layoutX="-14.0" layoutY="124.0" prefHeight="78.0" prefWidth="446.0" text="Let's make some money!" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="chartPane" layoutX="28.0" layoutY="17.0" prefHeight="302.0" prefWidth="402.0" />
+      <Label fx:id="playerInfo" layoutX="28.0" layoutY="516.0" prefHeight="59.0" prefWidth="746.0" />
+   </children>
 </AnchorPane>

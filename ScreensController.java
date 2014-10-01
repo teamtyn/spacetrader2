@@ -41,6 +41,7 @@
 
 package spacetrader;
 
+import java.io.IOException;
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -92,8 +93,12 @@ public class ScreensController extends StackPane {
             controller.setScreenParent(this);
             addScreen(name, loadScreen);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
+            System.out.println(e);
+            System.out.println(e.getStackTrace());
+            Thread.dumpStack();
+
             return false;
         }
     }
@@ -132,7 +137,9 @@ public class ScreensController extends StackPane {
             }
             return true;
         } else {
+            //Thread.dumpStack();
             System.out.println("Screen has not been loaded.\n");
+            
             return false;
         }
     }

@@ -285,8 +285,12 @@ public class StarMapController implements Initializable, ControlledScreen {
         Button marketButton = new Button("BUY THINGS");
         marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             // TODO: Make it not break?
-            //parentController.setScreen("Market");
+            
+
             MarketSetup market = new MarketSetup(planet);
+            MarketController.market = market;
+            System.out.println(MarketController.market);
+            parentController.setScreen("Market");
             System.out.println(market.toString());
         });
         marketButton.setLayoutX(100);

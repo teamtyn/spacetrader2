@@ -36,8 +36,8 @@ import spacetrader.star_system.Planet;
 public class TradeGood {
     public GoodType type;
     private final Planet planet;
-    private final int price;
-    private final int quantity;
+    private int price;
+    private  int quantity;
     // Price multipliers from government type of the planet
     private final static Map<Government.Type, Double> govPrice;
     static {
@@ -150,5 +150,8 @@ public class TradeGood {
 
     public int getQuantity() {
         return quantity;
+    }
+    public void setQuantity(int newQuantity) {
+        quantity = newQuantity;
     }
 }
