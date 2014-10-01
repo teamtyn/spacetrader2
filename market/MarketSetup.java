@@ -52,6 +52,7 @@ public class MarketSetup {
         return sellable;
     }
 
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         for (TradeGood good: goods) {
