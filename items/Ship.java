@@ -64,7 +64,7 @@ public class Ship {
         weapons = new Weapon[type.weaponSlots];
         cargoBays = new CargoBay[type.cargoBaySlots];
         //Very large cargobay, will worry about more bays later
-        cargoBays[0] = new CargoBay(100);
+        cargoBays[0] = new CargoBay(70);
         hull = type.hullStrength;
         fuel = type.fuelCapacity;
         this.escapePod = escapePod;
@@ -212,6 +212,7 @@ public class Ship {
         }
         return success;
     }
+
     public int takeDamage(int damage) {
         // Shields???
         if (hull - damage >= 0) {
@@ -225,6 +226,7 @@ public class Ship {
         }
         return hull;
     }
+
     public int repairHull(int repairs) {
         hull += repairs;
         if (hull >= type.hullStrength) {
@@ -232,40 +234,43 @@ public class Ship {
         }
         return hull;
     }
-    
-    //Only using one cargoBay for now
-    //TODO: More than one cargobay
-    public boolean canStoreTradeGood(int quantity){
+
+    // Only using one cargoBay for now
+    // TODO: More than one cargobay
+    public boolean canStoreTradeGood(int quantity) {
         return cargoBays[0].canAddQuantity(quantity);
     }
-    
-    //Only using one cargoBay for now
-    //TODO: More than one cargobay
-    public void storeTradeGood(TradeGood goods){
-        if(canStoreTradeGood(goods.getQuantity())){
-            cargoBays[0].addTradeGood(goods);
+
+    // RYAN: This is double checking that the size can fit it, but taking it out breaks it???
+    // Only using one cargoBay for now
+    // TODO: More than one cargobay
+    public void storeTradeGood(TradeGood good) {
+        if (canStoreTradeGood(good.getQuantity())) {
+            cargoBays[0].addTradeGood(good);
         }
     }
-    
-    //Only using one cargoBay for now
-    //TODO: More than one cargobay
-    public TradeGood removeTradeGood(TradeGood good){
+
+    // Only using one cargoBay for now
+    // TODO: More than one cargobay
+    public TradeGood removeTradeGood(TradeGood good) {
         return cargoBays[0].removeTradeGood(good);
     }
     
-    //Add up and return all the stuff in all the cargo holds.
-    public ArrayList<TradeGood> getCargo(){
-        ArrayList<TradeGood> cargo = new ArrayList<TradeGood>();
-        for(CargoBay cargobay : cargoBays){
+    // Add up and return all the stuff in all the cargo holds
+    public ArrayList<TradeGood> getCargo() {
+        ArrayList<TradeGood> cargo = new ArrayList<>();
+        for (CargoBay cargobay : cargoBays) {
             cargo.addAll(cargobay.getContents());
         }
         return cargo;
     }
-    //Return the unused space of one cargoboy
-    //TODO: More than one cargobay
+
+    // Return the unused space of one cargo bay
+    // TODO: More than one cargobay
     public int getExtraSpace() {
+        //return cargoBays[0].getCapacity() - cargoBays[0].getCurrentSize();
         int totalGoods = 0;
-        for(TradeGood tg: cargoBays[0].getContents()) {
+        for (TradeGood tg: cargoBays[0].getContents()) {
             totalGoods += tg.getQuantity();
         }
         return cargoBays[0].getCapacity() - totalGoods;

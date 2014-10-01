@@ -70,7 +70,13 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     public void updatePlayerInfo() {
-        playerInfo.setText("Cargo Space Remaining: " + ship.getExtraSpace() + "\nMoney Remaining: " + 
+        String space = "";
+        if (ship.getExtraSpace() >= 0) {
+            space = Integer.toString(ship.getExtraSpace());
+        } else {
+            space = "0";
+        }
+        playerInfo.setText("Cargo Space Remaining: " + space + "\nMoney Remaining: " + 
                 money + " bitcoins");
     }
 
@@ -143,9 +149,9 @@ public class MarketController implements Initializable, ControlledScreen {
     public void buy(TradeGood good, int amount) {
         int newMoney = money - good.getPrice() * amount;
         if (newMoney > 0) {
-        money = money - good.getPrice() * amount;
-        ship.storeTradeGood(new TradeGood(good.type, amount));
-        market.decreaseQuantity(good, amount);
+            money = money - good.getPrice() * amount;
+            ship.storeTradeGood(new TradeGood(good.type, amount));
+            market.decreaseQuantity(good, amount);
         }
         display();
     }
