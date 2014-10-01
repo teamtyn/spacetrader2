@@ -73,6 +73,10 @@ class CargoBay {
         return contents;
     }
     
+    public int getCapacity() {
+        return capacity;
+    }
+    
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder("Conents: \n");

@@ -66,25 +66,67 @@ public class MarketController implements Initializable, ControlledScreen {
         @Override
     public void initialize(URL url, ResourceBundle rb) {
         market = new MarketSetup(new Planet());
+        //market = SpaceTrader.marketSetup;
+        //market = new MarketSetup(SpaceTrader.getPlanet());
         player = new Player();
         ship = player.getShip();
+        ship.storeTradeGood(new TradeGood(TradeGood.GoodType.Firearms, 20));
+        ship.storeTradeGood(new TradeGood(TradeGood.GoodType.Furs, 20));
+        ship.storeTradeGood(new TradeGood(TradeGood.GoodType.Ore, 20));
         updatePlayerInfo();
-       setUpGoodsLists(market);
+        setUpGoodsLists();
     }
     
     public void updatePlayerInfo() {
-        playerInfo.setText("Cargo Space Remaining: " + 5 + "\nMoney Remaining: " + 
+        playerInfo.setText("Cargo Space Remaining: " + ship.getExtraSpace() + "\nMoney Remaining: " + 
                 money + " bitcoins");
     }
     
     public void display() {
-        
+        setUpGoodsLists();
+        updatePlayerInfo();
     }
-        public void setUpGoodsLists(MarketSetup aMarket) {
+    public void setUpGoodsLists() {
+        buyGoodsVBox.getChildren().clear();
+        sellGoodsVBox.getChildren().clear();
         ArrayList<TradeGood> buys = market.getBuyable();
         ArrayList<TradeGood> sells = market.getSellable();
-        buyList = new GoodsList(buyGoodsVBox, buys, true);
-        sellList = new GoodsList(sellGoodsVBox, sells, false);
+        buyList = new GoodsList(buyGoodsVBox, sells, true);
+        //sellList = new GoodsList(sellGoodsVBox, sells, false);
+        specifyList(buys, ship.getCargo());
+        sellList = new GoodsList(sellGoodsVBox, ship.getCargo(), false);
+    }
+      public void specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
+        TradeGood tg;
+        for(TradeGood tgm: marketList) {
+            for(TradeGood tgp: playerList) {
+                if(tgm.type == tgp.type) {
+                    
+                    //tg = new TradeGood(tgm.type, Math.min(tgm.getQuantity(), tgp.getQuantity()));
+                    tgp.setPrice(tgm.getPrice());
+                    
+                }
+            }
+        }
+    }
+    
+//    public ArrayList<TradeGood> specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
+//        ArrayList<TradeGood> newList = new ArrayList<>();
+//        TradeGood tg;
+//        for(TradeGood tgm: marketList) {
+//            for(TradeGood tgp: playerList) {
+//                if(tgm.type == tgp.type) {
+//                    
+//                    tg = new TradeGood(tgm.type, Math.min(tgm.getQuantity(), tgp.getQuantity()));
+//                    tg.setPrice(tgm.getPrice());
+//                    newList.add(tg);
+//                }
+//            }
+//        }
+//        return newList;
+//    }
+    public static void setMarket(MarketSetup newMarket) {
+        market = newMarket;
     }
     
     public void statusPanelMessage(String status) {
@@ -122,13 +164,16 @@ public class MarketController implements Initializable, ControlledScreen {
         int newMoney = money - good.getPrice() * amount;
         if (newMoney > 0) {
         money = money - good.getPrice() * amount;
+        ship.storeTradeGood(new TradeGood(good.type, amount));
+        market.decreaseQuantity(good, amount);
         }
-        updatePlayerInfo();
+        display();
         
     }
     public void sell(TradeGood good, int amount) {
         money = money + good.getPrice() * amount;
-        updatePlayerInfo();
+        ship.removeTradeGood(new TradeGood(good.type, amount));
+        display();
     }
     
     class BuyButton extends Button {
@@ -198,10 +243,12 @@ public class MarketController implements Initializable, ControlledScreen {
         private void listGoods() {
             //set up the VBox
             for(int i = 0; i < goodsNumber; i++) {
-                GoodsRow row = new GoodsRow(tradeGoods.get(i), isBuy);
-                //row.setPrefHeight(rowHeight);
-                
-                this.addChild(row);
+                TradeGood tg = tradeGoods.get(i);
+                if(tg.getPrice() > 0 && tg.getQuantity() > 0) {
+                    GoodsRow row = new GoodsRow(tradeGoods.get(i), isBuy);
+
+                    this.addChild(row);                }
+
             }
         }
     

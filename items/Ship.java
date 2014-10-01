@@ -261,4 +261,9 @@ public class Ship {
         }
         return cargo;
     }
+    //Return the unused space of one cargoboy
+    //TODO: More than one cargobay
+    public int getExtraSpace() {
+        return cargoBays[0].getCapacity() - cargoBays[0].getContents().size();
+    }
 }
