@@ -100,8 +100,9 @@ public class StarMapController implements Initializable, ControlledScreen {
 
         // If the player doesn't have a system or planet, just draw them somewhere
         // TODO: Randomize start location or pick a noob spot
-        if (tempPlayer.getPlayerSystem() == null && tempPlayer.getPlayerPlanet() == null) {
-            drawPlayer(100,100);
+        if (tempPlayer.getSystem() == null && tempPlayer.getPlanet() == null) {
+            tempPlayer.setCoordinates(new Point2D(100, 100));
+            drawPlayer(tempPlayer.getX(), tempPlayer.getY());
         }
 
         // Adding systems to map
@@ -115,8 +116,9 @@ public class StarMapController implements Initializable, ControlledScreen {
             systemPane.getChildren().add(star);
 
             // If player is in this system, draw them
-            if (system.hasPlayer && tempPlayer.getPlayerPlanet() == null) {
-                drawPlayer(system.getCoordinateX() - 50, system.getCoordinateY() - 25);
+            if (system.hasPlayer && tempPlayer.getPlanet() == null) {
+                tempPlayer.setCoordinates(new Point2D(system.getCoordinateX() - 50, system.getCoordinateY() - 25));
+                drawPlayer(tempPlayer.getX(), tempPlayer.getY());
             }
 
             // Loop through planets, adding them at equal intervals around the star
@@ -132,7 +134,7 @@ public class StarMapController implements Initializable, ControlledScreen {
                 double planetY = system.getCoordinateY() + (planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
                 Circle planetCircle = new Circle(planetX, planetY, planet.getSize(), planet.getColor());
                 systemPane.getChildren().add(planetCircle);
-                if(planet.hasPlayer){
+                if (planet.hasPlayer) {
                     drawPlayer(planetX - 5, planetY - 5);
                 }
                 degrees += 360 / numPlanets;
@@ -171,8 +173,9 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemPane.getChildren().add(backButton);
 
         // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
-        if (system.hasPlayer && tempPlayer.getPlayerPlanet() == null) {
-            drawPlayer(100,100);
+        if (system.hasPlayer && tempPlayer.getPlanet() == null) {
+            tempPlayer.setCoordinates(new Point2D(100, 100));
+            drawPlayer(tempPlayer.getX(), tempPlayer.getY());
         }
 
         // Name of system
@@ -281,12 +284,10 @@ public class StarMapController implements Initializable, ControlledScreen {
         monarch.setLayoutY(260);
         systemPane.getChildren().add(monarch);
 
-        // Button to go to the market  
-        // TODO: Add market GUI
+        // Button to go to the market
         Button marketButton = new Button("BUY THINGS");
         marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             // TODO: Make it not break?
-            
 
             MarketSetup market = new MarketSetup(planet);
             //MarketController.setMarket(market);
@@ -344,8 +345,8 @@ public class StarMapController implements Initializable, ControlledScreen {
      * @return  The distance between the player and the system
      */
     public int getDistanceToSystem(StarSystem system) {
-        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getPlayerCoordinateX(),2) +
-                                    Math.pow(system.getCoordinateY() - tempPlayer.getPlayerCoordinateY(),2));
+        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getX(), 2) +
+                                    Math.pow(system.getCoordinateY() - tempPlayer.getY(), 2));
         return (int)distance;
     }
 
@@ -359,29 +360,29 @@ public class StarMapController implements Initializable, ControlledScreen {
      */
     public void travelToSystem(StarSystem system) {
 
-        //Only travel if you can
+        // Only travel if you can
         if (tempPlayer.getShip().travelDistance(getDistanceToSystem(system))) {
 
-            //Update player ship display
-            fuelLabel.setText("" + tempPlayer.getShip().getFuel());
+            // Update player ship display
+            fuelLabel.setText("" + Math.round(tempPlayer.getShip().getFuel()));
             rangeLabel.setText("" + tempPlayer.getShip().getRange());
 
             // Make sure past planet and system no longer have player
-            if (tempPlayer.getPlayerSystem() != null) {
-                tempPlayer.getPlayerSystem().hasPlayer = false;
+            if (tempPlayer.getSystem() != null) {
+                tempPlayer.getSystem().hasPlayer = false;
             }
-            if (tempPlayer.getPlayerPlanet() != null) {
-                tempPlayer.getPlayerPlanet().hasPlayer = false;
+            if (tempPlayer.getPlanet() != null) {
+                tempPlayer.getPlanet().hasPlayer = false;
             }
 
             // System you are traveling to has player
             system.hasPlayer = true;
-            // Set system to target system and null planet.  Travel to planet later.
-            tempPlayer.setPlayerSystem(system);
-            tempPlayer.setPlayerPlanet(null);
+            // Set system to target system and null planet.  Travel to planet later
+            tempPlayer.setSystem(system);
+            tempPlayer.setPlanet(null);
 
             // Set new player coordinates, only currently used for distance calculations from system to system
-            tempPlayer.setPlayerCoordinates(new Point2D(system.getCoordinateX(),system.getCoordinateY()));
+            tempPlayer.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
             viewSystem(system);
         }
     }
@@ -398,13 +399,13 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void travelToPlanet(Planet planet, StarSystem system) {
 
         // Make sure past planet no longer has player.  System shouldn't change
-        if (tempPlayer.getPlayerPlanet() != null) {
-            tempPlayer.getPlayerPlanet().hasPlayer = false;
+        if (tempPlayer.getPlanet() != null) {
+            tempPlayer.getPlanet().hasPlayer = false;
         }
 
         // Planet you are traveling to has player
         planet.hasPlayer = true;
-        tempPlayer.setPlayerPlanet(planet);
+        tempPlayer.setPlanet(planet);
         viewPlanet(planet, system);
     }
 
@@ -431,7 +432,7 @@ public class StarMapController implements Initializable, ControlledScreen {
             viewUniverse();
             systemPane.getChildren().remove(backButton);
         } else if (curLevel == 2) {
-            viewSystem(tempPlayer.getPlayerSystem());
+            viewSystem(tempPlayer.getSystem());
         }
     }
 
@@ -448,7 +449,7 @@ public class StarMapController implements Initializable, ControlledScreen {
 
         // Replace with overall player
         tempPlayer = new Player();
-        tempPlayer.setPlayerCoordinates(new Point2D(100, 100));
+        tempPlayer.setCoordinates(new Point2D(100, 100));
         
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());

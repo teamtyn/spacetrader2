@@ -10,7 +10,7 @@ public class Player {
     private String name;
     private List<Skill> skills;
     // Used to determine player's location in the universe as a whole
-    private Point2D playerCoord;
+    private Point2D coord;
     private StarSystem system;
     private Planet planet;
     private Ship ship;
@@ -19,7 +19,7 @@ public class Player {
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
-        playerCoord = new Point2D(0, 0);
+        coord = new Point2D(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
         money = 1000;
     }
@@ -48,20 +48,20 @@ public class Player {
         }
     }
 
-    public void setPlayerShip(Ship ship){
+    public void setShip(Ship ship){
         this.ship = ship;
     }
     
     // Setter for coordinates
-    public void setPlayerCoordinates(Point2D newLoc) {
-        playerCoord = newLoc;
+    public void setCoordinates(Point2D newLoc) {
+        coord = newLoc;
     }
     
-    public void setPlayerSystem(StarSystem system) {
+    public void setSystem(StarSystem system) {
         this.system = system;
     }
     
-    public void setPlayerPlanet(Planet planet) {
+    public void setPlanet(Planet planet) {
         this.planet = planet;
     }
 
@@ -95,24 +95,24 @@ public class Player {
     }
 
     // Getter for coordinates
-    public Point2D getPlayerCoordinates() {
-        return playerCoord;
+    public Point2D getCoordinates() {
+        return coord;
     }
 
-    public double getPlayerCoordinateX() {
-        return playerCoord.getX();
+    public double getX() {
+        return coord.getX();
     }
 
-    public double getPlayerCoordinateY() {
-        return playerCoord.getY();
+    public double getY() {
+        return coord.getY();
     }
 
-    public StarSystem getPlayerSystem() {
+    public StarSystem getSystem() {
         return system;
     }
 
     // Getter for planet
-    public Planet getPlayerPlanet() {
+    public Planet getPlanet() {
         return planet;
     }
 
