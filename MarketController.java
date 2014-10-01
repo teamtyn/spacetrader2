@@ -23,29 +23,23 @@ import spacetrader.items.Ship;
 import spacetrader.market.TradeGood;
 import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
+
 /**
  *
- * @author Ryan Burns
+ * @author Clayton Kucera
  */
 public class MarketController implements Initializable, ControlledScreen {
-    @FXML
-    private VBox buyGoodsVBox;
-    @FXML
-    private AnchorPane chartPane;
-    @FXML
-    private Tab buyTab;
-    @FXML
-    private VBox sellGoodsVBox;
-    @FXML
-    private Tab sellTab;
-    @FXML
-    private Label sellLabel;
-    @FXML
-    private Label buyLabel;
-    @FXML
-    private Label playerInfo;
-    @FXML
-    private Label statusLabel;    
+    @FXML private VBox buyGoodsVBox;
+    @FXML private AnchorPane chartPane;
+    @FXML private Tab buyTab;
+    @FXML private VBox sellGoodsVBox;
+    @FXML private Tab sellTab;
+    @FXML private Label sellLabel;
+    @FXML private Label buyLabel;
+    @FXML private Label playerInfo;
+    @FXML private Label statusLabel;
+    @FXML private Button backButton;
+
     private ScreensController parentController;
     public static MarketSetup market;   //THIS WILL BE CHANGED ONCE WE HAVE A SINGLETON
     public String[] goods;
@@ -54,16 +48,14 @@ public class MarketController implements Initializable, ControlledScreen {
     Player player;
     Ship ship;
     int money = 1000;
-    
-//     This is the screen parent method that we must implement.
+
+    // This is the screen parent method that we must implement
     @Override
     public void setScreenParent(ScreensController parentController) {
-           this.parentController = parentController; 
-
-        
-        
+           this.parentController = parentController;
     }
-        @Override
+
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
         market = new MarketSetup(new Planet());
         //market = SpaceTrader.marketSetup;
@@ -76,16 +68,17 @@ public class MarketController implements Initializable, ControlledScreen {
         updatePlayerInfo();
         setUpGoodsLists();
     }
-    
+
     public void updatePlayerInfo() {
         playerInfo.setText("Cargo Space Remaining: " + ship.getExtraSpace() + "\nMoney Remaining: " + 
                 money + " bitcoins");
     }
-    
+
     public void display() {
         setUpGoodsLists();
         updatePlayerInfo();
     }
+
     public void setUpGoodsLists() {
         buyGoodsVBox.getChildren().clear();
         sellGoodsVBox.getChildren().clear();
@@ -96,20 +89,23 @@ public class MarketController implements Initializable, ControlledScreen {
         specifyList(buys, ship.getCargo());
         sellList = new GoodsList(sellGoodsVBox, ship.getCargo(), false);
     }
-      public void specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
-        TradeGood tg;
-        for(TradeGood tgm: marketList) {
-            for(TradeGood tgp: playerList) {
-                if(tgm.type == tgp.type) {
-                    
+
+    public void specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
+        for (TradeGood tgm: marketList) {
+            for (TradeGood tgp: playerList) {
+                if (tgm.type == tgp.type) {
                     //tg = new TradeGood(tgm.type, Math.min(tgm.getQuantity(), tgp.getQuantity()));
                     tgp.setPrice(tgm.getPrice());
-                    
                 }
             }
         }
     }
-    
+
+    @FXML
+    private void backButtonAction(ActionEvent event) {
+        parentController.setScreen("StarMap");
+    }
+
 //    public ArrayList<TradeGood> specifyList(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
 //        ArrayList<TradeGood> newList = new ArrayList<>();
 //        TradeGood tg;
@@ -125,33 +121,33 @@ public class MarketController implements Initializable, ControlledScreen {
 //        }
 //        return newList;
 //    }
+
     public static void setMarket(MarketSetup newMarket) {
         market = newMarket;
     }
-    
+
     public void statusPanelMessage(String status) {
         statusLabel.setText(status);
     }
-    
+
     public void updateLabels(String name, int price) {
         sellLabel.setText(name + " will sell for " + price + " bitcoins per unit.");
         buyLabel.setText("You can purchase " + name + " for " + price + " bitcoins per unit.");
     }
-    
-    public void chart(String name, int price) {
 
+    public void chart(String name, int price) {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        AreaChart<Number,Number> ac = new AreaChart<Number,Number>(xAxis,yAxis);
+        AreaChart<Number,Number> ac = new AreaChart<>(xAxis,yAxis);
         ac.setTitle(name + " prices over last 5 days");
-        
+
         XYChart.Series series = new XYChart.Series();
         series.setName(name);
         for(int i = 0; i < 4; i++) {
             series.getData().add(new XYChart.Data(i - 5, Math.random() * price * 3 + 1));
         }
         series.getData().add(new XYChart.Data(0, price));
-        
+
         ac.getData().addAll(series);
         chartPane.getChildren().clear();
         chartPane.getChildren().add(ac);
@@ -159,7 +155,7 @@ public class MarketController implements Initializable, ControlledScreen {
         ac.setMaxWidth(300);
         ac.setId("chart");
     }
-    
+
     public void buy(TradeGood good, int amount) {
         int newMoney = money - good.getPrice() * amount;
         if (newMoney > 0) {
@@ -168,59 +164,53 @@ public class MarketController implements Initializable, ControlledScreen {
         market.decreaseQuantity(good, amount);
         }
         display();
-        
     }
+
     public void sell(TradeGood good, int amount) {
         money = money + good.getPrice() * amount;
         ship.removeTradeGood(new TradeGood(good.type, amount));
         display();
     }
-    
+
     class BuyButton extends Button {
         public BuyButton(TradeGood good) {
             super("BUY");
             this.setOnAction((ActionEvent event) -> {
-            System.out.println("buy Buy BUY!!!");
-            buy(good, 1);
-        });
-        this.setId("row-button");
+                buy(good, 1);
+            });
+            this.setId("row-button");
         }
     }
-    
+
     class SellButton extends Button {
-     public SellButton(TradeGood good) {
-         super("SELL");
-         this.setOnAction((ActionEvent event) -> {
-            System.out.println("sell Sell SELL!!!");
+        public SellButton(TradeGood good) {
+            super("SELL");
+            this.setOnAction((ActionEvent event) -> {
             sell(good, 1);
         });
-         this.setId("row-button");
+        this.setId("row-button");
      }
  }
 
-        class GoodsRow extends HBox {
-            public GoodsRow(TradeGood good, boolean isBuy) {
-                this.getChildren().add(new Label(good.type.name));
-
-                this.getChildren().add(new Label("x" + good.getQuantity()));
-                if(isBuy) {
-                  this.getChildren().add(new BuyButton(good));  
-                } else {
-                  this.getChildren().add(new SellButton(good));  
-                }
-               
-                this.setId("goods-row");
-                this.setOnMouseEntered((MouseEvent event) -> {
-                    chart(good.type.name, good.getPrice());
-                    updateLabels(good.type.name, good.getPrice());
-                });
-                this.setAlignment(Pos.CENTER_RIGHT);
-                this.setSpacing(30);
+    class GoodsRow extends HBox {
+        public GoodsRow(TradeGood good, boolean isBuy) {
+            this.getChildren().add(new Label(good.type.name));
+            this.getChildren().add(new Label("x" + good.getQuantity()));
+            if(isBuy) {
+                this.getChildren().add(new BuyButton(good));  
+            } else {
+                this.getChildren().add(new SellButton(good));  
             }
-
-
+            this.setId("goods-row");
+            this.setOnMouseEntered((MouseEvent event) -> {
+                chart(good.type.name, good.getPrice());
+                updateLabels(good.type.name, good.getPrice());
+            });
+            this.setAlignment(Pos.CENTER_RIGHT);
+            this.setSpacing(30);
+        }
     }
-    
+
     class GoodsList {
         private ArrayList<TradeGood> tradeGoods;
         private ArrayList<String> names;
@@ -230,32 +220,28 @@ public class MarketController implements Initializable, ControlledScreen {
         double rowHeight;
         boolean isBuy;
         VBox box;
-        
+
         public GoodsList(VBox newBox, ArrayList<TradeGood> newGoods, boolean newIsBuy) {
             tradeGoods = newGoods;
             box = newBox;
             goodsNumber = tradeGoods.size();
             isBuy = newIsBuy;
             listGoods();
-
         }
-    
+
         private void listGoods() {
             //set up the VBox
             for(int i = 0; i < goodsNumber; i++) {
                 TradeGood tg = tradeGoods.get(i);
                 if(tg.getPrice() > 0 && tg.getQuantity() > 0) {
                     GoodsRow row = new GoodsRow(tradeGoods.get(i), isBuy);
-
-                    this.addChild(row);                }
-
+                    this.addChild(row);
+                }
             }
         }
-    
+
         public void addChild(Node node) {
-        box.getChildren().add(node);
-        
+            box.getChildren().add(node);
         }
-    
     }
 }

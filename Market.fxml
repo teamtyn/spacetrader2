@@ -30,13 +30,12 @@
       </TabPane>
       <AnchorPane layoutX="14.0" layoutY="300.0" prefHeight="216.0" prefWidth="286.0">
          <children>
-            <Label fx:id="sellLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="446.0" text="Label" />
-            <Label fx:id="buyLabel" alignment="CENTER" layoutY="68.0" prefHeight="68.0" prefWidth="446.0" text="Label" wrapText="true">
+            <Label fx:id="sellLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="446.0" />
+            <Label fx:id="buyLabel" alignment="CENTER" layoutY="68.0" prefHeight="68.0" prefWidth="446.0" wrapText="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="statusLabel" alignment="CENTER" layoutX="-14.0" layoutY="124.0" prefHeight="78.0" prefWidth="446.0" text="Let's make some money!" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="chartPane" layoutX="28.0" layoutY="17.0" prefHeight="302.0" prefWidth="402.0" />
@@ -44,5 +43,6 @@
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></Label>
+      <Button fx:id="backButton" layoutX="609.0" layoutY="546.0" mnemonicParsing="false" onAction="#backButtonAction" text="BACK" />
    </children>
 </AnchorPane>
