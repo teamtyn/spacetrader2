@@ -291,7 +291,6 @@ public class StarMapController implements Initializable, ControlledScreen {
             MarketSetup market = new MarketSetup(planet);
             //MarketController.setMarket(market);
             //SpaceTrader.marketSetup = market;
-            SpaceTrader.setPlanet(planet);
             System.out.println(MarketController.market);
             parentController.setScreen("Market");
             System.out.println(market.toString());

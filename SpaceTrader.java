@@ -12,8 +12,6 @@ import spacetrader.star_system.Planet;
  * @version 1.0
  */
 public class SpaceTrader extends Application {
-    public static MarketSetup marketSetup;
-    public static Planet plnt;
     @Override
     public void start(Stage stage) throws Exception {
         ScreensController mainContainer = new ScreensController();
@@ -34,11 +32,5 @@ public class SpaceTrader extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-    public static void setPlanet(Planet newPlanet) {
-        plnt = newPlanet;
-    }
-    public static Planet getPlanet() {
-        return plnt;
     }
 }
