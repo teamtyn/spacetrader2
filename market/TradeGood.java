@@ -158,13 +158,13 @@ public class TradeGood {
     public int getQuantity() {
         return quantity;
     }
-<<<<<<< HEAD
+
     public void setQuantity(int newQuantity) {
         quantity = newQuantity;
-=======
-    
+
+    }
     public String toString(){
         return this.type.name + " " + quantity;
->>>>>>> origin/master
+
     }
 }
