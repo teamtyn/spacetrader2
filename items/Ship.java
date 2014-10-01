@@ -1,6 +1,7 @@
 package spacetrader.items;
 
 import javafx.scene.paint.Color;
+import spacetrader.market.TradeGood;
 
 /**
  * Ship class, what the player travels around and transports cargo in
@@ -23,16 +24,16 @@ public class Ship {
      */
     public enum ShipType {
         // TODO: Make numbers more better?
-        Flea (100, 4, 4, 4, 4, 4, 4, Color.BLUE), 
-        Gnat (100, 100, 4, 4, 4, 4, 10, Color.RED), 
-        Firefly (100, 4, 4, 4, 4, 4, 4, Color.GREEN), 
-        Mosquito (100, 4, 4, 4, 4, 4, 4, Color.ORANGE), 
-        Bumblebee (100, 4, 4, 4, 4, 4, 4, Color.YELLOW),
-        Beetle (100, 4, 4, 4, 4, 4, 4, Color.PURPLE), 
-        Hornet (100, 4, 4, 4, 4, 4, 4, Color.BROWN), 
-        Grasshopper (100, 4, 4, 4, 4, 4, 4, Color.GREY), 
-        Termite (100, 4, 4, 4, 4, 4, 4, Color.WHITE), 
-        Wasp (100, 4, 4, 4, 4, 4, 4, Color.ALICEBLUE);
+        Flea (100, 4, 4, 4, 4, 1, 4, Color.BLUE), 
+        Gnat (100, 100, 4, 4, 4, 1, 10, Color.RED), 
+        Firefly (100, 4, 4, 4, 4, 1, 4, Color.GREEN), 
+        Mosquito (100, 4, 4, 4, 4, 1, 4, Color.ORANGE), 
+        Bumblebee (100, 4, 4, 4, 4, 1, 4, Color.YELLOW),
+        Beetle (100, 4, 4, 4, 4, 1, 4, Color.PURPLE), 
+        Hornet (100, 4, 4, 4, 4, 1, 4, Color.BROWN), 
+        Grasshopper (100, 4, 4, 4, 4, 1, 4, Color.GREY), 
+        Termite (100, 4, 4, 4, 4, 1, 4, Color.WHITE), 
+        Wasp (100, 4, 4, 4, 4, 1, 4, Color.ALICEBLUE);
 
         private int hullStrength;
         private double fuelCapacity;
@@ -61,6 +62,8 @@ public class Ship {
         shields = new Shield[type.shieldSlots];
         weapons = new Weapon[type.weaponSlots];
         cargoBays = new CargoBay[type.cargoBaySlots];
+        //Very large cargobay, will worry about more bays later
+        cargoBays[0] = new CargoBay(10000000);
         hull = type.hullStrength;
         fuel = type.fuelCapacity;
         this.escapePod = escapePod;
@@ -227,5 +230,19 @@ public class Ship {
             hull = type.hullStrength;
         }
         return hull;
+    }
+    
+    //Only using one cargoBay for now
+    //TODO: More than one cargobay
+    public boolean canStoreGoods(int quantity){
+        return cargoBays[0].canAddQuantity(quantity);
+    }
+    
+    //Only using one cargoBay for now
+    //TODO: More than one cargobay
+    public void storeGoods(TradeGood goods){
+        if(canStoreGoods(goods.getQuantity())){
+            cargoBays[0].addTradeGood(goods);
+        }
     }
 }
