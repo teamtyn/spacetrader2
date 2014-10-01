@@ -70,7 +70,7 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     public void updatePlayerInfo() {
-        String space = "";
+        String space;
         if (ship.getExtraSpace() >= 0) {
             space = Integer.toString(ship.getExtraSpace());
         } else {
