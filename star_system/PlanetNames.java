@@ -17,7 +17,7 @@ public class PlanetNames {
     static {
         Random random = new Random();
         List<String> anarchicNames = new ArrayList<>();
-        for (int count = 0; count < 40; count++) {
+        for (int count = 0; count < 200; count++) {
             int nameInt = random.nextInt(308915776); // 26 ** 6
             char[] nameChars = Integer.toString(nameInt, 26).toCharArray();
             for (int i = 0; i < nameChars.length; i++) {

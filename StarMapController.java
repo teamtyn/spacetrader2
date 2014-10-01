@@ -67,8 +67,8 @@ public class StarMapController implements Initializable, ControlledScreen {
     private void generateSystems() {
         Random random = new Random();
         List<Point2D> positions = new ArrayList<>();
-        for (int x = 100; x <= 700; x += 200) {
-            for (int y = 100; y <= 500; y += 200) {
+        for (int x = 100; x <= 860; x += 190) {
+            for (int y = 200; y <= 500; y += 150) {
                 positions.add(new Point2D(x + random.nextInt(100) - 50, y + random.nextInt(100) - 50));
             }
         }
