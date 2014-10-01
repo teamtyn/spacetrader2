@@ -123,6 +123,13 @@ public class TradeGood {
         this.price = calcPrice();
         this.quantity = calcQuantity();
     }
+    
+    public TradeGood(GoodType type, int quantity) {
+        this.type = type;
+        this.planet = null;
+        this.price = 0;
+        this.quantity = quantity;
+    }
 
     public final int calcPrice() {
         // Price calculation from the wiki
@@ -151,7 +158,13 @@ public class TradeGood {
     public int getQuantity() {
         return quantity;
     }
+<<<<<<< HEAD
     public void setQuantity(int newQuantity) {
         quantity = newQuantity;
+=======
+    
+    public String toString(){
+        return this.type.name + " " + quantity;
+>>>>>>> origin/master
     }
 }

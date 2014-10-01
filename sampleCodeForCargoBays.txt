@@ -1,0 +1,38 @@
+        //Testing cargo bays
+        System.out.println("Initial state");
+        Player player = new Player();
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Adding 10 firearms");
+        player.getShip().storeTradeGood(new TradeGood(TradeGood.GoodType.Firearms, 10));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Adding 10 Food");
+        player.getShip().storeTradeGood(new TradeGood(TradeGood.GoodType.Food, 10));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Adding 10 more food");
+        player.getShip().storeTradeGood(new TradeGood(TradeGood.GoodType.Food, 10));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Adding 100 more food");
+        player.getShip().storeTradeGood(new TradeGood(TradeGood.GoodType.Food, 100));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Removing 10 food");
+        player.getShip().removeTradeGood(new TradeGood(TradeGood.GoodType.Food, 10));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Removing 110 food");
+        System.out.println("Removed " + player.getShip().removeTradeGood(new TradeGood(TradeGood.GoodType.Food, 110)));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Adding 100 Furs");
+        player.getShip().storeTradeGood(new TradeGood(TradeGood.GoodType.Furs, 100));
+        System.out.println(player.getShip().getCargo());
+        
+        System.out.println("Removing 101 Furs");
+        System.out.println("Removed " + player.getShip().removeTradeGood(new TradeGood(TradeGood.GoodType.Furs, 101)));
+        System.out.println(player.getShip().getCargo());
+  
+        System.out.println("done");
