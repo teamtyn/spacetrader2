@@ -163,6 +163,9 @@ public class TradeGood {
         quantity = newQuantity;
 
     }
+    public void setPrice(int newPrice){
+        price = newPrice;
+    }
     public String toString(){
         return this.type.name + " " + quantity;
 

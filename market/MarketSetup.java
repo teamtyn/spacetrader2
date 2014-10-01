@@ -39,8 +39,8 @@ public class MarketSetup {
         return buyable;
     }
     
-    public void decreaseQuantity(String good, int decrease) {
-        TradeGood.GoodType type = TradeGood.GoodType.valueOf(good);
+    public void decreaseQuantity(TradeGood good, int decrease) {
+        TradeGood.GoodType type = good.type;
         for (TradeGood tg: sellable) {
             if(tg.type == type) {
                 tg.setQuantity(tg.getQuantity() - decrease);

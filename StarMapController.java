@@ -49,6 +49,7 @@ public class StarMapController implements Initializable, ControlledScreen {
     // Temporary player until we figure out how we are passing the actual player around
     private Player tempPlayer;
     private int curLevel;
+    public static MarketSetup marketSetup;
 
     @Override
     public String toString() {
@@ -288,7 +289,9 @@ public class StarMapController implements Initializable, ControlledScreen {
             
 
             MarketSetup market = new MarketSetup(planet);
-            MarketController.market = market;
+            //MarketController.setMarket(market);
+            //SpaceTrader.marketSetup = market;
+            SpaceTrader.setPlanet(planet);
             System.out.println(MarketController.market);
             parentController.setScreen("Market");
             System.out.println(market.toString());
