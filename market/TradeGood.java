@@ -76,16 +76,16 @@ public class TradeGood {
     }
 
     public enum GoodType {
-        Water(0, 0, 2, 30, 3, 4, 1, 4, 3, 30, 500),
-        Furs(0, 0, 0, 250, 10, 10, 2, 7, 8, 230, 280),
-        Food(1, 0, 1, 100, 5, 5, 3, 5, 6, 90, 160),
-        Ore(2, 2, 3, 350, 20, 10, 4, 1, 2, 350, 420),
-        Games(3, 1, 6, 250, -10, 5, 5, 11, -1, 160, 270),
-        Firearms(3, 1, 5, 1250, -75, 100, 4, 12, -1, 600, 1100),
-        Medicine(4, 1, 6, 650, -20, 10, 6, 10, -1, 400, 700),
-        Machines(4, 3, 5, 900, -30, 5, 7, -1, -1, 600, 800),
-        Narcotics(5, 0, 5, 3500, -125, 150, 5, 9, -1, 2000, 3000),
-        Robots(6, 4, 7, 5000, -150, 100, 7, -1, -1, 3500, 5000);
+        Water(0, 0, 2, 30, 3, 4, 1, 4, 3, 30, 500, "Water"),
+        Furs(0, 0, 0, 250, 10, 10, 2, 7, 8, 230, 280, "Furs"),
+        Food(1, 0, 1, 100, 5, 5, 3, 5, 6, 90, 160, "Food"),
+        Ore(2, 2, 3, 350, 20, 10, 4, 1, 2, 350, 420, "Ore"),
+        Games(3, 1, 6, 250, -10, 5, 5, 11, -1, 160, 270, "Games"),
+        Firearms(3, 1, 5, 1250, -75, 100, 4, 12, -1, 600, 1100, "Firearms"),
+        Medicine(4, 1, 6, 650, -20, 10, 6, 10, -1, 400, 700, "Medicine"),
+        Machines(4, 3, 5, 900, -30, 5, 7, -1, -1, 600, 800, "Machines"),
+        Narcotics(5, 0, 5, 3500, -125, 150, 5, 9, -1, 2000, 3000, "Narcotics"),
+        Robots(6, 4, 7, 5000, -150, 100, 7, -1, -1, 3500, 5000, "Robots");
 
         public int mtlp;
         public int mtlu;
@@ -98,9 +98,10 @@ public class TradeGood {
         public int er;
         public int mtl;
         public int mhl;
+        public String name;
         private final Random rando = new Random();
 
-        GoodType(int mtlp, int mtlu, int ttp, int basePrice, int ipl, int var, int ie, int cr, int er, int mtl, int mhl) {
+        GoodType(int mtlp, int mtlu, int ttp, int basePrice, int ipl, int var, int ie, int cr, int er, int mtl, int mhl, String name) {
             this.mtlp = mtlp;
             this.mtlu = mtlu;
             this.ttp = ttp;
@@ -112,6 +113,7 @@ public class TradeGood {
             this.er = er;
             this.mtl = mtl;
             this.mhl = mhl;
+            this.name = name;
         }
     };
 
