@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * Planet is defined by its government, resource level, circumstance, and tech level
  *   It has the physical characteristics of color, orbit distance, and size
+ *   It also knows whether or not the player is currently there
  * @author David Purcell
  */
 public class Planet {

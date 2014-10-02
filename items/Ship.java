@@ -63,7 +63,7 @@ public class Ship {
         shields = new Shield[type.shieldSlots];
         weapons = new Weapon[type.weaponSlots];
         cargoBays = new CargoBay[type.cargoBaySlots];
-        //Very large cargobay, will worry about more bays later
+        // One cargo bay, will worry about more bays later
         cargoBays[0] = new CargoBay(70);
         hull = type.hullStrength;
         fuel = type.fuelCapacity;
