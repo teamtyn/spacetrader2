@@ -4,6 +4,7 @@ import spacetrader.market.MarketSetup;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import spacetrader.items.Ship;
 import spacetrader.market.TradeGood;
 import spacetrader.player.Player;
@@ -43,6 +45,7 @@ public class MarketController implements Initializable, ControlledScreen {
     private ScreensController parentController;
     public static MarketSetup market;   //THIS WILL BE CHANGED ONCE WE HAVE A SINGLETON
     public String[] goods;
+    FadeTransition ft;
     GoodsList buyList;
     GoodsList sellList;
     Player player;
@@ -58,8 +61,6 @@ public class MarketController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         market = new MarketSetup(new Planet());
-        //market = SpaceTrader.marketSetup;
-        //market = new MarketSetup(SpaceTrader.getPlanet());
         player = new Player();
         ship = player.getShip();
         ship.storeTradeGood(new TradeGood(TradeGood.GoodType.Firearms, 20));
@@ -67,16 +68,18 @@ public class MarketController implements Initializable, ControlledScreen {
         ship.storeTradeGood(new TradeGood(TradeGood.GoodType.Ore, 20));
         updatePlayerInfo();
         setUpGoodsLists();
+        
+     ft = new FadeTransition(Duration.millis(2000), statusLabel);
+     ft.setFromValue(0);
+     ft.setToValue(1);
+     ft.setAutoReverse(true);
+     ft.setCycleCount(2);
     }
 
     public void updatePlayerInfo() {
         String space;
-        if (ship.getExtraSpace() >= 0) {
-            space = Integer.toString(ship.getExtraSpace());
-        } else {
-            space = "0";
-        }
-        playerInfo.setText("Cargo Space Remaining: " + space + "\nMoney Remaining: " + 
+
+        playerInfo.setText("Cargo Space Remaining: " + ship.getExtraSpace() + "\nMoney Remaining: " + 
                 money + " bitcoins");
     }
 
@@ -100,7 +103,6 @@ public class MarketController implements Initializable, ControlledScreen {
         for (TradeGood tgm: marketList) {
             for (TradeGood tgp: playerList) {
                 if (tgm.type == tgp.type) {
-                    //tg = new TradeGood(tgm.type, Math.min(tgm.getQuantity(), tgp.getQuantity()));
                     tgp.setPrice(tgm.getPrice());
                 }
             }
@@ -118,6 +120,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
     public void statusPanelMessage(String status) {
         statusLabel.setText(status);
+        ft.play();
     }
 
     public void updateLabels(String name, int price) {
@@ -147,11 +150,16 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     public void buy(TradeGood good, int amount) {
+
         int newMoney = money - good.getPrice() * amount;
         if (newMoney > 0) {
             money = money - good.getPrice() * amount;
-            ship.storeTradeGood(new TradeGood(good.type, amount));
+            if(ship.canStoreTradeGood(good.getQuantity())) {
+                ship.storeTradeGood(new TradeGood(good.type, amount));
+            } else {statusPanelMessage("Hey-oh! You're out of cargo space."); }
             market.decreaseQuantity(good, amount);
+        } else {
+            statusPanelMessage("Ohohoho! You don't have enough money!");
         }
         display();
     }

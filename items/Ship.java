@@ -269,10 +269,10 @@ public class Ship {
     // TODO: More than one cargobay
     public int getExtraSpace() {
         //return cargoBays[0].getCapacity() - cargoBays[0].getCurrentSize();
-        int totalGoods = 0;
-        for (TradeGood tg: cargoBays[0].getContents()) {
-            totalGoods += tg.getQuantity();
-        }
-        return cargoBays[0].getCapacity() - totalGoods;
+//        int totalGoods = 0;
+//        for (TradeGood tg: cargoBays[0].getContents()) {
+//            totalGoods += tg.getQuantity();
+//        }
+        return cargoBays[0].getCapacity() - cargoBays[0].getCurrentSize();
     }
 }
