@@ -21,7 +21,7 @@ public class Player {
         skills = new ArrayList<>();
         coord = new Point2D(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
-        money = 1000;
+        money = 10000;
     }
 
     // Setter for money

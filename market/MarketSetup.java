@@ -47,6 +47,20 @@ public class MarketSetup {
             }
         }
     }
+    
+    public void increaseQuantity(TradeGood good, int increase) {
+        TradeGood.GoodType type = good.type;
+        boolean added = false;
+        for (TradeGood tg: sellable) {
+            if(tg.type == type) {
+                tg.setQuantity(tg.getQuantity() + increase);
+                added = true;
+            }
+        }
+        if (!added){
+            sellable.add(new TradeGood(good.type, increase));
+        }
+    }
 
     public ArrayList<TradeGood> getSellable() {
         return sellable;

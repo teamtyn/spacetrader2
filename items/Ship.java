@@ -64,7 +64,7 @@ public class Ship {
         weapons = new Weapon[type.weaponSlots];
         cargoBays = new CargoBay[type.cargoBaySlots];
         // One cargo bay, will worry about more bays later
-        cargoBays[0] = new CargoBay(70);
+        cargoBays[0] = new CargoBay(10);
         hull = type.hullStrength;
         fuel = type.fuelCapacity;
         this.escapePod = escapePod;

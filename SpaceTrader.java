@@ -20,7 +20,7 @@ public class SpaceTrader extends Application {
         mainContainer.loadScreen("StarMap", "StarMap.fxml");
         mainContainer.loadScreen("Market", "Market.fxml");
         mainContainer.loadScreen("Engine", "Engine.fxml");
-        mainContainer.setScreen("Menu");
+        mainContainer.setScreen("Market");
 
         Group root = new Group();
         root.getChildren().addAll(mainContainer);

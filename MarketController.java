@@ -144,13 +144,14 @@ public class MarketController implements Initializable, ControlledScreen {
     public void buy(TradeGood good, int amount) {
         int newMoney = player.getMoney() - good.getPrice() * amount;
         if (newMoney > 0) {
-            player.setMoney(player.getMoney() - good.getPrice() * amount);
-            if (ship.canStoreTradeGood(good.getQuantity())) {
+            //TODO: Buy more than one thing at at time
+            if (ship.canStoreTradeGood(1)) {
+                player.setMoney(player.getMoney() - good.getPrice() * amount);
                 ship.storeTradeGood(new TradeGood(good.type, amount));
+                market.decreaseQuantity(good, amount);
             } else {
                 statusPanelMessage("Hey-oh! You're out of cargo space.");
             }
-            market.decreaseQuantity(good, amount);
         } else {
             statusPanelMessage("Ohohoho! You don't have enough money!");
         }
@@ -160,6 +161,7 @@ public class MarketController implements Initializable, ControlledScreen {
     public void sell(TradeGood good, int amount) {
         player.setMoney(player.getMoney() + good.getPrice() * amount);
         ship.removeTradeGood(new TradeGood(good.type, amount));
+        market.increaseQuantity(good,amount);
         display();
     }
 

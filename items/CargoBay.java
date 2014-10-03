@@ -27,6 +27,7 @@ public class CargoBay {
      * @return 
      */
     public boolean canAddQuantity(int quantity) {
+        System.out.println("Can Add quantity: " + quantity + " " + ((currentSize + quantity) <= capacity));
         return (currentSize + quantity) <= capacity;
     }
 
@@ -36,17 +37,21 @@ public class CargoBay {
      * @param good 
      */
     public void addTradeGood(TradeGood good) {
+        System.out.println("LETS ADD THINGS");
         boolean added = false;
         if (canAddQuantity(good.getQuantity())) {
             for (int i = 0; i < contents.size(); i++) {
                 if (contents.get(i).type == good.type) {
                     contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() + good.getQuantity()));
                     currentSize += good.getQuantity();
+                    System.out.println(currentSize);
                     added = true;
                 }
             }
             if (!added) {
                 contents.add(good);
+                currentSize += good.getQuantity();
+                System.out.println(currentSize);
             }
         }
     }
@@ -62,6 +67,7 @@ public class CargoBay {
         for (int i = 0; i < contents.size(); i++) {
             if (contents.get(i).type == good.type) {
                 if (contents.get(i).getQuantity() > good.getQuantity()) {
+                    removedGood = good;
                     contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() - good.getQuantity()));   
                 } else if (contents.get(i).getQuantity() == good.getQuantity()) {
                     removedGood = contents.get(i);
@@ -77,6 +83,7 @@ public class CargoBay {
         }
         if (removedGood != null) {
             currentSize -= removedGood.getQuantity();
+            System.out.println(currentSize);
         }
         return removedGood;
     }
