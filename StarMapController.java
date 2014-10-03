@@ -46,9 +46,8 @@ public class StarMapController implements Initializable, ControlledScreen {
     
     private ScreensController parentController;
     private StarSystem[] systems;
-    // Temporary player until we figure out how we are passing the actual player around
+    // Temporary player until we figure out how we are passing the actual player around (SINGLETON)!
     private Player tempPlayer;
-    private int curLevel;
     public static MarketSetup marketSetup;
 
     @Override
@@ -84,7 +83,6 @@ public class StarMapController implements Initializable, ControlledScreen {
      * Overall view of all systems and other entities in the universe
      */
     public void viewUniverse() {
-        curLevel = 0;
         systemPane.getChildren().removeAll(systemPane.getChildren());
         systemPane.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent keyEvent) -> {
             if (keyEvent.getCharacter().equals("w")) {
@@ -169,9 +167,7 @@ public class StarMapController implements Initializable, ControlledScreen {
      * @param system The system to be viewed
      */
     public void viewSystem(StarSystem system) {
-        curLevel = 1;
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        systemPane.getChildren().add(backButton);
 
         // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
         if (system.hasPlayer && tempPlayer.getPlanet() == null) {
@@ -179,6 +175,13 @@ public class StarMapController implements Initializable, ControlledScreen {
             drawPlayer(tempPlayer.getX(), tempPlayer.getY());
         }
 
+        // Go back to the universe view
+        Button backButton = new Button("GO BACK");
+        backButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+                viewUniverse();
+            });
+        systemPane.getChildren().add(backButton);
+        
         // Name of system
         Text systemText = new Text(600, 50, system.getName());
         systemText.setFont(Font.font("Verdana", 40));
@@ -237,14 +240,19 @@ public class StarMapController implements Initializable, ControlledScreen {
      * @param system The system that the planet resides in
      */
     public void viewPlanet(Planet planet, StarSystem system) {
-        curLevel = 2;
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        systemPane.getChildren().add(backButton);
 
         // If the player is at this planet, draw them in
         if (planet.hasPlayer) {
             drawPlayer(100,100);
         }
+        
+        // Button to return to system view
+        Button button = new Button("GO BACK");
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+                viewSystem(system);
+            });
+        systemPane.getChildren().add(button);
 
         // Write the name of the planet
         Text planetTitle = new Text(600, 50, planet.getName());
@@ -424,16 +432,6 @@ public class StarMapController implements Initializable, ControlledScreen {
     @FXML
     private void viewShipButtonAction(ActionEvent event) {
         System.out.println("Viewing ship now.");
-    }
-
-    @FXML
-    private void backButtonAction(ActionEvent event) {
-        if (curLevel == 1) {
-            viewUniverse();
-            systemPane.getChildren().remove(backButton);
-        } else if (curLevel == 2) {
-            viewSystem(tempPlayer.getSystem());
-        }
     }
 
     @FXML
