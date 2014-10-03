@@ -115,8 +115,8 @@ public class StarMapController implements Initializable, ControlledScreen {
 
             // If player is in this system, draw them
             if (system.hasPlayer && tempPlayer.getPlanet() == null) {
-                tempPlayer.setCoordinates(new Point2D(system.getCoordinateX() - 50, system.getCoordinateY() - 25));
-                drawPlayer(tempPlayer.getX(), tempPlayer.getY());
+                tempPlayer.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
+                drawPlayer(tempPlayer.getX() - 50, tempPlayer.getY() - 25);
             }
 
             // Loop through planets, adding them at equal intervals around the star
@@ -280,6 +280,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         });
         revolt.setLayoutX(100);
         revolt.setLayoutY(220);
+        revolt.setDisable(!planet.hasPlayer);
         systemPane.getChildren().add(revolt);
 
         // Button to instantiate a monarchy government
@@ -291,6 +292,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         });
         monarch.setLayoutX(100);
         monarch.setLayoutY(260);
+        monarch.setDisable(!planet.hasPlayer);
         systemPane.getChildren().add(monarch);
 
         // Button to go to the market
@@ -307,6 +309,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         });
         marketButton.setLayoutX(100);
         marketButton.setLayoutY(300);
+        marketButton.setDisable(!planet.hasPlayer);
         systemPane.getChildren().add(marketButton);
     }
 
@@ -354,8 +357,8 @@ public class StarMapController implements Initializable, ControlledScreen {
      * @return  The distance between the player and the system
      */
     public int getDistanceToSystem(StarSystem system) {
-        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getX(), 2) +
-                                    Math.pow(system.getCoordinateY() - tempPlayer.getY(), 2));
+        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getSystem().getCoordinateX(), 2) +
+                                    Math.pow(system.getCoordinateY() - tempPlayer.getSystem().getCoordinateY(), 2));
         return (int)distance;
     }
 
@@ -447,8 +450,11 @@ public class StarMapController implements Initializable, ControlledScreen {
 
         // Replace with overall player
         tempPlayer = new Player();
-        tempPlayer.setCoordinates(new Point2D(100, 100));
-        
+        tempPlayer.setSystem(systems[0]);
+        tempPlayer.setCoordinates(new Point2D(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
+        systems[0].hasPlayer = true;
+        System.out.println(tempPlayer.getSystem());
+        System.out.println(systems[0]);
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
         hullLabel.setText("" + tempPlayer.getShip().getHull());
