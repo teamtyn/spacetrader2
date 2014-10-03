@@ -151,6 +151,7 @@ public class StarMapController implements Initializable, ControlledScreen {
 
                 // Button to travel to system, displays distance to system
                 Button travelButton = new Button("Travel to " + system.getName() + "\nDistance " + getDistanceToSystem(system));
+                travelButton.setDisable(getDistanceToSystem(system) > tempPlayer.getShip().getRange());
                 travelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
 
                     // Method that handles traveling to the system
@@ -351,7 +352,6 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     // TODO: Animations?
-    // TODO: Fuel costs?
     // TODO: Random Encounters (pirates / police)?
     /**
      * Method for the player to travel to a given system
