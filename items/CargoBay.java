@@ -1,62 +1,64 @@
 package spacetrader.items;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import spacetrader.market.TradeGood;
 
 /**
- * A CargoBay is defined by its capacity, current size, and contents (which are TradeGoods)
+ *
  * @author David Purcell
  */
 public class CargoBay {
-    private int capacity;
+    private final int capacity;
+    // How many are in there
     private int currentSize;
-    private HashMap<String, Integer> goods;
+    // ArrayList storing instances of all possible trade goods to be stored in this cargo hold
     private ArrayList<TradeGood> contents;
 
     public CargoBay(int capacity) {
         this.capacity = capacity;
-        contents = new ArrayList<>();
-        goods = new HashMap<>();
+        this.currentSize = 0;
+        this.contents = new ArrayList<>();
     }
 
+    // Is the cargo hold big enough to accept new stuffs?
     /**
-     * Returns whether the cargo bay can fit a given quantity
-     * @param quantity The quantity to be potentially added
-     * @return Whether or not the cargo bay can handle this new quantity
+     * 
+     * @param quantity
+     * @return 
      */
     public boolean canAddQuantity(int quantity) {
+        System.out.println("Can Add quantity: " + quantity + " " + ((currentSize + quantity) <= capacity));
         return (currentSize + quantity) <= capacity;
     }
 
+    // If can add then if there is no copy of this type of good, add new good, else add on to quantity of other good
     /**
-     * If can add then if there is no copy of this type of good, add new good, else add on to quantity of other good
-     * @param good The good to be stored in the cargo bay
-     * @return Returns a message explaining failure if it does fail, can be printed to player
+     * 
+     * @param good 
      */
-    public String addTradeGood(TradeGood good) {
+    public void addTradeGood(TradeGood good) {
+        System.out.println("LETS ADD THINGS");
         boolean added = false;
-        String returnMsg = null;
-        if (canAddQuantity(1)) {
+        if (canAddQuantity(good.getQuantity())) {
             for (int i = 0; i < contents.size(); i++) {
                 if (contents.get(i).type == good.type) {
                     contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() + good.getQuantity()));
                     currentSize += good.getQuantity();
+                    System.out.println(currentSize);
                     added = true;
                 }
             }
             if (!added) {
                 contents.add(good);
                 currentSize += good.getQuantity();
+                System.out.println(currentSize);
             }
-        } else {
-            returnMsg = "Not enough room for that";
         }
-        return returnMsg;
     }
 
+    // If that kind of good exists in the hold, remove X of them, where X is as many goods as possible up to specified quantity
     /**
-     * If that kind of good exists in the hold, remove X of them, where X is as many goods as possible up to specified quantity
+     * 
      * @param good
      * @return 
      */
@@ -96,14 +98,6 @@ public class CargoBay {
 
     public int getCurrentSize() {
         return currentSize;
-    }
-
-    /**
-     * Only to be used as a convenience when player upgrades their cargo bay
-     * @param capacity The new capacity of the cargo bay
-     */
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 
     @Override
