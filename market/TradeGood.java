@@ -155,6 +155,16 @@ public class TradeGood {
         return thisPrice;
     }
 
+    public static GoodType fromNameToType(String name) {
+        GoodType found = null;
+        for (GoodType type: GoodType.values()) {
+            if (type.name.equals(name)) {
+                found = type;
+            }
+        }
+        return found;
+    }
+
     /*
      * Quantity is currently predicated on the government multipliers (all 1),
      *   and a simplistic stab at supply and demand from the price ratio
