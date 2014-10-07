@@ -298,9 +298,11 @@ public class StarMapController implements Initializable, ControlledScreen {
         // Button to go to the market
         Button marketButton = new Button("BUY THINGS");
         marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+            // TODO: Make it not break?
+
             MarketSetup market = new MarketSetup(planet);
-            // MarketController.setMarket(market);
-            // SpaceTrader.marketSetup = market;
+            //MarketController.setMarket(market);
+            //SpaceTrader.marketSetup = market;
             System.out.println(MarketController.market);
             parentController.setScreen("Market");
             System.out.println(market.toString());
@@ -451,6 +453,8 @@ public class StarMapController implements Initializable, ControlledScreen {
         tempPlayer.setSystem(systems[0]);
         tempPlayer.setCoordinates(new Point2D(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
         systems[0].hasPlayer = true;
+        System.out.println(tempPlayer.getSystem());
+        System.out.println(systems[0]);
         fuelLabel.setText("" + tempPlayer.getShip().getFuel());
         rangeLabel.setText("" + tempPlayer.getShip().getRange());
         hullLabel.setText("" + tempPlayer.getShip().getHull());
