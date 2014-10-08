@@ -61,16 +61,21 @@ import javafx.util.Duration;
 public class ScreensController extends StackPane {
 
     // Holds the screens to be displayed
-    private HashMap<String, Node> screens;
+    private final HashMap<String, Node> screens;
+    private final HashMap<String, ControlledScreen> controllers;
+    private final HashMap<String, Boolean> initialized;
 
     public ScreensController() {
         super();
         screens = new HashMap<>();
+        controllers = new HashMap<>();
+        initialized = new HashMap<>();
     }
 
     // Adds the screen to the collection
-    public void addScreen(String name, Node screen) {
+    public void addScreen(String name, Node screen, ControlledScreen controller) {
         screens.put(name, screen);
+        controllers.put(name, controller);
     }
 
     // Returns the Node with the appropriate name
@@ -91,12 +96,12 @@ public class ScreensController extends StackPane {
             Parent loadScreen = (Parent) loader.load();
             ControlledScreen controller = ((ControlledScreen) loader.getController());
             controller.setScreenParent(this);
-            addScreen(name, loadScreen);
+            addScreen(name, loadScreen, controller);
             return true;
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println(e);
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
             Thread.dumpStack();
 
             return false;
@@ -112,15 +117,20 @@ public class ScreensController extends StackPane {
      * @param name The name of the screen to be displayed
      * @return Whether the screen was successfully added or not
     */
-    public boolean setScreen(final String name) {       
-        if (screens.get(name) != null) { // Screen is already loaded
+    public boolean setScreen(final String name) {
+        Node screen = screens.get(name);
+        ControlledScreen controller = controllers.get(name);
+        if (screen != null) { // Screen is already loaded
             final DoubleProperty opacity = opacityProperty();
             if (!getChildren().isEmpty()) { // If there is more than one screen
+                if (initialized.put(name, true) == null) {
+                    controller.lazyInitialize();
+                }
                 Timeline fade = new Timeline(
                         new KeyFrame(Duration.ZERO, new KeyValue(opacity, 1.0)),
                         new KeyFrame(new Duration(1000), (ActionEvent t) -> {
                             getChildren().remove(0); // Remove the displayed screen
-                            getChildren().add(0, screens.get(name)); // Add the screen
+                            getChildren().add(0, screen); // Add the screen
                             Timeline fadeIn = new Timeline(
                                     new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                                     new KeyFrame(new Duration(800), new KeyValue(opacity, 1.0)));
@@ -129,7 +139,9 @@ public class ScreensController extends StackPane {
                 fade.play();
             } else {
                 setOpacity(0.0);
-                getChildren().add(screens.get(name)); // No one else been displayed, then just show
+                controller.lazyInitialize();
+                initialized.put(name, true);
+                getChildren().add(screen); // No one else been displayed, then just show
                 Timeline fadeIn = new Timeline(
                         new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                         new KeyFrame(new Duration(2500), new KeyValue(opacity, 1.0)));

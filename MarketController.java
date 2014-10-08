@@ -56,6 +56,7 @@ public class MarketController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         market = new MarketSetup(new Planet());
+        /*
         player = new Player();
         player.getShip().storeTradeGood("Furs", 3);
         player.getShip().storeTradeGood("Water", 3);
@@ -63,11 +64,25 @@ public class MarketController implements Initializable, ControlledScreen {
         player.getShip().storeTradeGood("Narcotics", 3);        
         updatePlayerInfo();
         setUpGoodsLists();
+        */
         ft = new FadeTransition(Duration.millis(1000), statusLabel);
         ft.setFromValue(0);
         ft.setToValue(1);
         ft.setAutoReverse(true);
         ft.setCycleCount(2);
+    }
+    
+    @Override
+    public void lazyInitialize() {
+        player = GameModel.getPlayer();
+        // DELETE FROM HERE
+        player.getShip().storeTradeGood("Furs", 3);
+        player.getShip().storeTradeGood("Water", 3);
+        player.getShip().storeTradeGood("Firearms", 3);
+        player.getShip().storeTradeGood("Narcotics", 3); 
+        // DELETE TO HERE
+        updatePlayerInfo();
+        setUpGoodsLists();
     }
 
     /**

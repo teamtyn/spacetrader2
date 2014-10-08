@@ -30,7 +30,7 @@ import spacetrader.star_system.StarSystemNames;
  * FXML Controller for the generation of the universe
  * @author David Purcell
  */
-public class StarMapController implements Initializable, ControlledScreen {
+public class StarMapController implements ControlledScreen {
     @FXML private Pane systemPane;
     @FXML private Pane shipDataPane;
     @FXML private Label fuelLabel;
@@ -47,11 +47,12 @@ public class StarMapController implements Initializable, ControlledScreen {
     private ScreensController parentController;
     private StarSystem[] systems;
     // Temporary player until we figure out how we are passing the actual player around (SINGLETON)!
-    private Player tempPlayer;
+    private Player player;
     public static MarketSetup marketSetup;
 
     @Override
     public String toString() {
+        if (systems == null) { return "an empty void. there are no stars."; }
         StringBuilder builder = new StringBuilder();
         for (StarSystem system : systems) {
             builder.append(system).append("\n");
@@ -60,47 +61,16 @@ public class StarMapController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Generates the star systems to avoid collisions
-     * TODO: Factor out, put into MAP / Model / whatever
-     */
-    private void generateSystems() {
-        Random random = new Random();
-        List<Point2D> positions = new ArrayList<>();
-        for (int x = 100; x <= 860; x += 190) {
-            for (int y = 200; y <= 500; y += 150) {
-                positions.add(new Point2D(x + random.nextInt(100) - 50, y + random.nextInt(100) - 50));
-            }
-        }
-        Collections.shuffle(positions, random);
-        
-        systems = new StarSystem[random.nextInt(5) + 7];
-        for (int i = 0; i < systems.length; i++) {
-            systems[i] = new StarSystem(StarSystemNames.getName(), positions.remove(0));
-        }
-    }
-
-    /**
      * Overall view of all systems and other entities in the universe
      */
     public void viewUniverse() {
         systemPane.getChildren().removeAll(systemPane.getChildren());
-        systemPane.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent keyEvent) -> {
-            if (keyEvent.getCharacter().equals("w")) {
-                movePlayer(0, -1);
-            } else if (keyEvent.getCharacter().equals("a")) {
-                movePlayer(-1, 0);
-            } else if (keyEvent.getCharacter().equals("s")) {
-                movePlayer(0, 1);
-            } else if (keyEvent.getCharacter().equals("d")) {
-                movePlayer(1, 0);
-            }
-        });
 
         // If the player doesn't have a system or planet, just draw them somewhere
         // TODO: Randomize start location or pick a noob spot
-        if (tempPlayer.getSystem() == null && tempPlayer.getPlanet() == null) {
-            tempPlayer.setCoordinates(new Point2D(100, 100));
-            drawPlayer(tempPlayer.getX(), tempPlayer.getY());
+        if (player.getSystem() == null && player.getPlanet() == null) {
+            player.setCoordinates(new Point2D(100, 100));
+            drawPlayer(player.getX(), player.getY());
         }
 
         // Adding systems to map
@@ -114,9 +84,9 @@ public class StarMapController implements Initializable, ControlledScreen {
             systemPane.getChildren().add(star);
 
             // If player is in this system, draw them
-            if (system.hasPlayer && tempPlayer.getPlanet() == null) {
-                tempPlayer.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
-                drawPlayer(tempPlayer.getX() - 50, tempPlayer.getY() - 25);
+            if (system.hasPlayer && player.getPlanet() == null) {
+                player.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
+                drawPlayer(player.getX() - 50, player.getY() - 25);
             }
 
             // Loop through planets, adding them at equal intervals around the star
@@ -149,7 +119,7 @@ public class StarMapController implements Initializable, ControlledScreen {
 
                 // Button to travel to system, displays distance to system
                 Button travelButton = new Button("Travel to " + system.getName() + "\nDistance " + getDistanceToSystem(system));
-                travelButton.setDisable(getDistanceToSystem(system) > tempPlayer.getShip().getRange());
+                travelButton.setDisable(getDistanceToSystem(system) > player.getShip().getRange());
                 travelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
 
                     // Method that handles traveling to the system
@@ -170,9 +140,9 @@ public class StarMapController implements Initializable, ControlledScreen {
         systemPane.getChildren().removeAll(systemPane.getChildren());
 
         // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
-        if (system.hasPlayer && tempPlayer.getPlanet() == null) {
-            tempPlayer.setCoordinates(new Point2D(100, 100));
-            drawPlayer(tempPlayer.getX(), tempPlayer.getY());
+        if (system.hasPlayer && player.getPlanet() == null) {
+            player.setCoordinates(new Point2D(100, 100));
+            drawPlayer(player.getX(), player.getY());
         }
 
         // Go back to the universe view
@@ -287,7 +257,7 @@ public class StarMapController implements Initializable, ControlledScreen {
         // TODO: Remove later, replace with better buttons
         Button monarch = new Button("Take control");
         monarch.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            planet.becomeMonarchy(tempPlayer.getName());
+            planet.becomeMonarchy(player.getName());
             planetText.setText(planet.toString());
         });
         monarch.setLayoutX(100);
@@ -320,26 +290,11 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void drawPlayer(double x, double y) {
         playerRectangle = new Rectangle(x, y, 5, 5);
         playerRectangle.setFill(Color.AQUA);
-        playerText = new Text(x - 30, y - 10, tempPlayer.getName());
+        playerText = new Text(x - 30, y - 10, player.getName());
         playerText.setFont(Font.font("Verdana", 20));
         playerText.setFill(Color.WHITE);
         systemPane.getChildren().add(playerRectangle);
         systemPane.getChildren().add(playerText);
-    }
-
-    /**
-     * Method to move the player dot on the screen a given amount
-     * @param x Horizontal change of the player
-     * @param y Vertical change of the player
-     */
-    public void movePlayer(double x, double y) {
-        int iterations = 10;
-        for (int i = 0; i < iterations; i++) {
-            playerRectangle.setX(playerRectangle.getX() + (x / iterations));
-            playerRectangle.setY(playerRectangle.getY() + (y / iterations));
-            playerText.setX(playerText.getX() + (x / iterations));
-            playerText.setY(playerText.getY() + (y / iterations));
-        }
     }
 
     /**
@@ -355,8 +310,8 @@ public class StarMapController implements Initializable, ControlledScreen {
      * @return  The distance between the player and the system
      */
     public int getDistanceToSystem(StarSystem system) {
-        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - tempPlayer.getSystem().getCoordinateX(), 2) +
-                                    Math.pow(system.getCoordinateY() - tempPlayer.getSystem().getCoordinateY(), 2));
+        double distance = Math.sqrt(Math.pow(system.getCoordinateX() - player.getSystem().getCoordinateX(), 2) +
+                                    Math.pow(system.getCoordinateY() - player.getSystem().getCoordinateY(), 2));
         return (int)distance;
     }
 
@@ -370,28 +325,28 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void travelToSystem(StarSystem system) {
 
         // Only travel if you can
-        if (tempPlayer.getShip().travelDistance(getDistanceToSystem(system))) {
+        if (player.getShip().travelDistance(getDistanceToSystem(system))) {
 
             // Update player ship display
-            fuelLabel.setText("" + Math.round(tempPlayer.getShip().getFuel()));
-            rangeLabel.setText("" + tempPlayer.getShip().getRange());
+            fuelLabel.setText("" + Math.round(player.getShip().getFuel()));
+            rangeLabel.setText("" + player.getShip().getRange());
 
             // Make sure past planet and system no longer have player
-            if (tempPlayer.getSystem() != null) {
-                tempPlayer.getSystem().hasPlayer = false;
+            if (player.getSystem() != null) {
+                player.getSystem().hasPlayer = false;
             }
-            if (tempPlayer.getPlanet() != null) {
-                tempPlayer.getPlanet().hasPlayer = false;
+            if (player.getPlanet() != null) {
+                player.getPlanet().hasPlayer = false;
             }
 
             // System you are traveling to has player
             system.hasPlayer = true;
             // Set system to target system and null planet.  Travel to planet later
-            tempPlayer.setSystem(system);
-            tempPlayer.setPlanet(null);
+            player.setSystem(system);
+            player.setPlanet(null);
 
             // Set new player coordinates, only currently used for distance calculations from system to system
-            tempPlayer.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
+            player.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
             viewSystem(system);
         }
     }
@@ -408,20 +363,20 @@ public class StarMapController implements Initializable, ControlledScreen {
     public void travelToPlanet(Planet planet, StarSystem system) {
 
         // Make sure past planet no longer has player.  System shouldn't change
-        if (tempPlayer.getPlanet() != null) {
-            tempPlayer.getPlanet().hasPlayer = false;
+        if (player.getPlanet() != null) {
+            player.getPlanet().hasPlayer = false;
         }
 
         // Planet you are traveling to has player
         planet.hasPlayer = true;
-        tempPlayer.setPlanet(planet);
+        player.setPlanet(planet);
         viewPlanet(planet, system);
     }
 
     @FXML
     private void damageShipButtonAction(ActionEvent event) {
-        tempPlayer.getShip().takeDamage(10);
-        hullLabel.setText("" + tempPlayer.getShip().getHull());
+        player.getShip().takeDamage(10);
+        hullLabel.setText("" + player.getShip().getHull());
     }
 
     @FXML
@@ -437,23 +392,20 @@ public class StarMapController implements Initializable, ControlledScreen {
 
     @FXML
     private void repairShipButtonAction(ActionEvent event) {
-        tempPlayer.getShip().repairHull(10);
-        hullLabel.setText("" + tempPlayer.getShip().getHull());
+        player.getShip().repairHull(10);
+        hullLabel.setText("" + player.getShip().getHull());
     }
-
-    // Initialize the systems and then views the universe
+    
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        generateSystems();
-
-        // Replace with overall player
-        tempPlayer = new Player();
-        tempPlayer.setSystem(systems[0]);
-        tempPlayer.setCoordinates(new Point2D(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
+    public void lazyInitialize() {
+        systems = GameModel.getSystems();
+        player = GameModel.getPlayer();
+        player.setSystem(systems[0]);
+        player.setCoordinates(new Point2D(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
         systems[0].hasPlayer = true;
-        fuelLabel.setText("" + tempPlayer.getShip().getFuel());
-        rangeLabel.setText("" + tempPlayer.getShip().getRange());
-        hullLabel.setText("" + tempPlayer.getShip().getHull());
+        fuelLabel.setText("" + player.getShip().getFuel());
+        rangeLabel.setText("" + player.getShip().getRange());
+        hullLabel.setText("" + player.getShip().getHull());
         viewUniverse();
     }
 

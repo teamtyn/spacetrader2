@@ -25,7 +25,10 @@ public class MenuController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+    
+    @Override
+    public void lazyInitialize() {}
 
     @Override
     public void setScreenParent(ScreensController parentController) {
