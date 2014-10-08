@@ -1,95 +1,90 @@
 package spacetrader.items;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import spacetrader.market.TradeGood;
 
 /**
- *
+ * A CargoBay is defined by its capacity, current size, and contents (which are TradeGoods)
  * @author David Purcell
  */
 public class CargoBay {
-    private final int capacity;
-    // How many are in there
+    private int capacity;
     private int currentSize;
-    // ArrayList storing instances of all possible trade goods to be stored in this cargo hold
-    private ArrayList<TradeGood> contents;
+    private HashMap<String, Integer> goods;
 
     public CargoBay(int capacity) {
         this.capacity = capacity;
-        this.currentSize = 0;
-        this.contents = new ArrayList<>();
+        goods = new HashMap<>(TradeGood.GoodType.values().length);
+        setUpMap();
     }
 
-    // Is the cargo hold big enough to accept new stuffs?
+    public final void setUpMap() {
+        goods.put("Water", 0);
+        goods.put("Furs", 0);
+        goods.put("Food", 0);
+        goods.put("Ore", 0);
+        goods.put("Games", 0);
+        goods.put("Firearms", 0);
+        goods.put("Medicine", 0);
+        goods.put("Machines", 0);
+        goods.put("Narcotics", 0);
+        goods.put("Robots", 0);
+    }
+
     /**
-     * 
-     * @param quantity
-     * @return 
+     * Returns whether the cargo bay can fit a given quantity
+     * @param quantity The quantity to be potentially added
+     * @return Whether or not the cargo bay can handle this new quantity
      */
-    public boolean canAddQuantity(int quantity) {
-        System.out.println("Can Add quantity: " + quantity + " " + ((currentSize + quantity) <= capacity));
+    private boolean canAddQuantity(int quantity) {
         return (currentSize + quantity) <= capacity;
     }
 
-    // If can add then if there is no copy of this type of good, add new good, else add on to quantity of other good
     /**
-     * 
-     * @param good 
+     * If room to add that quantity, increment the size and the quantity of the specified good
+     * @param goodName The good to be stored in the cargo bay
+     * @param quantity The quantity of the good to be stored in the cargo bay
+     * @return Whether or not there was room to add that quantity of the good
      */
-    public void addTradeGood(TradeGood good) {
-        System.out.println("LETS ADD THINGS");
+    public boolean addTradeGood(String goodName, int quantity) {
         boolean added = false;
-        if (canAddQuantity(good.getQuantity())) {
-            for (int i = 0; i < contents.size(); i++) {
-                if (contents.get(i).type == good.type) {
-                    contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() + good.getQuantity()));
-                    currentSize += good.getQuantity();
-                    System.out.println(currentSize);
-                    added = true;
-                }
-            }
-            if (!added) {
-                contents.add(good);
-                currentSize += good.getQuantity();
-                System.out.println(currentSize);
-            }
+        if (canAddQuantity(quantity)) {
+            added = true;
+            currentSize += quantity;
+            int oldNum = goods.get(goodName);
+            goods.replace(goodName, oldNum + quantity);
         }
+        return added;
     }
 
-    // If that kind of good exists in the hold, remove X of them, where X is as many goods as possible up to specified quantity
     /**
-     * 
-     * @param good
-     * @return 
+     * Returns whether the cargo bay can remove a given quantity
+     * @param quantity The quantity to be potentially removed
+     * @return Whether or not the cargo bay can afford to lose this new quantity
      */
-    public TradeGood removeTradeGood(TradeGood good) {
-        TradeGood removedGood = null;
-        for (int i = 0; i < contents.size(); i++) {
-            if (contents.get(i).type == good.type) {
-                if (contents.get(i).getQuantity() > good.getQuantity()) {
-                    removedGood = good;
-                    contents.set(i, new TradeGood(contents.get(i).type, contents.get(i).getQuantity() - good.getQuantity()));   
-                } else if (contents.get(i).getQuantity() == good.getQuantity()) {
-                    removedGood = contents.get(i);
-                    contents.remove(i);
-                    i--;
-                } else {
-                    System.out.println("Not enough, but here is what you have");
-                    removedGood = contents.get(i);
-                    contents.remove(i);
-                    i--;
-                }
-            }
-        }
-        if (removedGood != null) {
-            currentSize -= removedGood.getQuantity();
-            System.out.println(currentSize);
-        }
-        return removedGood;
+    private boolean canRemoveQuantity(int quantity) {
+        return (currentSize - quantity) >= 0;
     }
 
-    public ArrayList<TradeGood> getContents() {
-        return contents;
+    /**
+     * Remove X of them, where X is as many goods as possible up to specified quantity
+     * @param goodName The good to be removed from the cargo bay
+     * @param quantity The quantity to be removed from the cargo bay
+     * @return Whether or not it was able to removed that quantity of the good
+     */
+    public boolean removeTradeGood(String goodName, int quantity) {
+        boolean removed = false;
+        if (canRemoveQuantity(quantity)) {
+            removed = true;
+            currentSize -= quantity;
+            int oldNum = goods.get(goodName);
+            goods.replace(goodName, oldNum - quantity);
+        }
+        return removed;
+    }
+
+    public HashMap<String, Integer> getGoods() {
+        return goods;
     }
 
     public int getCapacity() {
@@ -100,11 +95,22 @@ public class CargoBay {
         return currentSize;
     }
 
+    /**
+     * Only to be used as a convenience when player upgrades their cargo bay
+     * @param capacity The new capacity of the cargo bay
+     */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("Contents: \n");
-        for (TradeGood content: contents) {
-            str.append(content.toString()).append("\n");
+        StringBuilder str = new StringBuilder("Cargo bay contents: \n");
+        for (String goodName: goods.keySet()) {
+            str.append(goodName);
+            str.append(": ");
+            str.append(goods.get(goodName));
+            str.append("\n");
         }
         return str.toString();
     }

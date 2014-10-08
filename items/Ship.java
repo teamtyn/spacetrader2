@@ -13,7 +13,7 @@ public class Ship {
     private Gadget[] gadgets;
     private Shield[] shields;
     private Weapon[] weapons;
-    private CargoBay[] cargoBays;
+    private CargoBay cargoBay;
     private EscapePod escapePod;
     private Insurance insurance;
     private int hull;
@@ -62,9 +62,7 @@ public class Ship {
         gadgets = new Gadget[type.gadgetSlots];
         shields = new Shield[type.shieldSlots];
         weapons = new Weapon[type.weaponSlots];
-        cargoBays = new CargoBay[type.cargoBaySlots];
-        // One cargo bay, will worry about more bays later
-        cargoBays[0] = new CargoBay(10);
+        cargoBay = new CargoBay(10);
         hull = type.hullStrength;
         fuel = type.fuelCapacity;
         this.escapePod = escapePod;
@@ -103,16 +101,6 @@ public class Ship {
         }
         return success;
     }
-    public boolean addCargoBay(CargoBay newCargoBay) {
-        boolean success = false;
-        for (CargoBay cargoBay: cargoBays) {
-            if (cargoBay == null && !success) {
-                cargoBay = newCargoBay;
-                success = true;
-            }
-        }
-        return success;
-    }
     public void addEscapePod(EscapePod escapePod) {
         this.escapePod = escapePod;
     }
@@ -121,12 +109,12 @@ public class Ship {
     }
     public double addFuel(double newFuel) {
         fuel += newFuel;
-        if(fuel > type.fuelCapacity) {
+        if (fuel > type.fuelCapacity) {
             fuel = type.fuelCapacity;
         }
         return fuel;
     }
- 
+
     //Remove things from ship
 
     public Gadget removeGadget(int position) {
@@ -153,14 +141,6 @@ public class Ship {
         }
         return removed;
     }   
-    public CargoBay removeCargoBay(int position) {
-        CargoBay removed = null;
-        if(position < cargoBays.length){
-            removed = cargoBays[position];
-            cargoBays[position] = null;
-        }
-        return removed;
-    }
     public EscapePod removeEscapePod() {
         EscapePod removed = escapePod;
         escapePod = null;
@@ -171,7 +151,7 @@ public class Ship {
         insurance = null;
         return removed;
     }
-    
+
     // Getters
 
     public Gadget[] getGadgets() {
@@ -183,8 +163,8 @@ public class Ship {
     public Weapon[] getWeapons() {
         return weapons;
     }
-    public CargoBay[] getCargoBays() {
-        return cargoBays;
+    public CargoBay getCargoBay() {
+        return cargoBay;
     }
     public EscapePod getEscapePod() {
         return escapePod;
@@ -235,44 +215,25 @@ public class Ship {
         return hull;
     }
 
-    // Only using one cargoBay for now
-    // TODO: More than one cargobay
-    public boolean canStoreTradeGood(int quantity) {
-        return cargoBays[0].canAddQuantity(quantity);
+    public boolean storeTradeGood(String goodName, int quantity) {
+        return cargoBay.addTradeGood(goodName, quantity);
     }
 
-    // RYAN: This is double checking that the size can fit it, but taking it out breaks it???
-    // Only using one cargoBay for now
-    // TODO: More than one cargobay
-    public void storeTradeGood(TradeGood good) {
-        if (canStoreTradeGood(good.getQuantity())) {
-            cargoBays[0].addTradeGood(good);
-        }
+    public boolean removeTradeGood(String goodName, int quantity) {
+        return cargoBay.removeTradeGood(goodName, quantity);
     }
 
-    // Only using one cargoBay for now
-    // TODO: More than one cargobay
-    public TradeGood removeTradeGood(TradeGood good) {
-        return cargoBays[0].removeTradeGood(good);
+    // Return the unused space of the cargo bay
+    public int getExtraSpace() {
+        return cargoBay.getCapacity() - cargoBay.getCurrentSize();
     }
-    
-    // Add up and return all the stuff in all the cargo holds
+
+    // EVERYTHING THAT IS WRONG WITH THE WORLD
     public ArrayList<TradeGood> getCargo() {
         ArrayList<TradeGood> cargo = new ArrayList<>();
-        for (CargoBay cargobay : cargoBays) {
-            cargo.addAll(cargobay.getContents());
+        for (String goodName: cargoBay.getGoods().keySet()) {
+            cargo.add(new TradeGood(TradeGood.fromNameToType(goodName), cargoBay.getGoods().get(goodName)));
         }
         return cargo;
-    }
-
-    // Return the unused space of one cargo bay
-    // TODO: More than one cargobay
-    public int getExtraSpace() {
-        //return cargoBays[0].getCapacity() - cargoBays[0].getCurrentSize();
-//        int totalGoods = 0;
-//        for (TradeGood tg: cargoBays[0].getContents()) {
-//            totalGoods += tg.getQuantity();
-//        }
-        return cargoBays[0].getCapacity() - cargoBays[0].getCurrentSize();
     }
 }

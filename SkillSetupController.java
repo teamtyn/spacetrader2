@@ -141,6 +141,9 @@ public class SkillSetupController implements Initializable, ControlledScreen {
         len = labelArray.length;
         setUp();
     }
+    
+    @Override
+    public void lazyInitialize() {}
 
     // Synchronizes Player's skills with the GUI for skill selection
     private void updatePlayerSkills() {
@@ -256,6 +259,7 @@ public class SkillSetupController implements Initializable, ControlledScreen {
             closingMessage = closingMessage + skill.getType() + " - " + skill.getValue() + "\n";
         }
         System.out.println(closingMessage);
+        GameModel.setPlayer(player);
         parentController.setScreen("StarMap");
     }
     @FXML
