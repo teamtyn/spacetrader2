@@ -19,7 +19,6 @@ public class SpaceTrader extends Application {
         mainContainer.loadScreen("SkillSetup", "SkillSetup.fxml");
         mainContainer.loadScreen("StarMap", "StarMap.fxml");
         mainContainer.loadScreen("Market", "Market.fxml");
-        mainContainer.loadScreen("Engine", "Engine.fxml");
         mainContainer.setScreen("Menu");
 
         Group root = new Group();
