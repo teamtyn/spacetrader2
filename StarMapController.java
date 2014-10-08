@@ -271,6 +271,9 @@ public class StarMapController implements ControlledScreen {
             MarketSetup market = new MarketSetup(planet);
             // MarketController.setMarket(market);
             // SpaceTrader.marketSetup = market;
+            if (ScreensController.isInitialized("Market")) {
+                ((MarketController) ScreensController.getController("Market")).display();
+            }
             System.out.println(MarketController.market);
             parentController.setScreen("Market");
             System.out.println(market.toString());

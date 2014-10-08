@@ -2,6 +2,7 @@ package spacetrader.star_system;
 
 import java.util.Random;
 import javafx.scene.paint.Color;
+import spacetrader.market.MarketSetup;
 
 /**
  * Planet is defined by its government, resource level, circumstance, and tech level
@@ -13,6 +14,7 @@ public class Planet {
     private final String name;
     private final int orbitDistance;
     private Government government;
+
     public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIEVAL, RENAISSANCE, 
                            EARLYINDUSTRIAL, INDUSTRIAL, 
@@ -28,6 +30,7 @@ public class Planet {
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
     private Random random = new Random();
+    private MarketSetup market;
     private final Color color;
     private final int size;
     public boolean hasPlayer;
@@ -42,8 +45,13 @@ public class Planet {
         government = new Government();
         name = PlanetNames.getName(government);
         hasPlayer = false;
+        market = new MarketSetup(this);
     }
 
+    public MarketSetup getMarketSetup() {
+        return market;
+    }
+    
     public Color getColor() {
         return color;
     }

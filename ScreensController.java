@@ -61,15 +61,12 @@ import javafx.util.Duration;
 public class ScreensController extends StackPane {
 
     // Holds the screens to be displayed
-    private final HashMap<String, Node> screens;
-    private final HashMap<String, ControlledScreen> controllers;
-    private final HashMap<String, Boolean> initialized;
+    private static final HashMap<String, Node> screens = new HashMap<>();
+    private static final HashMap<String, ControlledScreen> controllers = new HashMap<>();
+    private static final HashMap<String, Boolean> initialized = new HashMap<>();
 
     public ScreensController() {
         super();
-        screens = new HashMap<>();
-        controllers = new HashMap<>();
-        initialized = new HashMap<>();
     }
 
     // Adds the screen to the collection
@@ -79,8 +76,17 @@ public class ScreensController extends StackPane {
     }
 
     // Returns the Node with the appropriate name
-    public Node getScreen(String name) {
+    public static Node getScreen(String name) {
         return screens.get(name);
+    }
+    
+    public static boolean isInitialized(String name) {
+        return initialized.get(name) != null;
+    }
+
+    // Returns the Node with the appropriate name
+    public static ControlledScreen getController(String name) {
+        return controllers.get(name);
     }
 
     /**

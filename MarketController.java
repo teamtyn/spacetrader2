@@ -55,16 +55,6 @@ public class MarketController implements Initializable, ControlledScreen {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        market = new MarketSetup(new Planet());
-        /*
-        player = new Player();
-        player.getShip().storeTradeGood("Furs", 3);
-        player.getShip().storeTradeGood("Water", 3);
-        player.getShip().storeTradeGood("Firearms", 3);
-        player.getShip().storeTradeGood("Narcotics", 3);        
-        updatePlayerInfo();
-        setUpGoodsLists();
-        */
         ft = new FadeTransition(Duration.millis(1000), statusLabel);
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -81,8 +71,7 @@ public class MarketController implements Initializable, ControlledScreen {
         player.getShip().storeTradeGood("Firearms", 3);
         player.getShip().storeTradeGood("Narcotics", 3); 
         // DELETE TO HERE
-        updatePlayerInfo();
-        setUpGoodsLists();
+        display();
     }
 
     /**
@@ -99,8 +88,13 @@ public class MarketController implements Initializable, ControlledScreen {
      * trade goods lists.
      */
     public void display() {
+        setMarketSetup();
         setUpGoodsLists();
         updatePlayerInfo();
+    }
+    
+    public static void setMarketSetup() {
+        MarketController.market = GameModel.getPlayer().getPlanet().getMarketSetup();
     }
 
     /**
