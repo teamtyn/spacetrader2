@@ -29,12 +29,12 @@ public class Player {
         this.money = money;
     }
     
-    // Subtract specefied amount of money
+    // Subtract specified amount of money
     public void subtractMoney(int money) {
         this.money -= money;
     }
     
-    // Add specefied amount of money
+    // Add specified amount of money
     public void addMoney(int money) {
         this.money += money;
     }

@@ -38,8 +38,7 @@ public class CargoBay {
      * @return The number of goods successfully added
      */
     public int addTradeGood(String goodName, int quantity) {
-        boolean added = false;
-        if(quantity + currentSize > capacity){
+        if ((quantity + currentSize) > capacity) {
             quantity = capacity - currentSize;
             System.out.println("Too many, reduced to " + quantity + " units");
         }

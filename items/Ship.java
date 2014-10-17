@@ -38,16 +38,16 @@ public class Ship {
         Wasp        (500, 300,  2, 2, 4, 35, 20,   5000, Color.ALICEBLUE);
 
         private int hullStrength;
-        private double fuelCapacity;
+        private final double fuelCapacity;
         private int gadgetSlots;
         private int shieldSlots;
         private int weaponSlots;
         private int cargoBaySlots;
-        private double fuelEfficiency;
-        private int cost;
-        private Color color;
+        private final double fuelEfficiency;
+        private final int cost;
+        private final Color color;
 
-        ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, int cost, Color color){
+        ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, int cost, Color color) {
             this.hullStrength = hullStrength;
             this.fuelCapacity = fuelCapacity;
             this.gadgetSlots = gadgetSlots;
@@ -58,15 +58,15 @@ public class Ship {
             this.cost = cost;
             this.color = color;
         }
-        public Color getColor(){
+        public Color getColor() {
             return color;
         }
-        public int getCost(){
+        public int getCost() {
             return cost;
         }
     };
 
-    public Ship(ShipType type, EscapePod escapePod, Insurance insurance){
+    public Ship(ShipType type, EscapePod escapePod, Insurance insurance) {
         this.type = type;
         gadgets = new Gadget[type.gadgetSlots];
         shields = new Shield[type.shieldSlots];
@@ -128,7 +128,7 @@ public class Ship {
 
     public Gadget removeGadget(int position) {
         Gadget removed = null;
-        if(position < gadgets.length){
+        if (position < gadgets.length) {
             removed = gadgets[position];
             gadgets[position] = null;
         }
@@ -136,7 +136,7 @@ public class Ship {
     }   
     public Shield removeShield(int position) {
         Shield removed = null;
-        if(position < shields.length){
+        if (position < shields.length) {
             removed = shields[position];
             shields[position] = null;
         }
@@ -144,7 +144,7 @@ public class Ship {
     }   
     public Weapon removeWeapon(int position) {
         Weapon removed = null;
-        if(position < weapons.length){
+        if (position < weapons.length) {
             removed = weapons[position];
             weapons[position] = null;
         }
@@ -199,13 +199,13 @@ public class Ship {
     public double getFuel() {
         return fuel;
     }
-    public double getFuelCapacity(){
+    public double getFuelCapacity() {
         return type.fuelCapacity;
     }
-    public double getFuelEfficiency(){
+    public double getFuelEfficiency() {
         return type.fuelEfficiency;
     }
-    public double getMissingFuel(){
+    public double getMissingFuel() {
         return type.fuelCapacity - fuel;
     }
     public int getRange() {
