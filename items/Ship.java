@@ -9,7 +9,7 @@ import spacetrader.market.TradeGood;
  * @author David Purcell
  */
 public class Ship {
-    private ShipType type;
+    public ShipType type;
     private Gadget[] gadgets;
     private Shield[] shields;
     private Weapon[] weapons;
@@ -25,16 +25,16 @@ public class Ship {
      */
     public enum ShipType {
         // TODO: Make numbers more better?
-        Flea (100, 4, 4, 4, 4, 1, 4, Color.BLUE), 
-        Gnat (100, 100, 4, 4, 4, 1, 10, Color.RED), 
-        Firefly (100, 4, 4, 4, 4, 1, 4, Color.GREEN), 
-        Mosquito (100, 4, 4, 4, 4, 1, 4, Color.ORANGE), 
-        Bumblebee (100, 4, 4, 4, 4, 1, 4, Color.YELLOW),
-        Beetle (100, 4, 4, 4, 4, 1, 4, Color.PURPLE), 
-        Hornet (100, 4, 4, 4, 4, 1, 4, Color.BROWN), 
-        Grasshopper (100, 4, 4, 4, 4, 1, 4, Color.GREY), 
-        Termite (100, 4, 4, 4, 4, 1, 4, Color.WHITE), 
-        Wasp (100, 4, 4, 4, 4, 1, 4, Color.ALICEBLUE);
+        Flea (100, 4, 4, 4, 4, 1, 4, 100, Color.BLUE), 
+        Gnat (100, 100, 4, 4, 4, 1, 10, 200, Color.RED), 
+        Firefly (100, 4, 4, 4, 4, 1, 4, 300, Color.GREEN), 
+        Mosquito (100, 4, 4, 4, 4, 1, 4, 400, Color.ORANGE), 
+        Bumblebee (100, 4, 4, 4, 4, 1, 4, 500, Color.YELLOW),
+        Beetle (100, 4, 4, 4, 4, 1, 4, 600, Color.PURPLE),
+        Hornet (100, 4, 4, 4, 4, 1, 4, 700, Color.BROWN), 
+        Grasshopper (100, 4, 4, 4, 4, 1, 4, 800, Color.GREY), 
+        Termite (100, 4, 4, 4, 4, 1, 4, 900, Color.WHITE), 
+        Wasp (100, 4, 4, 4, 4, 1, 4, 100, Color.ALICEBLUE);
 
         private int hullStrength;
         private double fuelCapacity;
@@ -43,9 +43,10 @@ public class Ship {
         private int weaponSlots;
         private int cargoBaySlots;
         private double fuelEfficiency;
+        private int cost;
         private Color color;
 
-        ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, Color color){
+        ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, int cost, Color color){
             this.hullStrength = hullStrength;
             this.fuelCapacity = fuelCapacity;
             this.gadgetSlots = gadgetSlots;
@@ -53,7 +54,14 @@ public class Ship {
             this.weaponSlots = weaponSlots;
             this.cargoBaySlots = cargoBaySlots;
             this.fuelEfficiency = fuelEfficiency;
+            this.cost = cost;
             this.color = color;
+        }
+        public Color getColor(){
+            return color;
+        }
+        public int getCost(){
+            return cost;
         }
     };
 
@@ -157,14 +165,27 @@ public class Ship {
     public Gadget[] getGadgets() {
         return gadgets;
     }
+    public int getGadgetSlots() {
+        return gadgets.length;
+    }
     public Shield[] getShields() {
         return shields;
+    }
+    public int getShieldSlots() {
+        return shields.length;
     }
     public Weapon[] getWeapons() {
         return weapons;
     }
+    public int getWeaponSlots() {
+        return weapons.length;
+    }
     public CargoBay getCargoBay() {
         return cargoBay;
+    }
+    //TODO: More than one CargoBay
+    public int getCargoBaySlots() {
+        return 1;
     }
     public EscapePod getEscapePod() {
         return escapePod;
@@ -177,6 +198,15 @@ public class Ship {
     }
     public double getFuel() {
         return fuel;
+    }
+    public double getFuelCapacity(){
+        return type.fuelCapacity;
+    }
+    public double getFuelEfficiency(){
+        return type.fuelEfficiency;
+    }
+    public double getMissingFuel(){
+        return type.fuelCapacity - fuel;
     }
     public int getRange() {
         return (int)(fuel * type.fuelEfficiency);
@@ -235,5 +265,9 @@ public class Ship {
             cargo.add(new TradeGood(TradeGood.fromNameToType(goodName), cargoBay.getGoods().get(goodName)));
         }
         return cargo;
+    }
+    
+    public void emptyFuel(){
+        fuel = 0;
     }
 }

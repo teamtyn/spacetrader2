@@ -4,7 +4,7 @@ package spacetrader.items;
  *
  * @author David Purcell
  */
-class Gadget {
+public class Gadget {
     public Gadget(){
         
     }

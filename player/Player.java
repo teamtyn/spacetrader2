@@ -28,6 +28,11 @@ public class Player {
     public void setMoney(int money) {
         this.money = money;
     }
+    
+    // Subtract specefied amount of money
+    public void subtractMoney(int money) {
+        this.money -= money;
+    }
 
     // Setter for name
     public void setName(String newName) {

@@ -4,7 +4,7 @@ package spacetrader.items;
  *
  * @author David Purcell
  */
-class Weapon {
+public class Weapon {
     public Weapon(){
         
     }

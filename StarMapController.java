@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import spacetrader.market.MarketSetup;
 import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
+import spacetrader.star_system.Planet.TechLevel;
 import spacetrader.star_system.StarSystem;
 import spacetrader.star_system.StarSystemNames;
 
@@ -65,7 +66,11 @@ public class StarMapController implements ControlledScreen {
      */
     public void viewUniverse() {
         systemPane.getChildren().removeAll(systemPane.getChildren());
-
+        
+        // Update player ship display
+        fuelLabel.setText("" + Math.round(player.getShip().getFuel()));
+        rangeLabel.setText("" + player.getShip().getRange());
+        
         // If the player doesn't have a system or planet, just draw them somewhere
         // TODO: Randomize start location or pick a noob spot
         if (player.getSystem() == null && player.getPlanet() == null) {
@@ -255,15 +260,16 @@ public class StarMapController implements ControlledScreen {
 
         // Button to instantiate a monarchy government
         // TODO: Remove later, replace with better buttons
-        Button monarch = new Button("Take control");
-        monarch.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            planet.becomeMonarchy(player.getName());
-            planetText.setText(planet.toString());
+        Button spaceStation = new Button("NOT A MOON");
+        spaceStation.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
+            parentController.setScreen("SpaceStation");
         });
-        monarch.setLayoutX(100);
-        monarch.setLayoutY(260);
-        monarch.setDisable(!planet.hasPlayer);
-        systemPane.getChildren().add(monarch);
+        spaceStation.setLayoutX(100);
+        spaceStation.setLayoutY(260);
+        spaceStation.setDisable(!planet.hasPlayer);
+        if(planet.getTechLevel() == TechLevel.HIGHTECH){
+            systemPane.getChildren().add(spaceStation);   
+        }
 
         // Button to go to the market
         Button marketButton = new Button("BUY THINGS");
@@ -292,7 +298,7 @@ public class StarMapController implements ControlledScreen {
      */
     public void drawPlayer(double x, double y) {
         playerRectangle = new Rectangle(x, y, 5, 5);
-        playerRectangle.setFill(Color.AQUA);
+        playerRectangle.setFill(player.getShip().type.getColor());
         playerText = new Text(x - 30, y - 10, player.getName());
         playerText.setFont(Font.font("Verdana", 20));
         playerText.setFill(Color.WHITE);
@@ -326,7 +332,6 @@ public class StarMapController implements ControlledScreen {
      * @param system The system to be traveled to
      */
     public void travelToSystem(StarSystem system) {
-
         // Only travel if you can
         if (player.getShip().travelDistance(getDistanceToSystem(system))) {
 
