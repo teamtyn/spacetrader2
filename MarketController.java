@@ -31,11 +31,10 @@ public class MarketController implements Initializable, ControlledScreen {
     @FXML private VBox buyGoodsVBox;
     @FXML private AnchorPane chartPane;
     @FXML private VBox sellGoodsVBox;
-    @FXML private Label sellLabel;
-    @FXML private Label buyLabel;
-    @FXML private Label playerInfo;
+    @FXML private Label cargoLabel;
+    @FXML private Label moneyLabel;
     @FXML private Label dialogueField;
-    @FXML private Button backButton;
+    @FXML private Label priceField;
 
     private ScreensController parentController;
     public static MarketSetup market;
@@ -66,11 +65,11 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Simply updates the text displayed on our playerInfo label (cargoSpace and money)
+     * Updates cargoSpace and money labels on bottom dock
      */
     public void updatePlayerInfo() {
-        playerInfo.setText("Cargo Space Remaining: " + player.getShip().getExtraSpace() + "\nMoney Remaining: " + 
-                player.getMoney() + " bitcoins");
+        cargoLabel.setText(Integer.toString(player.getShip().getExtraSpace()));
+        moneyLabel.setText(Integer.toString(player.getMoney()));
     }
 
     /**
@@ -78,12 +77,12 @@ public class MarketController implements Initializable, ControlledScreen {
      *   trade goods lists
      */
     public void display() {
-        setMarketSetup();
+        setMarket();
         setUpGoodsLists();
         updatePlayerInfo();
     }
     
-    public static void setMarketSetup() {
+    public static void setMarket() {
         MarketController.market = GameModel.getPlayer().getPlanet().getMarket();
     }
 
@@ -148,29 +147,6 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Updates the status pane, which gives the player feedback from his
-     * attempted purchases or sales.
-     * @param status
-     */
-    public void statusPanelMessage(String status) {
-        dialogueField.setText(status);
-        // Using a fade transition
-        if (ft != null) {
-            ft.play();
-        }
-    }
-
-    /**
-     * Updates the labels displaying buy price and sell price.
-     * @param name
-     * @param price
-     */
-    public void updateLabels(String name, int price) {
-        sellLabel.setText(name + " will sell for " + price + " bitcoins per unit.");
-        buyLabel.setText("You can purchase " + name + " for " + price + " bitcoins per unit.");
-    }
-
-    /**
      * For setting up and then updating the chart. Right now all values are
      * delightfully random except for the final value of the chart, which is
      * the true trade good price.
@@ -180,11 +156,9 @@ public class MarketController implements Initializable, ControlledScreen {
     public void chart(String name, int price) {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        AreaChart<Number,Number> ac = new AreaChart<>(xAxis,yAxis);
+        AreaChart<Number, Number> ac = new AreaChart<>(xAxis, yAxis);
         ac.setTitle(name + " prices over last 5 days");
-
         XYChart.Series series = new XYChart.Series();
-        series.setName(name);
         for (int i = 0; i < 4; i++) {
             series.getData().add(new XYChart.Data(i - 5, Math.random() * price * 3 + 1));
         }
@@ -192,8 +166,8 @@ public class MarketController implements Initializable, ControlledScreen {
         ac.getData().addAll(series);
         chartPane.getChildren().clear();
         chartPane.getChildren().add(ac);
-        ac.setMaxHeight(300);
-        ac.setMaxWidth(300);
+        ac.setPrefHeight(300);
+        ac.setPrefWidth(300);
         ac.setId("chart");
     }
 
@@ -211,10 +185,16 @@ public class MarketController implements Initializable, ControlledScreen {
                 player.setMoney(player.getMoney() - good.getPrice() * amount);
                 market.decreaseQuantity(good, amount);
             } else {
-                statusPanelMessage("Hey-oh! You're out of cargo space.");
+                dialogueField.setText("You're out of cargo space!");
+                if (ft != null) {
+                    ft.play();
+                }
             }
         } else {
-            statusPanelMessage("Ohohoho! You don't have enough money!");
+            dialogueField.setText("You don't have enough money!");
+            if (ft != null) {
+                ft.play();
+            }
         }
         display();
     }
@@ -286,7 +266,7 @@ public class MarketController implements Initializable, ControlledScreen {
             this.setId("goods-row");
             this.setOnMouseEntered((MouseEvent event) -> {
                 chart(good.type.name, good.getPrice());
-                updateLabels(good.type.name, good.getPrice());
+                priceField.setText(good.type.name + " costs " + good.getPrice() + " per unit.");
             });
             this.setAlignment(Pos.CENTER_RIGHT);
             this.setSpacing(30);
