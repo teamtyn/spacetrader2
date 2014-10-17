@@ -1,4 +1,5 @@
 package spacetrader;
+
 import spacetrader.player.*;
 
 import java.net.URL;
@@ -7,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.HashMap;
@@ -21,89 +21,34 @@ import javafx.scene.Node;
  * @version 1.0
  */
 public class SkillSetupController implements Initializable, ControlledScreen {
-    @FXML
-    private Button minus0;
-
-    @FXML
-    private Button minus1;
-
-    @FXML
-    private Button minus2;
-
-    @FXML
-    private Button minus3;
-
-    @FXML
-    private Button minus4;
-
-    @FXML
-    private Button plus0;
-
-    @FXML
-    private Button plus1;
-
-    @FXML
-    private Button plus2;
-
-    @FXML
-    private Button plus3;
-
-    @FXML
-    private Button plus4;
-
-    @FXML
-    private Label points0;
-
-    @FXML
-    private Label points1;
-
-    @FXML
-    private Label points2;
-
-    @FXML
-    private Label points3;
-
-    @FXML
-    private Label points4;
-
-    @FXML
-    private ProgressBar bar0;
-
-    @FXML
-    private ProgressBar bar1;
-
-    @FXML
-    private ProgressBar bar2;
-
-    @FXML
-    private ProgressBar bar3;
-
-    @FXML
-    private ProgressBar bar4;
-
-    @FXML
-    private Label skill0;
-
-    @FXML
-    private Label skill1;
-
-    @FXML
-    private Label skill2;
-
-    @FXML
-    private Label skill3;
-
-    @FXML
-    private Label skill4;
-
-    @FXML
-    private Label totalLabel;
-    
-    @FXML
-    private ProgressBar totalBar;
-
-    @FXML
-    private TextField nameField;
+    @FXML private Button minus0;
+    @FXML private Button minus1;
+    @FXML private Button minus2;
+    @FXML private Button minus3;
+    @FXML private Button minus4;
+    @FXML private Button plus0;
+    @FXML private Button plus1;
+    @FXML private Button plus2;
+    @FXML private Button plus3;
+    @FXML private Button plus4;
+    @FXML private Label points0;
+    @FXML private Label points1;
+    @FXML private Label points2;
+    @FXML private Label points3;
+    @FXML private Label points4;
+    @FXML private ProgressBar bar0;
+    @FXML private ProgressBar bar1;
+    @FXML private ProgressBar bar2;
+    @FXML private ProgressBar bar3;
+    @FXML private ProgressBar bar4;
+    @FXML private Label skill0;
+    @FXML private Label skill1;
+    @FXML private Label skill2;
+    @FXML private Label skill3;
+    @FXML private Label skill4;
+    @FXML private Label totalLabel;
+    @FXML private ProgressBar totalBar;
+    @FXML private TextField nameField;
 
     private final Map<String, Integer> plusButtonMap = new HashMap<>(5);
     private final Map<String, Integer> minusButtonMap = new HashMap<>(5);  
@@ -159,7 +104,6 @@ public class SkillSetupController implements Initializable, ControlledScreen {
 
     // Initializes the players' skills and the GUI arrays
     private void setUp() {
-        // should probably be moved eventually
         player.setSkillList(createSkillList());
         setUpControls();
     }

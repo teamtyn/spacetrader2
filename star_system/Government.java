@@ -1,7 +1,7 @@
 package spacetrader.star_system;
 
 import java.util.HashMap;
-import java.util.Random;
+import spacetrader.GameModel;
 
 /**
  * Government is defined by its type, leader, and level of anger
@@ -15,10 +15,10 @@ public class Government {
     private Type type;
     private String leader;
     private int anger;
-    private Random random = new Random();
 
     public Government() {
-        type = Type.values()[random.nextInt(Type.values().length)];
+        type = Type.values()[GameModel.getRandom().nextInt(Type.values().length)];
+        leaders = new HashMap<>();
         //setUpLeaderMap();
         //leader = leaders.get(type);
         leader = "THE PEOPLE";

@@ -3,7 +3,7 @@ package spacetrader.market;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import spacetrader.GameModel;
 import spacetrader.star_system.Government;
 import spacetrader.star_system.Planet;
 
@@ -101,7 +101,6 @@ public class TradeGood {
         public int mtl;
         public int mhl;
         public String name;
-        private final Random rando = new Random();
 
         GoodType(int mtlp, int mtlu, int ttp, int basePrice, int baseQuantity, int ipl, int var, int ie, int cr, int er, int mtl, int mhl, String name) {
             this.mtlp = mtlp;
@@ -110,7 +109,7 @@ public class TradeGood {
             this.basePrice = basePrice;
             this.baseQuantity = baseQuantity;
             this.ipl = ipl;
-            this.var = 1 + (((rando.nextInt((2 * var) + 1)) - var) / 100);
+            this.var = 1 + (((GameModel.getRandom().nextInt((2 * var) + 1)) - var) / 100);
             this.ie = ie;
             this.cr = cr;
             this.er = er;

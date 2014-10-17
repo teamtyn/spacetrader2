@@ -256,14 +256,14 @@ public class StarMapController implements ControlledScreen {
         systemPane.getChildren().add(planetText);
 
         // Space station for player to buy things for their ship
-        Rectangle spaceStation = new Rectangle(50,50);
+        Rectangle spaceStation = new Rectangle(50, 50);
         spaceStation.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
             if (planet == player.getPlanet()) {
                 parentController.setScreen("SpaceStation");
             }
         });
         spaceStation.setFill(Color.GREY);
-        spaceStation.setLayoutX(100);
+        spaceStation.setLayoutX(400);
         spaceStation.setLayoutY(260);
         if (planet.getTechLevel() == TechLevel.HIGHTECH) {
             systemPane.getChildren().add(spaceStation);   

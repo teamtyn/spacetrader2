@@ -1,7 +1,7 @@
 package spacetrader.star_system;
 
-import java.util.Random;
 import javafx.scene.paint.Color;
+import spacetrader.GameModel;
 import spacetrader.market.MarketSetup;
 
 /**
@@ -27,19 +27,18 @@ public class Planet {
     private final Circumstance circumstance;
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
-    private final Random random = new Random();
     private final MarketSetup market;
     private final Color color;
     private final int size;
     public boolean hasPlayer;
 
     public Planet() {
-        resourceLevel = ResourceLevel.values()[random.nextInt(ResourceLevel.values().length)];
-        techLevel = TechLevel.values()[random.nextInt(TechLevel.values().length)];
+        resourceLevel = ResourceLevel.values()[GameModel.getRandom().nextInt(ResourceLevel.values().length)];
+        techLevel = TechLevel.values()[GameModel.getRandom().nextInt(TechLevel.values().length)];
         circumstance = new Circumstance();
-        size = random.nextInt(5) + 1;
-        color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // TODO: Josh make fancier
-        orbitDistance = random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
+        size = GameModel.getRandom().nextInt(5) + 1;
+        color = Color.rgb(GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256)); // TODO: Josh make fancier
+        orbitDistance = GameModel.getRandom().nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
         government = new Government();
         name = PlanetNames.getName(government);
         hasPlayer = false;

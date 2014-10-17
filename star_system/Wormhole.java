@@ -5,9 +5,9 @@ package spacetrader.star_system;
  * @author David Purcell
  */
 public class Wormhole {
-    private StarSystem system1;
-    private StarSystem system2;
-    
+    private final StarSystem system1;
+    private final StarSystem system2;
+
     public Wormhole(StarSystem system1, StarSystem system2) {
         this.system1 = system1;
         this.system2 = system2;

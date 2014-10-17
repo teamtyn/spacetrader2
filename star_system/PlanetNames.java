@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Random;
+import spacetrader.GameModel;
 
 /**
  * Generates planet names based on their original government.
@@ -15,10 +15,9 @@ public class PlanetNames {
         new EnumMap<>(Government.Type.class);
 
     static {
-        Random random = new Random();
         List<String> anarchicNames = new ArrayList<>();
         for (int count = 0; count < 200; count++) {
-            int nameInt = random.nextInt(308915776); // 26 ** 6
+            int nameInt = GameModel.getRandom().nextInt(308915776); // 26 ** 6
             char[] nameChars = Integer.toString(nameInt, 26).toCharArray();
             for (int i = 0; i < nameChars.length; i++) {
                 if (nameChars[i] <= '9') {
@@ -30,7 +29,7 @@ public class PlanetNames {
             anarchicNames.add(new String(nameChars));
         }
         nameLists.put(Government.Type.ANARCHY, anarchicNames);
-        
+
         List<String> capitalistCorporateNames = new ArrayList<>();
         capitalistCorporateNames.add("Abbott");
         capitalistCorporateNames.add("Actavis");
@@ -72,18 +71,16 @@ public class PlanetNames {
         capitalistCorporateNames.add("Waters");
         capitalistCorporateNames.add("Zimmer");
         capitalistCorporateNames.add("Zoetis");
-        Collections.shuffle(capitalistCorporateNames, random);
+        Collections.shuffle(capitalistCorporateNames, GameModel.getRandom());
         nameLists.put(Government.Type.CAPITALIST, capitalistCorporateNames);
         nameLists.put(Government.Type.CORPORATE, capitalistCorporateNames);
     }
 
     public static String getName(Government government) {
-        Random random = new Random();
         Government.Type governmentType = government.getType();
         while (nameLists.get(governmentType) == null || nameLists.get(governmentType).isEmpty()) {
-            governmentType = Government.Type.values()[random.nextInt(Government.Type.values().length)];
+            governmentType = Government.Type.values()[GameModel.getRandom().nextInt(Government.Type.values().length)];
         }
-        
         return nameLists.get(governmentType).remove(0);
     }
 }

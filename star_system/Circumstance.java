@@ -1,6 +1,6 @@
 package spacetrader.star_system;
 
-import java.util.Random;
+import spacetrader.GameModel;
 
 /**
  * Circumstance has one of a couple predefined types
@@ -8,7 +8,6 @@ import java.util.Random;
  * @author Ryan Burns
  */
 public class Circumstance {
-    private final Random random = new Random();
     private final Type type;
     private int curLevel;
     private final int maxLevel;
@@ -16,9 +15,9 @@ public class Circumstance {
     public enum Type {NONE, DROUGHT, COLD, CROPFAIL, WAR, BOREDOM, PLAGUE, LACKOFWORKERS};
 
     public Circumstance() {
-        type = Type.values()[random.nextInt(Type.values().length)];
+        type = Type.values()[GameModel.getRandom().nextInt(Type.values().length)];
         curLevel = 0;
-        maxLevel = random.nextInt(20) + 10;
+        maxLevel = GameModel.getRandom().nextInt(20) + 10;
         ascending = true;
     }
 

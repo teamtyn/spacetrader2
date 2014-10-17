@@ -10,10 +10,10 @@ import spacetrader.market.TradeGood;
  */
 public class Ship {
     public ShipType type;
-    private Gadget[] gadgets;
-    private Shield[] shields;
-    private Weapon[] weapons;
-    private CargoBay cargoBay;
+    private final Gadget[] gadgets;
+    private final Shield[] shields;
+    private final Weapon[] weapons;
+    private final CargoBay cargoBay;
     private EscapePod escapePod;
     private Insurance insurance;
     private int hull;

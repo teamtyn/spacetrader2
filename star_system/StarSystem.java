@@ -1,8 +1,8 @@
 package spacetrader.star_system;
 
-import java.util.Random;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import spacetrader.GameModel;
 
 /**
  * StarSystem contains an array of planets, and resides at some coordinates
@@ -14,18 +14,17 @@ public class StarSystem {
     private Planet[] planets;
     private final Color color;
     public boolean hasPlayer;
-    private Random random = new Random();
 
     public StarSystem(String name, Point2D coordinates) {
         this.name = name;
         this.coordinates = coordinates;
         hasPlayer = false;
-        planets = new Planet[random.nextInt(6) + 4];
+        planets = new Planet[GameModel.getRandom().nextInt(6) + 4];
         for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet();
         }
-        planets[random.nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
-        color = Color.rgb(random.nextInt(56) + 200, random.nextInt(106) + 150, random.nextInt(25)); // TODO: Josh make fancier
+        planets[GameModel.getRandom().nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
+        color = Color.rgb(GameModel.getRandom().nextInt(56) + 200, GameModel.getRandom().nextInt(106) + 150, GameModel.getRandom().nextInt(25));
     }
 
     public String getName() {
@@ -68,7 +67,7 @@ public class StarSystem {
             .append("\nStar System Coordinates:\n")
             .append(coordinates)
             .append("\nPlanets: \n");
-        for(Planet planet : planets) {
+        for (Planet planet: planets) {
             builder.append(planet).append("\n");
         }
         return builder.toString();

@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import spacetrader.market.MarketSetup;
-import spacetrader.star_system.Planet;
 
 /**
  * @author TYN

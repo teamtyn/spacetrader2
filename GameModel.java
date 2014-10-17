@@ -10,30 +10,34 @@ import spacetrader.star_system.StarSystem;
 import spacetrader.star_system.StarSystemNames;
 
 /**
- *
+ * Acts as the singleton for the game, notably holding the universal player
  */
 public class GameModel {
+    private static final Random random = new Random();
     private static Player player;
     private static final StarSystem[] systems = generateSystems();
 
     private GameModel() {
-        // cannot be instantiated outside of this class
+        // Cannot be instantiated outside of this class
     }
-    
+
     public static void setPlayer(Player player) {
         GameModel.player = player;
     }
-    
+
     public static Player getPlayer() {
         return player;
     }
-    
+
+    public static Random getRandom() {
+        return random;
+    }
+
     public static StarSystem[] getSystems() {
         return systems;
     }
-    
+
     private static StarSystem[] generateSystems() {
-        Random random = new Random();
         StarSystem[] generatedSystems = new StarSystem[random.nextInt(5) + 7];
         List<Point2D> positions = new ArrayList<>();
         for (int x = 100; x <= 860; x += 190) {
@@ -42,11 +46,9 @@ public class GameModel {
             }
         }
         Collections.shuffle(positions, random);
-        
         for (int i = 0; i < generatedSystems.length; i++) {
             generatedSystems[i] = new StarSystem(StarSystemNames.getName(), positions.remove(0));
         }
-        
         return generatedSystems;
     }
 }
