@@ -168,7 +168,6 @@ public class StarMapController implements ControlledScreen {
         for (Planet planet: system.getPlanets()) {
 
             // Draw circle for planet
-            // TODO: Make better? 3D?
             double planetX = star.getCenterX() + (5 * planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
             double planetY = star.getCenterY() + (5 * planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
             Circle planetCircle = new Circle(planetX, planetY, planet.getSize() * Math.sqrt(5), planet.getColor());
@@ -277,7 +276,6 @@ public class StarMapController implements ControlledScreen {
                 ((MarketController)ScreensController.getController("Market")).display();
             }
             parentController.setScreen("Market");
-            System.out.println(market.toString());
         });
         marketButton.setLayoutX(100);
         marketButton.setLayoutY(300);

@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import spacetrader.items.CargoBay;
 import spacetrader.market.TradeGood;
 import spacetrader.player.Player;
 
@@ -28,9 +29,9 @@ import spacetrader.player.Player;
  * @author Clayton Kucera
  */
 public class MarketController implements Initializable, ControlledScreen {
-    @FXML private VBox buyGoodsVBox;//?
+    @FXML private VBox buyGoodsVBox;
     @FXML private AnchorPane chartPane;
-    @FXML private VBox sellGoodsVBox;//?
+    @FXML private VBox sellGoodsVBox;
     @FXML private Label cargoLabel;
     @FXML private Label moneyLabel;
     @FXML private Label dialogueField;
@@ -39,10 +40,11 @@ public class MarketController implements Initializable, ControlledScreen {
     private ScreensController parentController;
     public static MarketSetup market;
     private FadeTransition ft;
-    private GoodsList buyList;//?
-    private GoodsList sellList;//?
+    private GoodsList buyList;
+    private GoodsList sellList;
     private Player player;
-
+    private ArrayList<TradeGood> goods;
+    private CargoBay cargoBay;
 
     @Override
     public void setScreenParent(ScreensController parentController) {
@@ -66,70 +68,26 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Display calls the methods for updating the player info and updating the
-     *   trade goods lists
+     * Initializes the market, goods, and cargoBay
+     * Maintains the cargo and money labels as well as the good lists
      */
     public void display() {
-        MarketController.market = GameModel.getPlayer().getPlanet().getMarket();
+        market = player.getPlanet().getMarket();
+        goods = market.getGoods();
+        cargoBay = player.getShip().getCargoBay();
         cargoLabel.setText(Integer.toString(player.getShip().getExtraSpace()));
         moneyLabel.setText(Integer.toString(player.getMoney()));
         setUpGoodsLists();
     }
 
     /**
-     * Clears the current lists of nodes
-     *   Sets the prices of the player's trade goods
-     *   Creates the GoodsLists that display our items
+     * Clears the current lists, and then populates the buy and sell tabs
      */
     public void setUpGoodsLists() {
-
-        // First clear the lists, because this method updates the lists as well
         buyGoodsVBox.getChildren().clear();
         sellGoodsVBox.getChildren().clear();
-            
-        // marketInventory is what the market is willing to sell, from getSellable method
-        ArrayList<TradeGood> marketInventory = market.getSellable();
-            
-        // marketDemand is what the market is willing to buy, from getBuyable method
-        ArrayList<TradeGood> marketDemand = market.getBuyable();
-        
-        // buyList displays what the player can buy
-        buyList = new GoodsList(buyGoodsVBox, marketInventory, true);
-
-        /*
-        The sellList displays what the player can sell. 
-            
-        But first we have to assign a price to each trade good in the player's cargo, and this price is
-        what the market is willing to pay. We do this with the addPricesToCargo method.
-        I'll probably change this later so that it doesn't directly modify the prices of
-        the player's cargo, since that could potentially cause problems later on.
-        */
-            //change the prices
-            ArrayList <TradeGood> pricedCargo = addPricesToCargo(marketDemand, player.getShip().getCargo());
-            //set up the sellList using the player's cargo
-            sellList = new GoodsList(sellGoodsVBox, pricedCargo, false);
-    }
-    
-    /**
-     * Updates the prices of each trade good in the playerList to match the price of
-     *   the trade good in marketList
-     * Note that the quantity is not currently considered
-     * Right now, if the price of the good is not updated,
-     *   then that means that the planet's market does not want that good
-     * If the price isn't updated it remains at 0
-     * @param marketList
-     * @param playerList
-     * @return 
-     */
-    public ArrayList<TradeGood> addPricesToCargo(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
-        for (TradeGood tgm: marketList) {
-            for (TradeGood tgp: playerList) {
-                if (tgm.type == tgp.type) {
-                    tgp.setPrice(tgm.getPrice());
-                }
-            }
-        }
-        return playerList;
+        buyList = new GoodsList(buyGoodsVBox, true);
+        sellList = new GoodsList(sellGoodsVBox, false);
     }
 
     @FXML
@@ -163,7 +121,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
     /**
      * Makes a purchase
-     * Subtracts the price of the good, stores it, removes it
+     * Subtracts the price of the good, stores it in the cargo bay, removes it
      *   from the market, then updates the display
      * If out of cargo space or money, a dialogue is shown on the bottom dock
      * @param good The good to be purchased
@@ -190,7 +148,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
     /**
      * Makes a sale
-     * Adds the price of the good, removes it from cargo bay, adds it
+     * Adds the price of the good, removes it from the cargo bay, adds it
      *   to the market, then updates the display
      * @param good The good to be sold
      */
@@ -233,16 +191,17 @@ public class MarketController implements Initializable, ControlledScreen {
      */
     private class GoodsRow extends HBox {
         public GoodsRow(TradeGood good, boolean isABuyRow, boolean isDisabled) {
-            // Add the labels for good's name and amount
             this.getChildren().add(new Label(good.type.name));
-            this.getChildren().add(new Label("x" + good.getQuantity()));
- 
+            Label quantityLabel;
             Button button;
             if (isABuyRow) {
+                quantityLabel = new Label("x" + good.getQuantity());
                 button = new BuyButton(good);
             } else {
+                quantityLabel = new Label("x" + cargoBay.getGoods().get(good.type.name));
                 button = new SellButton(good);
             }
+            this.getChildren().add(quantityLabel);
             if (isDisabled) {
                 button.setDisable(true);
             }
@@ -258,36 +217,38 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * 
+     * GoodsList is a VBox made up of HBox GoodsRow's
      */
     private class GoodsList {
-        private final ArrayList<TradeGood> tradeGoods;
-        private final boolean isABuyList;
         private final VBox vBox;
+        private final boolean isABuyList;
 
-        public GoodsList(VBox vBox, ArrayList<TradeGood> tradeGoods, boolean isABuyList) {
-            this.tradeGoods = tradeGoods;
+        public GoodsList(VBox vBox, boolean isABuyList) {
             this.vBox = vBox;
             this.isABuyList = isABuyList;
             listGoods();
         }
 
-        // Set up the VBox
         public final void listGoods() {
-            for (TradeGood good: tradeGoods) {
+            for (TradeGood good: goods) {
                 boolean isDisabled = false;
-
-                // Right now, if the price of the good is not updated,
-                // then that means that the planet's market does not want
-                // that good. If the price isn't updated it remains at 0.
-
-                //If the good's quantity or price are less than or equal to 0
-                if (good.getQuantity() <= 0 || good.getPrice() <= 0) {
-                        //disable the button for that good.
-                        isDisabled = true;
-                    }
+                if (good.getPrice() <= 0) {
+                    isDisabled = true;
+                }
+                if (isABuyList && good.getQuantity() <= 0) {
+                    isDisabled = true;
+                }
+                if (!isABuyList && cargoBay.getGoods().get(good.type.name) <= 0) {
+                    isDisabled = true;
+                }
+                
+                if (isABuyList && !market.getBuyable().contains(good)) {
+                    isDisabled = true;
+                }
+                if (!isABuyList && !market.getSellable().contains(good)) {
+                    isDisabled = true;
+                }
                 GoodsRow row = new GoodsRow(good, isABuyList, isDisabled);
-                //add the row to the GoodsList
                 this.addChild(row);
             }
         }

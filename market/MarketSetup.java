@@ -11,10 +11,8 @@ public class MarketSetup {
     private ArrayList<TradeGood> goods;
     private ArrayList<TradeGood> buyable;
     private ArrayList<TradeGood> sellable;
-    private final Planet planet;
 
     public MarketSetup(Planet planet) {
-        this.planet = planet;
         goods = new ArrayList<>();
         buyable = new ArrayList<>();
         sellable = new ArrayList<>();
@@ -22,9 +20,9 @@ public class MarketSetup {
             goods.add(new TradeGood(type, planet));
         }
         for (TradeGood good: goods) {
-                       if (good.type.mtlp <= planet.getTechLevelOrdinality()) {
+            if (good.type.mtlp <= planet.getTechLevelOrdinality()) {
                 buyable.add(good);
- }
+            }
             if (good.type.mtlu <= planet.getTechLevelOrdinality()) {
                 sellable.add(good);
             }
@@ -42,7 +40,7 @@ public class MarketSetup {
     public void decreaseQuantity(TradeGood good, int decrease) {
         TradeGood.GoodType type = good.type;
         for (TradeGood tg: sellable) {
-            if(tg.type == type) {
+            if (tg.type == type) {
                 tg.setQuantity(tg.getQuantity() - decrease);
             }
         }
@@ -52,12 +50,12 @@ public class MarketSetup {
         TradeGood.GoodType type = good.type;
         boolean added = false;
         for (TradeGood tg: sellable) {
-            if(tg.type == type) {
+            if (tg.type == type) {
                 tg.setQuantity(tg.getQuantity() + increase);
                 added = true;
             }
         }
-        if (!added){
+        if (!added) {
             sellable.add(new TradeGood(good.type, increase));
         }
     }
