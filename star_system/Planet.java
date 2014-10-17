@@ -33,12 +33,12 @@ public class Planet {
     public boolean hasPlayer;
 
     public Planet() {
-        resourceLevel = ResourceLevel.values()[GameModel.getRandom().nextInt(ResourceLevel.values().length)];
-        techLevel = TechLevel.values()[GameModel.getRandom().nextInt(TechLevel.values().length)];
+        resourceLevel = ResourceLevel.values()[GameModel.random.nextInt(ResourceLevel.values().length)];
+        techLevel = TechLevel.values()[GameModel.random.nextInt(TechLevel.values().length)];
         circumstance = new Circumstance();
-        size = GameModel.getRandom().nextInt(5) + 1;
-        color = Color.rgb(GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256)); // TODO: Josh make fancier
-        orbitDistance = GameModel.getRandom().nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
+        size = GameModel.random.nextInt(5) + 1;
+        color = Color.rgb(GameModel.random.nextInt(256), GameModel.random.nextInt(256), GameModel.random.nextInt(256)); // TODO: Josh make fancier
+        orbitDistance = GameModel.random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
         government = new Government();
         name = PlanetNames.getName(government);
         hasPlayer = false;

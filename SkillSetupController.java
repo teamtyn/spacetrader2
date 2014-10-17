@@ -197,23 +197,25 @@ public class SkillSetupController implements Initializable, ControlledScreen {
             player.setName(nameField.getText());
         }
         updatePlayerSkills();
-        String closingMessage;
-        closingMessage = "~~~PLAYER INFORMATION~~~\nNAME: " + player.getName() + "\nSKILLS: \n";
-        for(Skill skill : player.getSkills()) {
-            closingMessage = closingMessage + skill.getType() + " - " + skill.getValue() + "\n";
+        StringBuilder closingMessage = new StringBuilder();
+        closingMessage.append("~~~PLAYER INFORMATION~~~\nNAME: ")
+                        .append(player.getName()).append("\nSKILLS: \n");
+        for (Skill skill : player.getSkills()) {
+            closingMessage.append(skill.getType()).append(" - ")
+                            .append(skill.getValue()).append("\n");
         }
-        System.out.println(closingMessage);
+        System.out.println(closingMessage.toString());
         GameModel.setPlayer(player);
         parentController.setScreen("StarMap");
     }
     @FXML
     private void plusButtonAction(ActionEvent event) {
-        Node n = (Node) event.getSource();
+        Node n = (Node)event.getSource();
         addToSkill(plusButtonMap.get(n.getId()));
     }
     @FXML
     private void minusButtonAction(ActionEvent event) {
-        Node n = (Node) event.getSource();
+        Node n = (Node)event.getSource();
         subtractFromSkill(minusButtonMap.get(n.getId()));
     }
 }

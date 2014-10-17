@@ -19,12 +19,12 @@ public class StarSystem {
         this.name = name;
         this.coordinates = coordinates;
         hasPlayer = false;
-        planets = new Planet[GameModel.getRandom().nextInt(6) + 4];
+        planets = new Planet[GameModel.random.nextInt(6) + 4];
         for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet();
         }
-        planets[GameModel.getRandom().nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
-        color = Color.rgb(GameModel.getRandom().nextInt(56) + 200, GameModel.getRandom().nextInt(106) + 150, GameModel.getRandom().nextInt(25));
+        planets[GameModel.random.nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
+        color = Color.rgb(GameModel.random.nextInt(56) + 200, GameModel.random.nextInt(106) + 150, GameModel.random.nextInt(25));
     }
 
     public String getName() {

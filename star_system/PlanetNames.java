@@ -17,7 +17,7 @@ public class PlanetNames {
     static {
         List<String> anarchicNames = new ArrayList<>();
         for (int count = 0; count < 200; count++) {
-            int nameInt = GameModel.getRandom().nextInt(308915776); // 26 ** 6
+            int nameInt = GameModel.random.nextInt(308915776); // 26 ** 6
             char[] nameChars = Integer.toString(nameInt, 26).toCharArray();
             for (int i = 0; i < nameChars.length; i++) {
                 if (nameChars[i] <= '9') {
@@ -71,7 +71,7 @@ public class PlanetNames {
         capitalistCorporateNames.add("Waters");
         capitalistCorporateNames.add("Zimmer");
         capitalistCorporateNames.add("Zoetis");
-        Collections.shuffle(capitalistCorporateNames, GameModel.getRandom());
+        Collections.shuffle(capitalistCorporateNames, GameModel.random);
         nameLists.put(Government.Type.CAPITALIST, capitalistCorporateNames);
         nameLists.put(Government.Type.CORPORATE, capitalistCorporateNames);
     }
@@ -79,7 +79,7 @@ public class PlanetNames {
     public static String getName(Government government) {
         Government.Type governmentType = government.getType();
         while (nameLists.get(governmentType) == null || nameLists.get(governmentType).isEmpty()) {
-            governmentType = Government.Type.values()[GameModel.getRandom().nextInt(Government.Type.values().length)];
+            governmentType = Government.Type.values()[GameModel.random.nextInt(Government.Type.values().length)];
         }
         return nameLists.get(governmentType).remove(0);
     }

@@ -109,7 +109,7 @@ public class TradeGood {
             this.basePrice = basePrice;
             this.baseQuantity = baseQuantity;
             this.ipl = ipl;
-            this.var = 1 + (((GameModel.getRandom().nextInt((2 * var) + 1)) - var) / 100);
+            this.var = 1 + (((GameModel.random.nextInt((2 * var) + 1)) - var) / 100);
             this.ie = ie;
             this.cr = cr;
             this.er = er;

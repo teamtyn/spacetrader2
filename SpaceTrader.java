@@ -1,5 +1,6 @@
 package spacetrader;
 
+import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ public class SpaceTrader extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ScreensController mainContainer = new ScreensController();
+        GameModel.setRandom(new Random());
         mainContainer.loadScreen("Menu", "Menu.fxml");
         mainContainer.loadScreen("SkillSetup", "SkillSetup.fxml");
         mainContainer.loadScreen("StarMap", "StarMap.fxml");

@@ -109,7 +109,6 @@ public class ScreensController extends StackPane {
             System.out.println(e);
             e.printStackTrace();
             Thread.dumpStack();
-
             return false;
         }
     }
@@ -155,9 +154,7 @@ public class ScreensController extends StackPane {
             }
             return true;
         } else {
-            //Thread.dumpStack();
             System.out.println("Screen has not been loaded.\n");
-            
             return false;
         }
     }

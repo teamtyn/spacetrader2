@@ -17,7 +17,7 @@ public class Government {
     private int anger;
 
     public Government() {
-        type = Type.values()[GameModel.getRandom().nextInt(Type.values().length)];
+        type = Type.values()[GameModel.random.nextInt(Type.values().length)];
         leaders = new HashMap<>();
         //setUpLeaderMap();
         //leader = leaders.get(type);

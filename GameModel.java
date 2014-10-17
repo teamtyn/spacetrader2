@@ -13,7 +13,7 @@ import spacetrader.star_system.StarSystemNames;
  * Acts as the singleton for the game, notably holding the universal player
  */
 public class GameModel {
-    private static final Random random = new Random();
+    public static Random random= new Random();
     private static Player player;
     private static final StarSystem[] systems = generateSystems();
 
@@ -25,12 +25,12 @@ public class GameModel {
         GameModel.player = player;
     }
 
-    public static Player getPlayer() {
-        return player;
+    public static void setRandom(Random random) {
+        GameModel.random = random;
     }
 
-    public static Random getRandom() {
-        return random;
+    public static Player getPlayer() {
+        return player;
     }
 
     public static StarSystem[] getSystems() {
