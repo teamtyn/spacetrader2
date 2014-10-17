@@ -28,9 +28,9 @@ import spacetrader.player.Player;
  * @author Clayton Kucera
  */
 public class MarketController implements Initializable, ControlledScreen {
-    @FXML private VBox buyGoodsVBox;
+    @FXML private VBox buyGoodsVBox;//?
     @FXML private AnchorPane chartPane;
-    @FXML private VBox sellGoodsVBox;
+    @FXML private VBox sellGoodsVBox;//?
     @FXML private Label cargoLabel;
     @FXML private Label moneyLabel;
     @FXML private Label dialogueField;
@@ -39,8 +39,8 @@ public class MarketController implements Initializable, ControlledScreen {
     private ScreensController parentController;
     public static MarketSetup market;
     private FadeTransition ft;
-    private GoodsList buyList;
-    private GoodsList sellList;
+    private GoodsList buyList;//?
+    private GoodsList sellList;//?
     private Player player;
 
 
@@ -49,6 +49,7 @@ public class MarketController implements Initializable, ControlledScreen {
            this.parentController = parentController;
     }
 
+    // Sets up the fade transition specifications
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ft = new FadeTransition(Duration.millis(1000), dialogueField);
@@ -65,25 +66,14 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Updates cargoSpace and money labels on bottom dock
-     */
-    public void updatePlayerInfo() {
-        cargoLabel.setText(Integer.toString(player.getShip().getExtraSpace()));
-        moneyLabel.setText(Integer.toString(player.getMoney()));
-    }
-
-    /**
      * Display calls the methods for updating the player info and updating the
      *   trade goods lists
      */
     public void display() {
-        setMarket();
-        setUpGoodsLists();
-        updatePlayerInfo();
-    }
-    
-    public static void setMarket() {
         MarketController.market = GameModel.getPlayer().getPlanet().getMarket();
+        cargoLabel.setText(Integer.toString(player.getShip().getExtraSpace()));
+        moneyLabel.setText(Integer.toString(player.getMoney()));
+        setUpGoodsLists();
     }
 
     /**
@@ -122,10 +112,11 @@ public class MarketController implements Initializable, ControlledScreen {
     
     /**
      * Updates the prices of each trade good in the playerList to match the price of
-     * the trade good in marketList. Note that the quantity is not currently considered
+     *   the trade good in marketList
+     * Note that the quantity is not currently considered
      * Right now, if the price of the good is not updated,
-     * then that means that the planet's market does not want
-     * that good. If the price isn't updated it remains at 0.
+     *   then that means that the planet's market does not want that good
+     * If the price isn't updated it remains at 0
      * @param marketList
      * @param playerList
      * @return 
@@ -147,18 +138,17 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * For setting up and then updating the chart. Right now all values are
-     * delightfully random except for the final value of the chart, which is
-     * the true trade good price.
-     * @param name
-     * @param price
+     * Sets up and then updates the past pricing chart
+     * @param name The name of the good the chart applies to
+     * @param price The current price of that good
      */
-    public void chart(String name, int price) {
+    public void generateChart(String name, int price) {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
         AreaChart<Number, Number> ac = new AreaChart<>(xAxis, yAxis);
         ac.setTitle(name + " prices over last 5 days");
         XYChart.Series series = new XYChart.Series();
+        // TODO: Make the chart values not random
         for (int i = 0; i < 4; i++) {
             series.getData().add(new XYChart.Data(i - 5, Math.random() * price * 3 + 1));
         }
@@ -172,18 +162,17 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Makes a purchase. Subtracts the price of the good, stores it, removes it
-     * from the market, then updates the display.
-     * @param good - the good to be purchased
-     * @param amount - the amount of good to be purchased
+     * Makes a purchase
+     * Subtracts the price of the good, stores it, removes it
+     *   from the market, then updates the display
+     * If out of cargo space or money, a dialogue is shown on the bottom dock
+     * @param good The good to be purchased
      */
-    public void buy(TradeGood good, int amount) {
-        int newMoney = player.getMoney() - good.getPrice() * amount;
-        if (newMoney > 0) {
-            // TODO: Buy more than one thing at at time
+    public void buy(TradeGood good) {
+        if (player.getMoney() > good.getPrice()) {
             if (player.getShip().storeTradeGood(good.type.name, 1) > 0) {
-                player.setMoney(player.getMoney() - good.getPrice() * amount);
-                market.decreaseQuantity(good, amount);
+                player.setMoney(player.getMoney() - good.getPrice());
+                market.decreaseQuantity(good, 1);
             } else {
                 dialogueField.setText("You're out of cargo space!");
                 if (ft != null) {
@@ -201,16 +190,14 @@ public class MarketController implements Initializable, ControlledScreen {
 
     /**
      * Makes a sale
-     * Removes the good from the cargo, adds the price to
-     *   the player's money, and adds the good to the market
-     * @param good
-     * @param amount
+     * Adds the price of the good, removes it from cargo bay, adds it
+     *   to the market, then updates the display
+     * @param good The good to be sold
      */
-    public void sell(TradeGood good, int amount) {
-        // TODO: Sell more than one thing at at time
+    public void sell(TradeGood good) {
         if (player.getShip().removeTradeGood(good.type.name, 1)) {
-            player.setMoney(player.getMoney() + good.getPrice() * amount);
-            market.increaseQuantity(good, amount);
+            player.setMoney(player.getMoney() + good.getPrice());
+            market.increaseQuantity(good, 1);
         }
         display();
     }
@@ -222,7 +209,7 @@ public class MarketController implements Initializable, ControlledScreen {
         public BuyButton(TradeGood good) {
             super("BUY");
             this.setOnAction((ActionEvent event) -> {
-                buy(good, 1);
+                buy(good);
             });
             this.setId("row-button");
         }
@@ -235,39 +222,36 @@ public class MarketController implements Initializable, ControlledScreen {
         public SellButton(TradeGood good) {
             super("SELL");
             this.setOnAction((ActionEvent event) -> {
-                sell(good, 1);
+                sell(good);
             });
             this.setId("row-button");
         }
     }
 
     /**
-     * Goods Row is an HBox that contains two labels and a buy/sell button
+     * GoodsRow is a HBox that contains two labels and a buy/sell button
      */
     private class GoodsRow extends HBox {
         public GoodsRow(TradeGood good, boolean isABuyRow, boolean isDisabled) {
             // Add the labels for good's name and amount
-                this.getChildren().add(new Label(good.type.name));
-                this.getChildren().add(new Label("x" + good.getQuantity()));
-            
+            this.getChildren().add(new Label(good.type.name));
+            this.getChildren().add(new Label("x" + good.getQuantity()));
+ 
             Button button;
-            // If the row is a Buy Row
             if (isABuyRow) {
-                // Make a buy button
                 button = new BuyButton(good);
             } else {
-                //otherwise make a sell button
                 button = new SellButton(good);
             }
             if (isDisabled) {
                 button.setDisable(true);
             }
             this.getChildren().add(button);
-            this.setId("goods-row");
             this.setOnMouseEntered((MouseEvent event) -> {
-                chart(good.type.name, good.getPrice());
+                generateChart(good.type.name, good.getPrice());
                 priceField.setText(good.type.name + " costs " + good.getPrice() + " per unit.");
             });
+            this.setId("goods-row");
             this.setAlignment(Pos.CENTER_RIGHT);
             this.setSpacing(30);
         }
