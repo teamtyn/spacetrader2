@@ -34,16 +34,14 @@ public class MarketController implements Initializable, ControlledScreen {
     @FXML private Label sellLabel;
     @FXML private Label buyLabel;
     @FXML private Label playerInfo;
-    @FXML private Label statusLabel;
+    @FXML private Label dialogueField;
     @FXML private Button backButton;
 
     private ScreensController parentController;
-    // THIS WILL BE CHANGED ONCE WE HAVE A SINGLETON
     public static MarketSetup market;
     private FadeTransition ft;
     private GoodsList buyList;
     private GoodsList sellList;
-    // THIS WILL BE CHANGED ONCE WE HAVE A SINGLETON
     private Player player;
 
 
@@ -54,7 +52,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ft = new FadeTransition(Duration.millis(1000), statusLabel);
+        ft = new FadeTransition(Duration.millis(1000), dialogueField);
         ft.setFromValue(0);
         ft.setToValue(1);
         ft.setAutoReverse(true);
@@ -64,18 +62,11 @@ public class MarketController implements Initializable, ControlledScreen {
     @Override
     public void lazyInitialize() {
         player = GameModel.getPlayer();
-        // DELETE FROM HERE
-        player.getShip().storeTradeGood("Furs", 3);
-        player.getShip().storeTradeGood("Water", 3);
-        player.getShip().storeTradeGood("Firearms", 3);
-        player.getShip().storeTradeGood("Narcotics", 3); 
-        // DELETE TO HERE
         display();
     }
 
     /**
-     * Simply updates the text displayed on our playerInfo label.
-     * Cargo space and money.
+     * Simply updates the text displayed on our playerInfo label (cargoSpace and money)
      */
     public void updatePlayerInfo() {
         playerInfo.setText("Cargo Space Remaining: " + player.getShip().getExtraSpace() + "\nMoney Remaining: " + 
@@ -84,7 +75,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
     /**
      * Display calls the methods for updating the player info and updating the
-     * trade goods lists.
+     *   trade goods lists
      */
     public void display() {
         setMarketSetup();
@@ -97,29 +88,25 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * setUpGoodsLists does several things:
-     *      clears the current lists of nodes
-     *      sets the prices of the player's trade goods
-     *      creates the GoodsLists that display our items
+     * Clears the current lists of nodes
+     *   Sets the prices of the player's trade goods
+     *   Creates the GoodsLists that display our items
      */
     public void setUpGoodsLists() {
-        //Okay, sorry. I made this SUPER CONFUSING when I first coded this.
-        //First clear the lists, because we use this method to update the list as well.
-            buyGoodsVBox.getChildren().clear();
-            sellGoodsVBox.getChildren().clear();
+
+        // First clear the lists, because this method updates the lists as well
+        buyGoodsVBox.getChildren().clear();
+        sellGoodsVBox.getChildren().clear();
             
-        //The marketInventory is what the market has and is willing to sell, told to it by
-        //its getSellable method.
-            ArrayList<TradeGood> marketInventory = market.getSellable();
+        // marketInventory is what the market is willing to sell, from getSellable method
+        ArrayList<TradeGood> marketInventory = market.getSellable();
             
-        //marketDemand is what the market is willing to buy, and for how much. Gets this from
-        //.getBuyable method.
-            ArrayList<TradeGood> marketDemand = market.getBuyable();
+        // marketDemand is what the market is willing to buy, from getBuyable method
+        ArrayList<TradeGood> marketDemand = market.getBuyable();
         
-        //The Buy List displays what the player can buy.
-            buyList = new GoodsList(buyGoodsVBox, marketInventory, true);
-            
-        
+        // buyList displays what the player can buy
+        buyList = new GoodsList(buyGoodsVBox, marketInventory, true);
+
         /*
         The sellList displays what the player can sell. 
             
@@ -136,9 +123,7 @@ public class MarketController implements Initializable, ControlledScreen {
     
     /**
      * Updates the prices of each trade good in the playerList to match the price of
-     * the trade good in marketList. Note that the quantity is not currently
-     * considered.
-     * 
+     * the trade good in marketList. Note that the quantity is not currently considered
      * Right now, if the price of the good is not updated,
      * then that means that the planet's market does not want
      * that good. If the price isn't updated it remains at 0.
@@ -168,8 +153,8 @@ public class MarketController implements Initializable, ControlledScreen {
      * @param status
      */
     public void statusPanelMessage(String status) {
-        statusLabel.setText(status);
-        //using a fade transition
+        dialogueField.setText(status);
+        // Using a fade transition
         if (ft != null) {
             ft.play();
         }
@@ -204,7 +189,6 @@ public class MarketController implements Initializable, ControlledScreen {
             series.getData().add(new XYChart.Data(i - 5, Math.random() * price * 3 + 1));
         }
         series.getData().add(new XYChart.Data(0, price));
-
         ac.getData().addAll(series);
         chartPane.getChildren().clear();
         chartPane.getChildren().add(ac);
@@ -236,8 +220,9 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Making a sale. Removes the good from the cargo, adds the price to
-     * the player's money, and adds the good to the market.
+     * Makes a sale
+     * Removes the good from the cargo, adds the price to
+     *   the player's money, and adds the good to the market
      * @param good
      * @param amount
      */
@@ -251,7 +236,7 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Buy Button.
+     * Buy Button
      */
     private class BuyButton extends Button {
         public BuyButton(TradeGood good) {
@@ -264,7 +249,7 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Sell Button.
+     * Sell Button
      */
     private class SellButton extends Button {
         public SellButton(TradeGood good) {
@@ -277,18 +262,18 @@ public class MarketController implements Initializable, ControlledScreen {
     }
 
     /**
-     * Goods Row is an HBox that contains two labels and a buy/sell button.
+     * Goods Row is an HBox that contains two labels and a buy/sell button
      */
     private class GoodsRow extends HBox {
         public GoodsRow(TradeGood good, boolean isABuyRow, boolean isDisabled) {
-            //add the labels for good's name and amount
+            // Add the labels for good's name and amount
                 this.getChildren().add(new Label(good.type.name));
                 this.getChildren().add(new Label("x" + good.getQuantity()));
             
             Button button;
-            //if the row is a Buy Row
+            // If the row is a Buy Row
             if (isABuyRow) {
-                //make a buy button
+                // Make a buy button
                 button = new BuyButton(good);
             } else {
                 //otherwise make a sell button
@@ -328,10 +313,10 @@ public class MarketController implements Initializable, ControlledScreen {
             for (TradeGood good: tradeGoods) {
                 boolean isDisabled = false;
 
-                //Right now, if the price of the good is not updated,
-                //then that means that the planet's market does not want
-                //that good. If the price isn't updated it remains at 0.
-                
+                // Right now, if the price of the good is not updated,
+                // then that means that the planet's market does not want
+                // that good. If the price isn't updated it remains at 0.
+
                 //If the good's quantity or price are less than or equal to 0
                 if (good.getQuantity() <= 0 || good.getPrice() <= 0) {
                         //disable the button for that good.

@@ -13,7 +13,8 @@ import spacetrader.star_system.StarSystemNames;
  * Acts as the singleton for the game, notably holding the universal player
  */
 public class GameModel {
-    public static Random random= new Random();
+    public static Random random = new Random();
+    public static int day;
     private static Player player;
     private static final StarSystem[] systems = generateSystems();
 

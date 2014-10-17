@@ -9,12 +9,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="background" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.MarketController">
+<AnchorPane id="AnchorPane" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" style="-fx-background-color: black;" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spacetrader.MarketController">
     <stylesheets>
         <URL value="@market.css" />
     </stylesheets>
    <children>
-      <TabPane fx:id="tabPane" layoutX="475.0" layoutY="4.0" prefHeight="522.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutX="600.0" layoutY="20.0" prefHeight="560.0" prefWidth="340.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="buyTab" text="BUY">
                <content>
@@ -43,11 +43,52 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="chartPane" layoutX="28.0" layoutY="17.0" prefHeight="302.0" prefWidth="402.0" />
+      <AnchorPane fx:id="chartPane" layoutX="50.0" layoutY="50.0" prefHeight="302.0" prefWidth="402.0" />
       <Label fx:id="playerInfo" layoutX="28.0" layoutY="516.0" prefHeight="59.0" prefWidth="746.0">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></Label>
-      <Button fx:id="backButton" layoutX="609.0" layoutY="546.0" mnemonicParsing="false" onAction="#backButtonAction" text="BACK" />
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonAction" text="GO BACK" />
+      <Pane layoutY="600.0" prefHeight="120.0" prefWidth="960.0" style="-fx-background-color: grey;">
+         <children>
+            <VBox layoutX="20.0" prefHeight="120.0" prefWidth="180.0">
+               <children>
+                  <HBox prefHeight="60.0" prefWidth="180.0">
+                     <children>
+                        <Label prefHeight="120.0" prefWidth="90.0" text="Cargo Space:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cargoLabel" prefHeight="120.0" prefWidth="90.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="60.0" prefWidth="180.0">
+                     <children>
+                        <Label prefHeight="120.0" prefWidth="90.0" text="Money:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="moneyLabel" prefHeight="120.0" prefWidth="90.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <ScrollPane layoutX="550.0" layoutY="10.0" prefHeight="100.0" prefWidth="400.0">
+               <content>
+                  <Label fx:id="dialogueField" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="380.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
