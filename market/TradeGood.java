@@ -148,7 +148,7 @@ public class TradeGood {
         if (type.er == planet.getResourceLevelOrdinality()) {
             thisPrice *= 1.25;
         }
-        if (type.ie == planet.getCircumstanceOrdinality()) {
+        if (type.ie == planet.getCircumstance().getOrdinality()) {
             thisPrice *= 1.5;
         }
         thisPrice *= govPrice.get(planet.getGovernment().getType());

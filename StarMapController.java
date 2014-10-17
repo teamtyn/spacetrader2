@@ -255,18 +255,6 @@ public class StarMapController implements ControlledScreen {
         planetText.setFill(Color.WHITE);
         systemPane.getChildren().add(planetText);
 
-        // Button to instantiate an anarchy government
-        // TODO: Remove later, replace with better buttons
-        Button revolt = new Button("Sponsor Revolution");
-        revolt.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            planet.revolt();
-            planetText.setText(planet.toString());
-        });
-        revolt.setLayoutX(100);
-        revolt.setLayoutY(220);
-        revolt.setDisable(!planet.hasPlayer);
-        systemPane.getChildren().add(revolt);
-
         // Space station for player to buy things for their ship
         Rectangle spaceStation = new Rectangle(50,50);
         spaceStation.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
@@ -288,7 +276,6 @@ public class StarMapController implements ControlledScreen {
             if (ScreensController.isInitialized("Market")) {
                 ((MarketController)ScreensController.getController("Market")).display();
             }
-            System.out.println(MarketController.market);
             parentController.setScreen("Market");
             System.out.println(market.toString());
         });

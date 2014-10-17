@@ -13,7 +13,7 @@ import spacetrader.market.MarketSetup;
 public class Planet {
     private final String name;
     private final int orbitDistance;
-    private Government government;
+    private final Government government;
 
     public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIEVAL, RENAISSANCE, 
@@ -24,13 +24,11 @@ public class Planet {
                                POORSOIL, RICHFAUNA, LIFELESS,
                                WEIRDMUSHROOMS, LOTSOFHERBS,
                                ARTISTIC, WARLIKE};
-    public enum Circumstance {NONE, DROUGHT, COLD, CROPFAIL, WAR,
-                              BOREDOM, PLAGUE, LACKOFWORKERS};
-    private Circumstance circumstance;
+    private final Circumstance circumstance;
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
-    private Random random = new Random();
-    private MarketSetup market;
+    private final Random random = new Random();
+    private final MarketSetup market;
     private final Color color;
     private final int size;
     public boolean hasPlayer;
@@ -38,7 +36,7 @@ public class Planet {
     public Planet() {
         resourceLevel = ResourceLevel.values()[random.nextInt(ResourceLevel.values().length)];
         techLevel = TechLevel.values()[random.nextInt(TechLevel.values().length)];
-        circumstance = Circumstance.values()[random.nextInt(Circumstance.values().length)];
+        circumstance = new Circumstance();
         size = random.nextInt(5) + 1;
         color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // TODO: Josh make fancier
         orbitDistance = random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
@@ -48,7 +46,7 @@ public class Planet {
         market = new MarketSetup(this);
     }
 
-    public MarketSetup getMarketSetup() {
+    public MarketSetup getMarket() {
         return market;
     }
     
@@ -92,34 +90,20 @@ public class Planet {
         return circumstance;
     }
 
-    public int getCircumstanceOrdinality() {
-        return circumstance.ordinal();
+    public void setResourceLevel(ResourceLevel resourceLevel) {
+        this.resourceLevel = resourceLevel;
     }
 
-    public void setResourceLevel(ResourceLevel newRes) {
-        resourceLevel = newRes;
-    }
-
-    public void setTechLevel(TechLevel newTech) {
-        techLevel = newTech;
-    }
-
-    public void setCircumstance(Circumstance circumstance) {
-        this.circumstance = circumstance;
-    }
-
-    public void revolt() {
-        government.revolution();
-    }
-
-    public void becomeMonarchy(String name){
-        government.toMonarchy(name);
+    public void setTechLevel(TechLevel techLevel) {
+        this.techLevel = techLevel;
     }
 
     @Override
     public String toString() {
-        String str = "Planet: " + name + "\nResource Level: " + resourceLevel + "\nTech Level: " + techLevel
-                        + "\nUnder rule of " + government;
-        return str;
+        StringBuilder str = new StringBuilder();
+        str.append("Planet: ").append(name).append("\nResource Level: ")
+                .append(resourceLevel).append("\nTech Level: ").append(techLevel)
+                        .append("\nUnder rule of ").append(government);
+        return str.toString();
     }
 }

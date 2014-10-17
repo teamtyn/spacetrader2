@@ -22,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import spacetrader.market.TradeGood;
 import spacetrader.player.Player;
-import spacetrader.star_system.Planet;
 
 /**
  * FXML Controller for the generation of a market
@@ -94,7 +93,7 @@ public class MarketController implements Initializable, ControlledScreen {
     }
     
     public static void setMarketSetup() {
-        MarketController.market = GameModel.getPlayer().getPlanet().getMarketSetup();
+        MarketController.market = GameModel.getPlayer().getPlanet().getMarket();
     }
 
     /**
@@ -145,13 +144,13 @@ public class MarketController implements Initializable, ControlledScreen {
      * that good. If the price isn't updated it remains at 0.
      * @param marketList
      * @param playerList
+     * @return 
      */
     public ArrayList<TradeGood> addPricesToCargo(ArrayList<TradeGood> marketList, ArrayList<TradeGood> playerList) {
         for (TradeGood tgm: marketList) {
             for (TradeGood tgp: playerList) {
                 if (tgm.type == tgp.type) {
                     tgp.setPrice(tgm.getPrice());
-                    System.out.println("market " + tgm.type.name + " $ " + tgm.getPrice() + "\n player " + tgp.type.name + " $ " + tgp.getPrice());
                 }
             }
         }
@@ -163,7 +162,6 @@ public class MarketController implements Initializable, ControlledScreen {
         parentController.setScreen("StarMap");
     }
 
-
     /**
      * Updates the status pane, which gives the player feedback from his
      * attempted purchases or sales.
@@ -172,7 +170,7 @@ public class MarketController implements Initializable, ControlledScreen {
     public void statusPanelMessage(String status) {
         statusLabel.setText(status);
         //using a fade transition
-        if(ft != null) {
+        if (ft != null) {
             ft.play();
         }
     }
@@ -202,7 +200,7 @@ public class MarketController implements Initializable, ControlledScreen {
 
         XYChart.Series series = new XYChart.Series();
         series.setName(name);
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             series.getData().add(new XYChart.Data(i - 5, Math.random() * price * 3 + 1));
         }
         series.getData().add(new XYChart.Data(0, price));
