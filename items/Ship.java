@@ -25,16 +25,17 @@ public class Ship {
      */
     public enum ShipType {
         // TODO: Make numbers more better?
-        Flea (100, 4, 4, 4, 4, 1, 4, 100, Color.BLUE), 
-        Gnat (100, 100, 4, 4, 4, 1, 10, 200, Color.RED), 
-        Firefly (100, 4, 4, 4, 4, 1, 4, 300, Color.GREEN), 
-        Mosquito (100, 4, 4, 4, 4, 1, 4, 400, Color.ORANGE), 
-        Bumblebee (100, 4, 4, 4, 4, 1, 4, 500, Color.YELLOW),
-        Beetle (100, 4, 4, 4, 4, 1, 4, 600, Color.PURPLE),
-        Hornet (100, 4, 4, 4, 4, 1, 4, 700, Color.BROWN), 
-        Grasshopper (100, 4, 4, 4, 4, 1, 4, 800, Color.GREY), 
-        Termite (100, 4, 4, 4, 4, 1, 4, 900, Color.WHITE), 
-        Wasp (100, 4, 4, 4, 4, 1, 4, 100, Color.ALICEBLUE);
+        //Name      hull  fuelC G  S  W  C   fuelE cost  color
+        Flea        (10,  30,   0, 0, 0, 10, 30,   100,  Color.BLUE), 
+        Gnat        (100, 100,  1, 0, 1, 15, 10,   200,  Color.RED), 
+        Firefly     (100, 200,  1, 0, 1, 20, 20,   500,  Color.GREEN), 
+        Mosquito    (300, 100,  1, 1, 2, 15, 10,   750,  Color.ORANGE), 
+        Bumblebee   (100, 200,  1, 1, 2, 20, 15,   750,  Color.YELLOW),
+        Beetle      (100, 1000, 1, 1, 0, 50, 5,    1000, Color.PURPLE),
+        Hornet      (400, 100,  1, 2, 3, 20, 15,   1000, Color.BROWN), 
+        Grasshopper (100, 200,  3, 2, 2, 30, 15,   1000, Color.GREY), 
+        Termite     (500, 1000, 2, 3, 1, 60, 5,    5000, Color.WHITE), 
+        Wasp        (500, 300,  2, 2, 4, 35, 20,   5000, Color.ALICEBLUE);
 
         private int hullStrength;
         private double fuelCapacity;
@@ -70,9 +71,9 @@ public class Ship {
         gadgets = new Gadget[type.gadgetSlots];
         shields = new Shield[type.shieldSlots];
         weapons = new Weapon[type.weaponSlots];
-        cargoBay = new CargoBay(10);
+        cargoBay = new CargoBay(type.cargoBaySlots);
         hull = type.hullStrength;
-        fuel = type.fuelCapacity;
+        fuel = 0;
         this.escapePod = escapePod;
         this.insurance = insurance;
     }

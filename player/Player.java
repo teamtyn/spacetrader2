@@ -33,6 +33,11 @@ public class Player {
     public void subtractMoney(int money) {
         this.money -= money;
     }
+    
+    // Add specefied amount of money
+    public void addMoney(int money) {
+        this.money += money;
+    }
 
     // Setter for name
     public void setName(String newName) {

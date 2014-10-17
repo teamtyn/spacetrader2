@@ -24,6 +24,7 @@ public class StarSystem {
         for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet();
         }
+        planets[random.nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
         color = Color.rgb(random.nextInt(56) + 200, random.nextInt(106) + 150, random.nextInt(25)); // TODO: Josh make fancier
     }
 

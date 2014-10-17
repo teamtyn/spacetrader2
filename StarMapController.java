@@ -70,6 +70,7 @@ public class StarMapController implements ControlledScreen {
         // Update player ship display
         fuelLabel.setText("" + Math.round(player.getShip().getFuel()));
         rangeLabel.setText("" + player.getShip().getRange());
+        hullLabel.setText("" + player.getShip().getHull());
         
         // If the player doesn't have a system or planet, just draw them somewhere
         // TODO: Randomize start location or pick a noob spot
@@ -144,6 +145,11 @@ public class StarMapController implements ControlledScreen {
     public void viewSystem(StarSystem system) {
         systemPane.getChildren().removeAll(systemPane.getChildren());
 
+        // Update player ship display
+        fuelLabel.setText("" + Math.round(player.getShip().getFuel()));
+        rangeLabel.setText("" + player.getShip().getRange());
+        hullLabel.setText("" + player.getShip().getHull());
+        
         // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
         if (system.hasPlayer && player.getPlanet() == null) {
             player.setCoordinates(new Point2D(100, 100));
@@ -200,6 +206,15 @@ public class StarMapController implements ControlledScreen {
                 travelButton.setLayoutY(planetY - 75);
                 systemPane.getChildren().add(travelButton);
             }
+            
+            // Space station for player to buy things for their ship, not clickable from here
+            Rectangle spaceStation = new Rectangle(5,5);
+            spaceStation.setFill(Color.GREY);
+            spaceStation.setLayoutX(planetX - 25);
+            spaceStation.setLayoutY(planetY);
+            if(planet.getTechLevel() == TechLevel.HIGHTECH){
+                systemPane.getChildren().add(spaceStation);   
+            }
 
             // If the player is at this planet, draw the player
             if(planet.hasPlayer){
@@ -216,6 +231,11 @@ public class StarMapController implements ControlledScreen {
      */
     public void viewPlanet(Planet planet, StarSystem system) {
         systemPane.getChildren().removeAll(systemPane.getChildren());
+        
+        // Update player ship display
+        fuelLabel.setText("" + Math.round(player.getShip().getFuel()));
+        rangeLabel.setText("" + player.getShip().getRange());
+        hullLabel.setText("" + player.getShip().getHull());
 
         // If the player is at this planet, draw them in
         if (planet.hasPlayer) {
@@ -258,15 +278,16 @@ public class StarMapController implements ControlledScreen {
         revolt.setDisable(!planet.hasPlayer);
         systemPane.getChildren().add(revolt);
 
-        // Button to instantiate a monarchy government
-        // TODO: Remove later, replace with better buttons
-        Button spaceStation = new Button("NOT A MOON");
+        // Space station for player to buy things for their ship
+        Rectangle spaceStation = new Rectangle(50,50);
         spaceStation.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            parentController.setScreen("SpaceStation");
+            if(planet == player.getPlanet()){
+                parentController.setScreen("SpaceStation");
+            }
         });
+        spaceStation.setFill(Color.GREY);
         spaceStation.setLayoutX(100);
         spaceStation.setLayoutY(260);
-        spaceStation.setDisable(!planet.hasPlayer);
         if(planet.getTechLevel() == TechLevel.HIGHTECH){
             systemPane.getChildren().add(spaceStation);   
         }

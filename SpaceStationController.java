@@ -65,7 +65,7 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML
     private void backButtonAction(ActionEvent event) {
         if (ScreensController.isInitialized("StarMap")) {
-            ((StarMapController) ScreensController.getController("StarMap")).viewUniverse();
+            ((StarMapController) ScreensController.getController("StarMap")).viewPlanet(player.getPlanet(), player.getSystem());
             parentController.setScreen("StarMap");
         }
     }
@@ -115,6 +115,12 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         for(TradeGood good : player.getShip().getCargo()){
             viewShip.storeTradeGood(good.type.name, good.getQuantity());
         }
+        if(player.getShip().getFuel() > viewShip.getFuelCapacity()){
+            double excessFuel = player.getShip().getFuel() - viewShip.getFuelCapacity(); 
+            System.out.println("Sold excess fuel (" + excessFuel + ") at market value for " + (excessFuel * fuelCost));
+            player.addMoney((int)(excessFuel * fuelCost));
+        }
+        viewShip.addFuel(player.getShip().getFuel());
         player.setShip(viewShip);
     }
     
