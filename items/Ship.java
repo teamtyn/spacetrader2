@@ -184,9 +184,8 @@ public class Ship {
     public CargoBay getCargoBay() {
         return cargoBay;
     }
-    //TODO: More than one CargoBay
     public int getCargoBaySlots() {
-        return 1;
+        return cargoBay.getCapacity();
     }
     public EscapePod getEscapePod() {
         return escapePod;
@@ -246,7 +245,7 @@ public class Ship {
         return hull;
     }
 
-    public boolean storeTradeGood(String goodName, int quantity) {
+    public int storeTradeGood(String goodName, int quantity) {
         return cargoBay.addTradeGood(goodName, quantity);
     }
 

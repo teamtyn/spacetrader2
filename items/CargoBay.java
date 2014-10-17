@@ -32,29 +32,23 @@ public class CargoBay {
     }
 
     /**
-     * Returns whether the cargo bay can fit a given quantity
-     * @param quantity The quantity to be potentially added
-     * @return Whether or not the cargo bay can handle this new quantity
-     */
-    private boolean canAddQuantity(int quantity) {
-        return (currentSize + quantity) <= capacity;
-    }
-
-    /**
      * If room to add that quantity, increment the size and the quantity of the specified good
      * @param goodName The good to be stored in the cargo bay
      * @param quantity The quantity of the good to be stored in the cargo bay
-     * @return Whether or not there was room to add that quantity of the good
+     * @return The number of goods successfully added
      */
-    public boolean addTradeGood(String goodName, int quantity) {
+    public int addTradeGood(String goodName, int quantity) {
         boolean added = false;
-        if (canAddQuantity(quantity)) {
-            added = true;
+        if(quantity + currentSize > capacity){
+            quantity = capacity - currentSize;
+            System.out.println("Too many, reduced to " + quantity + " units");
+        }
+        if (quantity > 0) {
             currentSize += quantity;
             int oldNum = goods.get(goodName);
             goods.replace(goodName, oldNum + quantity);
         }
-        return added;
+        return quantity;
     }
 
     /**

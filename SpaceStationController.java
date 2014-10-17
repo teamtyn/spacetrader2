@@ -103,6 +103,8 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     public void buyShip(){
         player.subtractMoney(viewShip.type.getCost());
         viewShip.addEscapePod(player.getShip().getEscapePod());
+        viewShip.addInsurance(player.getShip().getInsurance());
+        //TODO: 
         for(Gadget gadget : player.getShip().getGadgets()){
             viewShip.addGadget(gadget);
         }
@@ -122,6 +124,7 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         }
         viewShip.addFuel(player.getShip().getFuel());
         player.setShip(viewShip);
+        viewShip = new Ship(viewShip.type, null, null);
     }
     
     @Override

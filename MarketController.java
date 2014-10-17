@@ -225,7 +225,7 @@ public class MarketController implements Initializable, ControlledScreen {
         int newMoney = player.getMoney() - good.getPrice() * amount;
         if (newMoney > 0) {
             // TODO: Buy more than one thing at at time
-            if (player.getShip().storeTradeGood(good.type.name, 1)) {
+            if (player.getShip().storeTradeGood(good.type.name, 1) > 0) {
                 player.setMoney(player.getMoney() - good.getPrice() * amount);
                 market.decreaseQuantity(good, amount);
             } else {
