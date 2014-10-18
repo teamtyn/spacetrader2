@@ -10,7 +10,7 @@ import spacetrader.market.TradeGood;
 public class CargoBay {
     private int capacity;
     private int currentSize;
-    private HashMap<String, Integer> goods;
+    private final HashMap<String, Integer> goods;
 
     public CargoBay(int capacity) {
         this.capacity = capacity;

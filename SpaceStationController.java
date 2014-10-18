@@ -24,19 +24,23 @@ import spacetrader.player.Player;
  * @author Purcell7
  */
 public class SpaceStationController implements Initializable, ControlledScreen {
+    @FXML private Button buyShip;
+    @FXML private VBox shipList;
+    @FXML private Label moneyLabel;
+    @FXML private Button viewPlayerCardButton;
+    @FXML private Button shopForPartsButton;
+
     @FXML private ProgressBar fuel;
     @FXML private Label fuelLabel;
     @FXML private Label fuelCostLabel;
-    @FXML private Label moneyLabel;
     @FXML private Button emptyFuel;
     @FXML private Button add1Fuel;
     @FXML private Button add10Fuel;
     @FXML private Button add50Fuel;
     @FXML private Button add100Fuel;
-    @FXML private Button buyShip;
-    @FXML private Button viewMyShip;
-    @FXML private VBox shipList;
-    @FXML private Pane viewShipDetails;
+
+    @FXML private Label otherShipLabel;
+    @FXML private Pane otherShipPicturePane;
     @FXML private Label hullStrength;
     @FXML private Label fuelCapacity;
     @FXML private Label gadgetSlots;
@@ -46,18 +50,22 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML private Label fuelEfficiency;
     @FXML private Label shipCost;
 
-    private Ship viewShip;
+    @FXML private Pane myShipPicturePane;
+    @FXML private Label myHullStrength;
+    @FXML private Label myFuelCapacity;
+    @FXML private Label myGadgetSlots;
+    @FXML private Label myShieldSlots;
+    @FXML private Label myWeaponSlots;
+    @FXML private Label myCargoBaySlots;
+    @FXML private Label myFuelEfficiency;
+    @FXML private Label myShipValue;
+
+
+    private Ship myShip;
+    private Ship otherShip;
     private final int fuelCost = 10;
     private Player player;
     private ScreensController parentController;
-
-    @FXML
-    private void backButtonAction(ActionEvent event) {
-        if (ScreensController.isInitialized("StarMap")) {
-            ((StarMapController)ScreensController.getController("StarMap")).viewPlanet(player.getPlanet(), player.getSystem());
-            parentController.setScreen("StarMap");
-        }
-    }
 
     public void updateFuel() {
         fuel.setProgress(player.getShip().getFuel() / player.getShip().getFuelCapacity());
@@ -69,52 +77,74 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         moneyLabel.setText(Integer.toString(player.getMoney()));
     }
 
+    public void myShipStats() {
+        myHullStrength.setText(Integer.toString(myShip.getHull()));
+        myFuelCapacity.setText(Double.toString(myShip.getFuelCapacity()));
+        myGadgetSlots.setText(Integer.toString(myShip.getGadgetSlots()));
+        myShieldSlots.setText(Integer.toString(myShip.getShieldSlots()));
+        myWeaponSlots.setText(Integer.toString(myShip.getWeaponSlots()));
+        myCargoBaySlots.setText(Integer.toString(myShip.getCargoBaySlots()));
+        myFuelEfficiency.setText(Double.toString(myShip.getFuelEfficiency()));
+        myShipValue.setText(Integer.toString(myShip.type.getCost()));
+        myShipPicturePane.getChildren().removeAll();
+        Rectangle myShipPicture = new Rectangle(100, 10, 100, 100);
+        myShipPicture.setFill(myShip.type.getColor());
+        myShipPicturePane.getChildren().add(myShipPicture);
+    }
+
+    public void otherShipStats() {
+        otherShipLabel.setText(otherShip.type.name());
+        hullStrength.setText(Integer.toString(otherShip.getHull()));
+        fuelCapacity.setText(Double.toString(otherShip.getFuelCapacity()));
+        gadgetSlots.setText(Integer.toString(otherShip.getGadgetSlots()));
+        shieldSlots.setText(Integer.toString(otherShip.getShieldSlots()));
+        weaponSlots.setText(Integer.toString(otherShip.getWeaponSlots()));
+        cargoBaySlots.setText(Integer.toString(otherShip.getCargoBaySlots()));
+        fuelEfficiency.setText(Double.toString(otherShip.getFuelEfficiency()));
+        otherShipPicturePane.getChildren().removeAll();
+        Rectangle otherShipPicture = new Rectangle(100, 10, 100, 100);
+        otherShipPicture.setFill(otherShip.type.getColor());
+        otherShipPicturePane.getChildren().add(otherShipPicture);
+    }
+
     public void updateShip() {
-        if (viewShip.type == player.getShip().type) {
+        if (otherShip.type == myShip.type) {
             shipCost.setText("You already own this type of ship");
+            buyShip.setDisable(true);
         } else {
-            shipCost.setText(Integer.toString(viewShip.type.getCost()));
+            shipCost.setText(Integer.toString(otherShip.type.getCost()));
+            buyShip.setDisable(false);
         }
-        buyShip.setDisable(viewShip.type == player.getShip().type);
-        viewShipDetails.getChildren().removeAll();
-        Rectangle ship = new Rectangle(100, 10, 100, 100);
-        ship.setFill(viewShip.type.getColor());
-        viewShipDetails.getChildren().add(ship);
-        hullStrength.setText(Integer.toString(viewShip.getHull()));
-        fuelCapacity.setText(Double.toString(viewShip.getFuelCapacity()));
-        gadgetSlots.setText(Integer.toString(viewShip.getGadgetSlots()));
-        shieldSlots.setText(Integer.toString(viewShip.getShieldSlots()));
-        weaponSlots.setText(Integer.toString(viewShip.getWeaponSlots()));
-        cargoBaySlots.setText(Integer.toString(viewShip.getCargoBaySlots()));
-        fuelEfficiency.setText(Double.toString(viewShip.getFuelEfficiency()));
+        myShipStats();
+        otherShipStats();
     }
 
     public void buyShip() {
-        player.subtractMoney(viewShip.type.getCost());
-        viewShip.addEscapePod(player.getShip().getEscapePod());
-        viewShip.addInsurance(player.getShip().getInsurance());
+        player.subtractMoney(otherShip.type.getCost());
+        otherShip.addEscapePod(player.getShip().getEscapePod());
+        otherShip.addInsurance(player.getShip().getInsurance());
         // TODO: 
         for (Gadget gadget: player.getShip().getGadgets()) {
-            viewShip.addGadget(gadget);
+            otherShip.addGadget(gadget);
         }
         for (Shield shield: player.getShip().getShields()) {
-            viewShip.addShield(shield);
+            otherShip.addShield(shield);
         }
         for (Weapon weapon: player.getShip().getWeapons()) {
-            viewShip.addWeapon(weapon);
+            otherShip.addWeapon(weapon);
         }
         HashMap<String, Integer> goods = player.getShip().getCargoBay().getGoods();
         for (String goodName: goods.keySet()) {
-            viewShip.storeTradeGood(goodName, goods.get(goodName));
+            otherShip.storeTradeGood(goodName, goods.get(goodName));
         }
-        if (player.getShip().getFuel() > viewShip.getFuelCapacity()) {
-            double excessFuel = player.getShip().getFuel() - viewShip.getFuelCapacity(); 
+        if (player.getShip().getFuel() > otherShip.getFuelCapacity()) {
+            double excessFuel = player.getShip().getFuel() - otherShip.getFuelCapacity(); 
             System.out.println("Sold excess fuel (" + excessFuel + ") at market value for " + (excessFuel * fuelCost));
             player.addMoney((int)(excessFuel * fuelCost));
         }
-        viewShip.addFuel(player.getShip().getFuel());
-        player.setShip(viewShip);
-        viewShip = new Ship(viewShip.type, null, null);
+        otherShip.addFuel(player.getShip().getFuel());
+        player.setShip(otherShip);
+        otherShip = new Ship(otherShip.type, null, null);
     }
 
     @Override
@@ -123,16 +153,16 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @Override
     public void lazyInitialize() {
         player = GameModel.getPlayer();
-        viewShip = player.getShip();
+        myShip = player.getShip();
+        otherShip = player.getShip();
         fuelCostLabel.setText(Integer.toString(fuelCost));
-        moneyLabel.setText(Integer.toString(player.getMoney()));
         updateFuel();
         updateShip();
         for (ShipType type: ShipType.values()) {
             HBox row = new HBox();
             row.getChildren().add(new Label(type.name()));
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-                viewShip = new Ship(type, null, null);
+                otherShip = new Ship(type, null, null);
                 for (Node node: shipList.getChildren()) {
                     node.setStyle("-fx-background-color: #FFFFFF;");
                 }
@@ -142,49 +172,74 @@ public class SpaceStationController implements Initializable, ControlledScreen {
             });
             shipList.getChildren().add(row);
         }
-        buyShip.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            if (viewShip.type.getCost() <= player.getMoney()) {
-                buyShip();
-                updateFuel();
-            }
-            updateShip();
-        });
-        viewMyShip.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            viewShip = player.getShip();
-            updateShip();
-        });
-        emptyFuel.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            player.getShip().emptyFuel();
+    }
+
+    @FXML
+    private void backButtonAction(ActionEvent event) {
+        parentController.setScreen("StarMap");
+    }
+
+    @FXML
+    private void viewPlayerCardButtonAction(ActionEvent event) {
+        // TODO
+        System.out.println("Viewing player card.");
+    }
+
+    @FXML
+    private void shopForPartsButtonAction(ActionEvent event) {
+        // TODO
+        System.out.println("Shopping for parts.");
+    }
+
+    @FXML
+    private void buyShipButtonAction(ActionEvent event) {
+        if (otherShip.type.getCost() <= player.getMoney()) {
+            buyShip();
             updateFuel();
-        });
-        add1Fuel.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            if (player.getMoney() >= fuelCost) {
-                player.getShip().addFuel(1);
-                player.subtractMoney(fuelCost);
-                updateFuel();
-            }
-        });
-        add10Fuel.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            if (player.getMoney() >= fuelCost * 10) {
-                player.getShip().addFuel(10);
-                player.subtractMoney(fuelCost * 10);
-                updateFuel();
-            }
-        });
-        add50Fuel.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            if (player.getMoney() >= fuelCost * 50) {
-                player.getShip().addFuel(50);
-                player.subtractMoney(fuelCost * 50);
-                updateFuel();
-            }
-        });
-        add100Fuel.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            if (player.getMoney() >= fuelCost * 100) {
-                player.getShip().addFuel(100);
-                player.subtractMoney(fuelCost * 100);
-                updateFuel();
-            }
-        });
+        }
+        updateShip();
+    }
+
+    @FXML
+    private void emptyFuelButtonAction(ActionEvent event) {
+        player.getShip().emptyFuel();
+        updateFuel();
+    }
+
+    @FXML
+    private void add1FuelButtonAction(ActionEvent event) {
+        if (player.getMoney() >= fuelCost) {
+            player.getShip().addFuel(1);
+            player.subtractMoney(fuelCost);
+            updateFuel();
+        }
+    }
+
+    @FXML
+    private void add10FuelButtonAction(ActionEvent event) {
+        if (player.getMoney() >= fuelCost * 10) {
+            player.getShip().addFuel(10);
+            player.subtractMoney(fuelCost * 10);
+            updateFuel();
+        }
+    }
+
+    @FXML
+    private void add50FuelButtonAction(ActionEvent event) {
+        if (player.getMoney() >= fuelCost * 50) {
+            player.getShip().addFuel(50);
+            player.subtractMoney(fuelCost * 50);
+            updateFuel();
+        }
+    }
+
+    @FXML
+    private void add100FuelButtonAction(ActionEvent event) {
+        if (player.getMoney() >= fuelCost * 100) {
+            player.getShip().addFuel(100);
+            player.subtractMoney(fuelCost * 100);
+            updateFuel();
+        }
     }
 
     @Override

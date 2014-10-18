@@ -1,8 +1,6 @@
 package spacetrader.items;
 
-import java.util.ArrayList;
 import javafx.scene.paint.Color;
-import spacetrader.market.TradeGood;
 
 /**
  * Ship class, what the player travels around and transports cargo in
