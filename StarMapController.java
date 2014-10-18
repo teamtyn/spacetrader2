@@ -28,12 +28,10 @@ public class StarMapController implements ControlledScreen {
     @FXML private Label fuelLabel;
     @FXML private Label rangeLabel;
     @FXML private Label hullLabel;
+    @FXML private Label dialogueField;
     @FXML private Rectangle playerRectangle;
     @FXML private Text playerText;
     @FXML private Button backButton;
-    @FXML private Button viewShipButton;
-    @FXML private Button damageShipButton;
-    @FXML private Button repairShipButton;
     @FXML private Button viewPlayerCardButton;
     
     private ScreensController parentController;
@@ -301,7 +299,7 @@ public class StarMapController implements ControlledScreen {
      * 
      */
     private void showPlayerCard() {
-        
+        // TODO
     }
 
     /**
@@ -372,26 +370,9 @@ public class StarMapController implements ControlledScreen {
     }
 
     @FXML
-    private void damageShipButtonAction(ActionEvent event) {
-        player.getShip().takeDamage(10);
-        hullLabel.setText(Integer.toString(player.getShip().getHull()));
-    }
-
-    @FXML
     private void viewPlayerCardButtonAction(ActionEvent event) {
         System.out.println("Viewing player card now.");
         showPlayerCard();
-    }
-
-    @FXML
-    private void viewShipButtonAction(ActionEvent event) {
-        System.out.println("Viewing ship now.");
-    }
-
-    @FXML
-    private void repairShipButtonAction(ActionEvent event) {
-        player.getShip().repairHull(10);
-        hullLabel.setText(Integer.toString(player.getShip().getHull()));
     }
     
     @Override

@@ -58,14 +58,23 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER" layoutX="200.0" prefHeight="120.0" prefWidth="740.0" spacing="75.0">
+            <HBox alignment="CENTER" layoutX="200.0" prefHeight="120.0" prefWidth="340.0" spacing="75.0">
                <children>
-                  <Button fx:id="viewShipButton" mnemonicParsing="false" onAction="#viewShipButtonAction" text="View Ship" />
-                  <Button fx:id="damageShipButton" mnemonicParsing="false" onAction="#damageShipButtonAction" text="Damage" />
-                  <Button fx:id="repairShipButton" mnemonicParsing="false" onAction="#repairShipButtonAction" text="Repair" />
                   <Button fx:id="viewPlayerCardButton" mnemonicParsing="false" onAction="#viewPlayerCardButtonAction" text="View Player Card" />
                </children>
             </HBox>
+            <ScrollPane layoutX="550.0" layoutY="10.0" prefHeight="100.0" prefWidth="400.0">
+               <content>
+                  <VBox prefHeight="80.0" prefWidth="380.0">
+                     <children>
+                        <Label fx:id="dialogueField" prefHeight="40.0" prefWidth="380.0" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content></ScrollPane>
          </children></Pane>
    </children>
 </AnchorPane>

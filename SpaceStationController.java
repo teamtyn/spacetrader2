@@ -3,18 +3,22 @@ package spacetrader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import spacetrader.items.*;
 import spacetrader.items.Ship.ShipType;
 import spacetrader.player.Player;
@@ -25,19 +29,20 @@ import spacetrader.player.Player;
  */
 public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML private Button buyShip;
+    @FXML private TextField confirmationField;
     @FXML private VBox shipList;
     @FXML private Label moneyLabel;
+    @FXML private Label shipDialogueField;
+    @FXML private Label fuelDialogueField;
     @FXML private Button viewPlayerCardButton;
     @FXML private Button shopForPartsButton;
 
-    @FXML private ProgressBar fuel;
+    @FXML private ProgressBar fuelProgress;
     @FXML private Label fuelLabel;
     @FXML private Label fuelCostLabel;
-    @FXML private Button emptyFuel;
-    @FXML private Button add1Fuel;
-    @FXML private Button add10Fuel;
-    @FXML private Button add50Fuel;
-    @FXML private Button add100Fuel;
+    @FXML private Button cancelFuelButton;
+    @FXML private Button fillFuelButton;
+    @FXML private Button confirmFuelButton;
 
     @FXML private Label otherShipLabel;
     @FXML private Pane otherShipPicturePane;
@@ -60,23 +65,31 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML private Label myFuelEfficiency;
     @FXML private Label myShipValue;
 
-
     private Ship myShip;
     private Ship otherShip;
     private final int fuelCost = 10;
+    private double tempFuel;
     private Player player;
+    private FadeTransition ft;
     private ScreensController parentController;
 
+    /**
+     * Determines which fuel buttons should currently be disabled
+     * Maintains the progress bar and labels associated with fuel
+     */
     public void updateFuel() {
-        fuel.setProgress(player.getShip().getFuel() / player.getShip().getFuelCapacity());
-        fuelLabel.setText(player.getShip().getFuel() + "/" + player.getShip().getFuelCapacity());
-        add1Fuel.setDisable(player.getShip().getMissingFuel() < 1);
-        add10Fuel.setDisable(player.getShip().getMissingFuel() < 10);
-        add50Fuel.setDisable(player.getShip().getMissingFuel() < 50);
-        add100Fuel.setDisable(player.getShip().getMissingFuel() < 100);
+        fuelProgress.setProgress(tempFuel / player.getShip().getFuelCapacity());
+        fuelLabel.setText(Math.round(tempFuel) + "/" + Math.round(player.getShip().getFuelCapacity()));
+        confirmFuelButton.setDisable(player.getShip().getFuel() == tempFuel);
+        cancelFuelButton.setDisable(player.getShip().getFuel() == tempFuel);
+        fillFuelButton.setDisable(tempFuel == player.getShip().getFuelCapacity());
         moneyLabel.setText(Integer.toString(player.getMoney()));
     }
 
+    /**
+     * Sets up the My Ship panel with the appropriate info
+     * Picture is currently a colored rectangle, TODO: Get Josh's 3D ship
+     */
     public void myShipStats() {
         myHullStrength.setText(Integer.toString(myShip.getHull()));
         myFuelCapacity.setText(Double.toString(myShip.getFuelCapacity()));
@@ -92,6 +105,10 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         myShipPicturePane.getChildren().add(myShipPicture);
     }
 
+    /**
+     * Sets up the Other Ship panel with the appropriate info
+     * Picture is currently a colored rectangle, TODO: Get Josh's 3D ship
+     */
     public void otherShipStats() {
         otherShipLabel.setText(otherShip.type.name());
         hullStrength.setText(Integer.toString(otherShip.getHull()));
@@ -105,22 +122,46 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         Rectangle otherShipPicture = new Rectangle(100, 10, 100, 100);
         otherShipPicture.setFill(otherShip.type.getColor());
         otherShipPicturePane.getChildren().add(otherShipPicture);
+        shipCost.setText(Integer.toString(otherShip.type.getCost()));
     }
 
+    /**
+     * Informs the user if they are not allowed to buy the currently selected ship
+     * Calls the methods to keep myShip and otherShip up to date
+     */
     public void updateShip() {
         if (otherShip.type == myShip.type) {
-            shipCost.setText("You already own this type of ship");
+            shipDialogueField.setText("You already own this type of ship!");
+            buyShip.setDisable(true);
+        } else if (otherShip.type.getCost() > player.getMoney()) {
+            shipDialogueField.setText("You cannot afford this ship!");
             buyShip.setDisable(true);
         } else {
-            shipCost.setText(Integer.toString(otherShip.type.getCost()));
+            shipDialogueField.setText("");
             buyShip.setDisable(false);
         }
         myShipStats();
         otherShipStats();
     }
 
+    /**
+     * Handles purchase of a ship
+     * Subtracts money from the player, transfers the parts, and then
+     *   resets all variables after giving the player their new ship
+     */
     public void buyShip() {
         player.subtractMoney(otherShip.type.getCost());
+        transferParts();
+        player.setShip(otherShip);
+        myShip = otherShip;
+        otherShip = new Ship(otherShip.type, null, null);
+    }
+
+    /**
+     * Transfers parts from player's old ship to new ship upon purchase
+     * TODO: Account for new ship not being able to fit any of these things, esp. goods
+     */
+    public void transferParts() {
         otherShip.addEscapePod(player.getShip().getEscapePod());
         otherShip.addInsurance(player.getShip().getInsurance());
         // TODO: 
@@ -137,42 +178,53 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         for (String goodName: goods.keySet()) {
             otherShip.storeTradeGood(goodName, goods.get(goodName));
         }
-        if (player.getShip().getFuel() > otherShip.getFuelCapacity()) {
-            double excessFuel = player.getShip().getFuel() - otherShip.getFuelCapacity(); 
-            System.out.println("Sold excess fuel (" + excessFuel + ") at market value for " + (excessFuel * fuelCost));
-            player.addMoney((int)(excessFuel * fuelCost));
-        }
-        otherShip.addFuel(player.getShip().getFuel());
-        player.setShip(otherShip);
-        otherShip = new Ship(otherShip.type, null, null);
     }
 
+    // Sets up the fade transition specifications
     @Override
-    public void initialize(URL url, ResourceBundle rb) {}
+    public void initialize(URL url, ResourceBundle rb) {
+        ft = new FadeTransition(Duration.millis(1000), fuelDialogueField);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.setAutoReverse(true);
+        ft.setCycleCount(2);
+    }
 
+    /**
+     * 
+     */
     @Override
     public void lazyInitialize() {
         player = GameModel.getPlayer();
         myShip = player.getShip();
         otherShip = player.getShip();
         fuelCostLabel.setText(Integer.toString(fuelCost));
+        tempFuel = myShip.getFuel();
         updateFuel();
         updateShip();
         for (ShipType type: ShipType.values()) {
+            int mult = type.ordinal();
             HBox row = new HBox();
-            row.getChildren().add(new Label(type.name()));
+            Label label = new Label(type.name());
+            label.setPrefSize(200, 25);
+            label.setAlignment(Pos.CENTER);
+            row.getChildren().add(label);
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
                 otherShip = new Ship(type, null, null);
                 for (Node node: shipList.getChildren()) {
                     node.setStyle("-fx-background-color: #FFFFFF;");
                 }
                 row.setStyle("-fx-background-color: #EEEEEE;");
+                row.setPrefSize(200, 25);
+                row.setLayoutY(mult * 25);
                 buyShip.setDisable(false);
                 updateShip();
             });
             shipList.getChildren().add(row);
         }
     }
+
+    // All button handlers below here
 
     @FXML
     private void backButtonAction(ActionEvent event) {
@@ -193,53 +245,32 @@ public class SpaceStationController implements Initializable, ControlledScreen {
 
     @FXML
     private void buyShipButtonAction(ActionEvent event) {
-        if (otherShip.type.getCost() <= player.getMoney()) {
+        if (confirmationField.getText().trim().equals(Integer.toString(otherShip.type.getCost()))) {
             buyShip();
             updateFuel();
+            updateShip();
+        } else {
+            shipDialogueField.setText("Please confirm the price of your new ship.");
         }
-        updateShip();
     }
 
     @FXML
-    private void emptyFuelButtonAction(ActionEvent event) {
-        player.getShip().emptyFuel();
+    private void confirmFuelButtonAction(ActionEvent event) {
+        player.getShip().addFuel(tempFuel);
+        player.subtractMoney((int)(tempFuel * fuelCost));
         updateFuel();
     }
 
     @FXML
-    private void add1FuelButtonAction(ActionEvent event) {
-        if (player.getMoney() >= fuelCost) {
-            player.getShip().addFuel(1);
-            player.subtractMoney(fuelCost);
-            updateFuel();
-        }
+    private void cancelFuelButtonAction(ActionEvent event) {
+        tempFuel = player.getShip().getFuel();
+        updateFuel();
     }
 
     @FXML
-    private void add10FuelButtonAction(ActionEvent event) {
-        if (player.getMoney() >= fuelCost * 10) {
-            player.getShip().addFuel(10);
-            player.subtractMoney(fuelCost * 10);
-            updateFuel();
-        }
-    }
-
-    @FXML
-    private void add50FuelButtonAction(ActionEvent event) {
-        if (player.getMoney() >= fuelCost * 50) {
-            player.getShip().addFuel(50);
-            player.subtractMoney(fuelCost * 50);
-            updateFuel();
-        }
-    }
-
-    @FXML
-    private void add100FuelButtonAction(ActionEvent event) {
-        if (player.getMoney() >= fuelCost * 100) {
-            player.getShip().addFuel(100);
-            player.subtractMoney(fuelCost * 100);
-            updateFuel();
-        }
+    private void fillFuelButtonAction(ActionEvent event) {
+        tempFuel = player.getShip().getFuelCapacity() - player.getShip().getFuel();
+        updateFuel();
     }
 
     @Override

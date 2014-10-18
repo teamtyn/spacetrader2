@@ -148,7 +148,23 @@
                   </HBox>
                </children>
             </VBox>
-            <ScrollPane layoutX="550.0" layoutY="10.0" prefHeight="100.0" prefWidth="400.0" />
+            <ScrollPane layoutX="550.0" layoutY="10.0" prefHeight="100.0" prefWidth="400.0">
+               <content>
+                  <VBox prefHeight="80.0" prefWidth="380.0">
+                     <children>
+                        <Label fx:id="shipDialogueField" prefHeight="40.0" prefWidth="380.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="fuelDialogueField" prefHeight="40.0" prefWidth="380.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content></ScrollPane>
          </children>
       </Pane>
       <Pane fx:id="viewShipDetails" layoutX="650.0" layoutY="35.0" prefHeight="555.0" prefWidth="300.0" style="-fx-background-color: gainsboro;">
@@ -264,27 +280,46 @@
          <children>
             <Pane fx:id="fuelPane" layoutY="370.0" prefHeight="185.0" prefWidth="300.0" style="-fx-background-color: gainsboro;">
                <children>
-                  <Label fx:id="fuelCostLabel" layoutX="96.0" layoutY="9.0" prefHeight="17.0" prefWidth="76.0" text="0" />
-                  <Label layoutX="19.0" layoutY="9.0" text="Costs per unit:" />
-                  <Button fx:id="add50Fuel" layoutX="94.0" layoutY="58.0" mnemonicParsing="false" onAction="#add50FuelButtonAction" text="50" />
-                  <Button fx:id="add100Fuel" layoutX="135.0" layoutY="58.0" mnemonicParsing="false" onAction="#add100FuelButtonAction" text="100" />
-                  <Button fx:id="emptyFuel" layoutX="115.0" layoutY="96.0" mnemonicParsing="false" onAction="#emptyFuelButtonAction" text="empty" />
-                  <ProgressBar fx:id="fuel" layoutX="12.0" layoutY="30.0" prefWidth="200.0" progress="0.0" />
-                  <Label fx:id="fuelLabel" layoutX="89.0" layoutY="33.0" text="0/0">
+                  <ProgressBar fx:id="fuelProgress" layoutX="10.0" layoutY="110.0" prefHeight="20.0" prefWidth="280.0" progress="0.0" />
+                  <Label fx:id="fuelLabel" alignment="CENTER" layoutX="100.0" layoutY="110.0" prefHeight="20.0" prefWidth="100.0" text="x/x" />
+                  <HBox alignment="CENTER" layoutY="135.0" prefHeight="50.0" prefWidth="300.0" spacing="40.0">
+                     <children>
+                        <Button fx:id="fillFuelButton" mnemonicParsing="false" onAction="#fillFuelButtonAction" prefHeight="30.0" prefWidth="60.0" text="Fill" />
+                        <Button fx:id="cancelFuelButton" mnemonicParsing="false" onAction="#cancelFuelButtonAction" prefHeight="30.0" prefWidth="60.0" text="Cancel" />
+                        <Button fx:id="confirmFuelButton" mnemonicParsing="false" onAction="#confirmFuelButtonAction" prefHeight="30.0" prefWidth="60.0" text="Confirm" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutY="70.0" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Price Per Gallon:">
+                           <HBox.margin>
+                              <Insets left="95.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="fuelCostLabel" prefHeight="40.0" prefWidth="80.0" />
+                     </children>
+                  </HBox>
+                  <Label alignment="CENTER" prefHeight="60.0" prefWidth="300.0" text="Fueling Station">
                      <font>
-                        <Font size="8.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="add10Fuel" layoutX="53.0" layoutY="58.0" mnemonicParsing="false" onAction="#add10FuelButtonAction" text="10" />
-                  <Button fx:id="add1Fuel" layoutX="17.0" layoutY="58.0" mnemonicParsing="false" onAction="#add1FuelButtonAction" text="1" />
                </children>
             </Pane>
             <Pane fx:id="shipsToBuy" layoutX="50.0" prefHeight="250.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="shipList" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: gainsboro;" />
+                  <VBox fx:id="shipList" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: gainsboro;">
+                     <children>
+                        <HBox prefHeight="25.0" prefWidth="200.0" />
+                     </children></VBox>
                </children>
             </Pane>
-            <Button fx:id="buyShip" layoutX="117.0" layoutY="295.0" mnemonicParsing="false" onAction="#buyShipButtonAction" prefHeight="30.0" prefWidth="66.0" text="Buy Ship" />
+            <HBox alignment="CENTER" layoutY="290.0" prefHeight="50.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="confirmationField" />
+                  <Button fx:id="buyShip" mnemonicParsing="false" onAction="#buyShipButtonAction" prefHeight="30.0" prefWidth="66.0" text="Buy Ship" />
+               </children>
+            </HBox>
          </children>
       </Pane>
       <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonAction" text="GO BACK" />
