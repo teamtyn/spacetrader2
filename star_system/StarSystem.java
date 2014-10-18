@@ -12,6 +12,7 @@ public class StarSystem {
     private final String name;
     private final Point2D coordinates;
     private Planet[] planets;
+    private final double size;
     private final Color color;
     public boolean hasPlayer;
     private Random random = new Random();
@@ -21,10 +22,9 @@ public class StarSystem {
         this.coordinates = coordinates;
         hasPlayer = false;
         planets = new Planet[random.nextInt(6) + 4];
-        for (int i = 0; i < planets.length; i++) {
-            planets[i] = new Planet();
-        }
-        color = Color.rgb(random.nextInt(56) + 200, random.nextInt(106) + 150, random.nextInt(25)); // TODO: Josh make fancier
+        setOrbits();
+        size = random.nextInt(10) + 5;
+        color = Color.rgb(random.nextInt(5) + 250, random.nextInt(55) + 200, random.nextInt(100));
     }
 
     public String getName() {
@@ -35,8 +35,25 @@ public class StarSystem {
         return planets;
     }
     
+    public double getSize() {
+        return size;
+    }
+    
     public Color getColor(){
         return color;
+    }
+    
+    public void setOrbits() {
+        double minDist = 20;
+        double remDist = 80;
+        for(int i = 0; i < planets.length; i++) {
+            double size = 2 * random.nextDouble() + 1;
+            double offset = (planets.length - i != 0) ? remDist / (2 * (planets.length - i)) : remDist / 2;
+            double distance = minDist + size + offset + (offset / 3) * random.nextGaussian();
+            minDist += 2 * offset + size;
+            remDist -= 2 * offset + size; 
+            planets[i] = new Planet(distance);
+        }
     }
 
     public Planet destroyPlanet(int i) {

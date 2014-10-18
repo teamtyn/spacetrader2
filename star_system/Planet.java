@@ -10,7 +10,9 @@ import javafx.scene.paint.Color;
  */
 public class Planet {
     private final String name;
-    private final int orbitDistance;
+    private final double orbitDistance;
+    private final double orbitSpeed;
+    private final double axialTilt;
     private Government government;
     public enum TechLevel {PREAGRICULTURAL, AGRICULTURAL, 
                            MEDIEVAL, RENAISSANCE, 
@@ -29,16 +31,21 @@ public class Planet {
     private TechLevel techLevel;
     private Random random = new Random();
     private final Color color;
-    private final int size;
+    private final double size;
     public boolean hasPlayer;
 
-    public Planet() {
+    public Planet(double orbitDistance) {
         resourceLevel = ResourceLevel.values()[random.nextInt(ResourceLevel.values().length)];
         techLevel = TechLevel.values()[random.nextInt(TechLevel.values().length)];
         circumstance = Circumstance.values()[random.nextInt(Circumstance.values().length)];
-        size = random.nextInt(5) + 1;
+        
         color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)); // TODO: Josh make fancier
-        orbitDistance = random.nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
+        this.orbitDistance = orbitDistance;
+        size = 2 * random.nextDouble() + 1;
+        orbitSpeed = Math.sqrt(1/(20 * orbitDistance));
+        axialTilt = 360 * random.nextDouble();
+        
+        
         government = new Government();
         name = PlanetNames.getName(government);
         hasPlayer = false;
@@ -48,11 +55,19 @@ public class Planet {
         return color;
     }
 
-    public int getOrbitDistance(){
+    public double getOrbitSpeed() {
+        return  orbitSpeed;
+    }
+    
+    public double getOrbitDistance(){
         return orbitDistance;
     }
+    
+    public double getAxialTilt() {
+        return axialTilt;
+    }
 
-    public int getSize() {
+    public double getSize() {
         return size;
     }
 

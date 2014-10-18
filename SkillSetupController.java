@@ -1,19 +1,19 @@
 package spacetrader;
-import spacetrader.player.*;
-
 import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.*;
+
+import spacetrader.player.*;
 
 /**
  * FXML Controller class
@@ -250,14 +250,20 @@ public class SkillSetupController implements Initializable, ControlledScreen {
             player.setName(nameField.getText());
         }
         updatePlayerSkills();
-        String closingMessage;
-        closingMessage = "~~~PLAYER INFORMATION~~~\nNAME: " + player.getName() + "\nSKILLS: \n";
-        for(Skill skill : player.getSkills()) {
-            closingMessage = closingMessage + skill.getType() + " - " + skill.getValue() + "\n";
-        }
-        System.out.println("This is the end of our game. Look out for the sequel: '" + player.getName() + " Clicks Buttons II: Even More Buttons!'");
-        System.out.println(closingMessage);
-        parentController.setScreen("StarMap");
+        GameModel model = GameModel.getGameModel();
+        model.setPlayer(player);
+        model.generateSystems();
+        parentController.loadScreen("UniverseMap", "UniverseMap.fxml");
+//        System.out.println(parentController);
+//        String closingMessage;
+//        closingMessage = "~~~PLAYER INFORMATION~~~\nNAME: " + player.getName() + "\nSKILLS: \n";
+//        for(Skill skill : player.getSkills()) {
+//            closingMessage = closingMessage + skill.getType() + " - " + skill.getValue() + "\n";
+//        }
+        //System.out.println("This is the end of our game. Look out for the sequel: '" + player.getName() + " Clicks Buttons II: Even More Buttons!'");
+        //System.out.println(closingMessage);
+        //parentController.setScreen("StarMap");
+        parentController.setScreen("UniverseMap");
     }
     @FXML
     private void plusButtonAction(ActionEvent event) {
