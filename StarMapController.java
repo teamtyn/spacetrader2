@@ -12,7 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import spacetrader.market.MarketSetup;
+import spacetrader.market.MarketPlace;
 import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.Planet.TechLevel;
@@ -39,7 +39,7 @@ public class StarMapController implements ControlledScreen {
     private ScreensController parentController;
     private StarSystem[] systems;
     private Player player;
-    public static MarketSetup marketSetup;
+    public static MarketPlace marketSetup;
 
     @Override
     public String toString() {
@@ -92,7 +92,6 @@ public class StarMapController implements ControlledScreen {
             for (Planet planet : system.getPlanets()) {
 
                 // Draw circle for planet
-                // TODO: Make better? 3D?
                 double planetX = system.getCoordinateX() + (planet.getOrbitDistance() * Math.cos(degrees * 0.0174532925));
                 double planetY = system.getCoordinateY() + (planet.getOrbitDistance() * Math.sin(degrees * 0.0174532925));
                 Circle planetCircle = new Circle(planetX, planetY, planet.getSize(), planet.getColor());
@@ -271,7 +270,7 @@ public class StarMapController implements ControlledScreen {
         // Button to go to the market
         Button marketButton = new Button("BUY THINGS");
         marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            MarketSetup market = new MarketSetup(planet);
+            MarketPlace market = new MarketPlace(planet);
             if (ScreensController.isInitialized("Market")) {
                 ((MarketController)ScreensController.getController("Market")).display();
             }

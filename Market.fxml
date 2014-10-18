@@ -68,12 +68,12 @@
                <content>
                   <VBox prefHeight="80.0" prefWidth="380.0">
                      <children>
-                        <Label fx:id="priceField" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="380.0">
+                        <Label fx:id="priceField" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="380.0" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="dialogueField" prefHeight="40.0" prefWidth="380.0">
+                        <Label fx:id="dialogueField" prefHeight="40.0" prefWidth="380.0" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font>

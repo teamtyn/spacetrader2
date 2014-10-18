@@ -258,15 +258,6 @@ public class Ship {
         return cargoBay.getCapacity() - cargoBay.getCurrentSize();
     }
 
-    // EVERYTHING THAT IS WRONG WITH THE WORLD
-    public ArrayList<TradeGood> getCargo() {
-        ArrayList<TradeGood> cargo = new ArrayList<>();
-        for (String goodName: cargoBay.getGoods().keySet()) {
-            cargo.add(new TradeGood(TradeGood.fromNameToType(goodName), cargoBay.getGoods().get(goodName)));
-        }
-        return cargo;
-    }
-    
     public void emptyFuel(){
         fuel = 0;
     }

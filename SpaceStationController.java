@@ -1,6 +1,7 @@
 package spacetrader;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import spacetrader.items.*;
 import spacetrader.items.Ship.ShipType;
-import spacetrader.market.TradeGood;
 import spacetrader.player.Player;
 
 /**
@@ -103,8 +103,9 @@ public class SpaceStationController implements Initializable, ControlledScreen {
         for (Weapon weapon: player.getShip().getWeapons()) {
             viewShip.addWeapon(weapon);
         }
-        for (TradeGood good: player.getShip().getCargo()) {
-            viewShip.storeTradeGood(good.type.name, good.getQuantity());
+        HashMap<String, Integer> goods = player.getShip().getCargoBay().getGoods();
+        for (String goodName: goods.keySet()) {
+            viewShip.storeTradeGood(goodName, goods.get(goodName));
         }
         if (player.getShip().getFuel() > viewShip.getFuelCapacity()) {
             double excessFuel = player.getShip().getFuel() - viewShip.getFuelCapacity(); 

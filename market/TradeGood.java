@@ -125,14 +125,6 @@ public class TradeGood {
         this.price = calcPrice();
         this.quantity = calcQuantity();
     }
-    
-    public TradeGood(GoodType type, int quantity) {
-        this.type = type;
-        // Setting planet to null is BAD!
-        this.planet = null;
-        this.price = 0;
-        this.quantity = quantity;
-    }
 
     /*
      * 

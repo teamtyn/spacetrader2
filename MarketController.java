@@ -1,6 +1,6 @@
 package spacetrader;
 
-import spacetrader.market.MarketSetup;
+import spacetrader.market.MarketPlace;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -38,7 +38,7 @@ public class MarketController implements Initializable, ControlledScreen {
     @FXML private Label priceField;
 
     private ScreensController parentController;
-    public static MarketSetup market;
+    public static MarketPlace market;
     private FadeTransition ft;
     private GoodsList buyList;
     private GoodsList sellList;
@@ -130,7 +130,7 @@ public class MarketController implements Initializable, ControlledScreen {
         if (player.getMoney() > good.getPrice()) {
             if (player.getShip().storeTradeGood(good.type.name, 1) > 0) {
                 player.setMoney(player.getMoney() - good.getPrice());
-                market.decreaseQuantity(good, 1);
+                market.changeQuantity(good, -1);
             } else {
                 dialogueField.setText("You're out of cargo space!");
                 if (ft != null) {
@@ -155,7 +155,7 @@ public class MarketController implements Initializable, ControlledScreen {
     public void sell(TradeGood good) {
         if (player.getShip().removeTradeGood(good.type.name, 1)) {
             player.setMoney(player.getMoney() + good.getPrice());
-            market.increaseQuantity(good, 1);
+            market.changeQuantity(good, 1);
         }
         display();
     }
@@ -190,7 +190,7 @@ public class MarketController implements Initializable, ControlledScreen {
      * GoodsRow is a HBox that contains two labels and a buy/sell button
      */
     private class GoodsRow extends HBox {
-        public GoodsRow(TradeGood good, boolean isABuyRow, boolean isDisabled) {
+        public GoodsRow(TradeGood good, boolean isABuyRow, boolean isDisabled, boolean notAllowedHere) {
             this.getChildren().add(new Label(good.type.name));
             Label quantityLabel;
             Button button;
@@ -208,7 +208,15 @@ public class MarketController implements Initializable, ControlledScreen {
             this.getChildren().add(button);
             this.setOnMouseEntered((MouseEvent event) -> {
                 generateChart(good.type.name, good.getPrice());
-                priceField.setText(good.type.name + " costs " + good.getPrice() + " per unit.");
+                if (notAllowedHere && isABuyRow) {
+                    priceField.setText(good.type.name + " cannot be bought here due to "
+                                            + player.getPlanet().getName() + "'s tech level being too low.");
+                } else if (notAllowedHere && !isABuyRow) {
+                    priceField.setText(good.type.name + " cannot be sold here due to "
+                                            + player.getPlanet().getName() + "'s tech level being too low.");
+                } else {
+                    priceField.setText(good.type.name + " costs " + good.getPrice() + " per unit.");
+                }
             });
             this.setId("goods-row");
             this.setAlignment(Pos.CENTER_RIGHT);
@@ -232,6 +240,7 @@ public class MarketController implements Initializable, ControlledScreen {
         public final void listGoods() {
             for (TradeGood good: goods) {
                 boolean isDisabled = false;
+                boolean notAllowedHere = false;
                 if (good.getPrice() <= 0) {
                     isDisabled = true;
                 }
@@ -241,14 +250,15 @@ public class MarketController implements Initializable, ControlledScreen {
                 if (!isABuyList && cargoBay.getGoods().get(good.type.name) <= 0) {
                     isDisabled = true;
                 }
-                
                 if (isABuyList && !market.getBuyable().contains(good)) {
                     isDisabled = true;
+                    notAllowedHere = true;
                 }
                 if (!isABuyList && !market.getSellable().contains(good)) {
                     isDisabled = true;
+                    notAllowedHere = true;
                 }
-                GoodsRow row = new GoodsRow(good, isABuyList, isDisabled);
+                GoodsRow row = new GoodsRow(good, isABuyList, isDisabled, notAllowedHere);
                 this.addChild(row);
             }
         }

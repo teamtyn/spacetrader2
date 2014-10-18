@@ -2,7 +2,7 @@ package spacetrader.star_system;
 
 import javafx.scene.paint.Color;
 import spacetrader.GameModel;
-import spacetrader.market.MarketSetup;
+import spacetrader.market.MarketPlace;
 
 /**
  * Planet is defined by its government, resource level, circumstance, and tech level
@@ -27,7 +27,7 @@ public class Planet {
     private final Circumstance circumstance;
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
-    private final MarketSetup market;
+    private final MarketPlace market;
     private final Color color;
     private final int size;
     public boolean hasPlayer;
@@ -42,10 +42,10 @@ public class Planet {
         government = new Government();
         name = PlanetNames.getName(government);
         hasPlayer = false;
-        market = new MarketSetup(this);
+        market = new MarketPlace(this);
     }
 
-    public MarketSetup getMarket() {
+    public MarketPlace getMarket() {
         return market;
     }
     
