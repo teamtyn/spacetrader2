@@ -146,11 +146,12 @@ public class SpaceStationController implements Initializable, ControlledScreen {
 
     /**
      * Handles purchase of a ship
-     * Subtracts money from the player, transfers the parts, and then
+     * Subtracts/Adds money from/to the player, transfers the parts, and then
      *   resets all variables after giving the player their new ship
      */
     public void buyShip() {
         player.subtractMoney(otherShip.type.getCost());
+        player.addMoney(myShip.type.getCost());
         transferParts();
         player.setShip(otherShip);
         myShip = otherShip;
@@ -246,6 +247,8 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML
     private void buyShipButtonAction(ActionEvent event) {
         if (confirmationField.getText().trim().equals(Integer.toString(otherShip.type.getCost()))) {
+            shipDialogueField.setText("");
+            confirmationField.setText("");
             buyShip();
             updateFuel();
             updateShip();
@@ -256,8 +259,13 @@ public class SpaceStationController implements Initializable, ControlledScreen {
 
     @FXML
     private void confirmFuelButtonAction(ActionEvent event) {
-        player.getShip().addFuel(tempFuel);
-        player.subtractMoney((int)(tempFuel * fuelCost));
+        int newFuel = (int)(tempFuel - player.getShip().getFuel());
+        fuelDialogueField.setText("Purchased " + newFuel + " gallons of fuel.");
+        if (ft != null) {
+            ft.play();
+        }
+        player.getShip().addFuel(newFuel);
+        player.subtractMoney((int)(newFuel * fuelCost));
         updateFuel();
     }
 
@@ -269,7 +277,17 @@ public class SpaceStationController implements Initializable, ControlledScreen {
 
     @FXML
     private void fillFuelButtonAction(ActionEvent event) {
-        tempFuel = player.getShip().getFuelCapacity() - player.getShip().getFuel();
+        int potentialNewFuel = (int)(player.getShip().getFuelCapacity() - player.getShip().getFuel());
+        int canAffordFuel = player.getMoney() / fuelCost;
+        if (canAffordFuel >= potentialNewFuel) {
+            tempFuel = player.getShip().getFuelCapacity();
+        } else {
+            tempFuel = player.getShip().getFuel() + canAffordFuel;
+            fuelDialogueField.setText("Can only afford " + canAffordFuel + " gallons of fuel.");
+            if (ft != null) {
+                ft.play();
+            }
+        }
         updateFuel();
     }
 
