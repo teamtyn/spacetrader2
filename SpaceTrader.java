@@ -14,7 +14,7 @@ public class SpaceTrader extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ScreensController mainContainer = new ScreensController();
-        GameModel.setRandom(new Random());
+        GameModel.initialize();
         mainContainer.loadScreen("Menu", "Menu.fxml");
         mainContainer.loadScreen("SkillSetup", "SkillSetup.fxml");
         mainContainer.loadScreen("StarMap", "StarMap.fxml");

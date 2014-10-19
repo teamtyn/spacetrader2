@@ -1,5 +1,6 @@
 package spacetrader.star_system;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import spacetrader.GameModel;
 
@@ -7,7 +8,7 @@ import spacetrader.GameModel;
  * Government is defined by its type, leader, and level of anger
  * @author David Purcell
  */
-public class Government {
+public class Government implements Serializable {
     public enum Type {ANARCHY, ARISTOCRACY, CAPITALIST, COMMUNIST,
                           CORPORATE, DEMOCRACY, FASCIST, MERITOCRACY,
                           MONARCHY, OLIGARCHY, TECHNOCRACY, THEOCRACY};
@@ -17,7 +18,7 @@ public class Government {
     private int anger;
 
     public Government() {
-        type = Type.values()[GameModel.random.nextInt(Type.values().length)];
+        type = Type.values()[GameModel.getRandom().nextInt(Type.values().length)];
         leaders = new HashMap<>();
         //setUpLeaderMap();
         //leader = leaders.get(type);

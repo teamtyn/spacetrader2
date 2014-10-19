@@ -1,9 +1,11 @@
 package spacetrader.items;
 
+import java.io.Serializable;
+
 /**
  *
  * @author David Purcell
  */
-class Insurance {
+class Insurance implements Serializable {
     
 }

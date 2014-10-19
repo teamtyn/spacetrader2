@@ -1,12 +1,13 @@
 package spacetrader.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
 import spacetrader.items.*;
 import spacetrader.star_system.*;
 
-public class Player {
+public class Player implements Serializable {
     private String name;
     private List<Skill> skills;
     // Used to determine player's location in the universe as a whole

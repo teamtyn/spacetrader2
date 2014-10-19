@@ -1,5 +1,6 @@
 package spacetrader.market;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +34,11 @@ import spacetrader.star_system.Planet;
  * If ie, cr, or er == -1, means never
  * @author Ryan Burns
  */
-public class TradeGood {
+public class TradeGood implements Serializable {
     public GoodType type;
     private final Planet planet;
     private int price;
-    private  int quantity;
+    private int quantity;
     // Price multipliers from government type of the planet
     private final static Map<Government.Type, Double> govPrice;
     static {
@@ -109,7 +110,7 @@ public class TradeGood {
             this.basePrice = basePrice;
             this.baseQuantity = baseQuantity;
             this.ipl = ipl;
-            this.var = 1 + (((GameModel.random.nextInt((2 * var) + 1)) - var) / 100);
+            this.var = 1 + (((GameModel.getRandom().nextInt((2 * var) + 1)) - var) / 100);
             this.ie = ie;
             this.cr = cr;
             this.er = er;

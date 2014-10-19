@@ -1,6 +1,8 @@
 package spacetrader.player;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
     private String type;
     private int value;
 

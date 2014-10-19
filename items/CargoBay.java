@@ -1,5 +1,6 @@
 package spacetrader.items;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import spacetrader.market.TradeGood;
 
@@ -7,7 +8,7 @@ import spacetrader.market.TradeGood;
  * A CargoBay is defined by its capacity, current size, and contents (which are TradeGoods)
  * @author David Purcell
  */
-public class CargoBay {
+public class CargoBay implements Serializable {
     private int capacity;
     private int currentSize;
     private final HashMap<String, Integer> goods;

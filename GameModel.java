@@ -1,5 +1,6 @@
 package spacetrader;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,33 +13,48 @@ import spacetrader.star_system.StarSystemNames;
 /**
  * Acts as the singleton for the game, notably holding the universal player
  */
-public class GameModel {
-    public static Random random = new Random();
-    public static int day;
-    private static Player player;
-    private static final StarSystem[] systems = generateSystems();
+public class GameModel implements Serializable {
+    private static GameModel state;
+    private static final Random random = new Random();
+
+    private int day;
+    private Player player;
+    private final StarSystem[] systems;
 
     private GameModel() {
         // Cannot be instantiated outside of this class
+        systems = generateSystems();
+    }
+    
+    public static void initialize() {
+        state = new GameModel();
     }
 
     public static void setPlayer(Player player) {
-        GameModel.player = player;
-    }
-
-    public static void setRandom(Random random) {
-        GameModel.random = random;
+        state.player = player;
     }
 
     public static Player getPlayer() {
-        return player;
+        return state.player;
     }
 
     public static StarSystem[] getSystems() {
-        return systems;
+        return state.systems;
+    }
+    
+    public static Random getRandom() {
+        return random;
     }
 
-    private static StarSystem[] generateSystems() {
+    public static int getDay() {
+        return state.day;
+    }
+
+    public static void setDay(int day) {
+        state.day = day;
+    }
+
+    private StarSystem[] generateSystems() {
         StarSystem[] generatedSystems = new StarSystem[random.nextInt(5) + 7];
         List<Point2D> positions = new ArrayList<>();
         for (int x = 100; x <= 860; x += 190) {

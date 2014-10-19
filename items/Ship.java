@@ -1,12 +1,13 @@
 package spacetrader.items;
 
+import java.io.Serializable;
 import javafx.scene.paint.Color;
 
 /**
  * Ship class, what the player travels around and transports cargo in
  * @author David Purcell
  */
-public class Ship {
+public class Ship implements Serializable {
     public ShipType type;
     private final Gadget[] gadgets;
     private final Shield[] shields;

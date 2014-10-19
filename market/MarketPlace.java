@@ -1,5 +1,6 @@
 package spacetrader.market;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import spacetrader.star_system.Planet;
 
@@ -10,7 +11,7 @@ import spacetrader.star_system.Planet;
  *   -sellable are all the goods that are allowed to be sold here (via tech level)
  * @author Ryan Burns
  */
-public class MarketPlace {
+public class MarketPlace implements Serializable {
     private final ArrayList<TradeGood> goods;
     private final ArrayList<TradeGood> buyable;
     private final ArrayList<TradeGood> sellable;
