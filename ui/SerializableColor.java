@@ -13,7 +13,7 @@ public class SerializableColor implements Serializable {
         this.color = color;
     }
     
-    public Color toJavaFX() {
+    public Color getColor() {
         return color;
     }
     
