@@ -33,10 +33,10 @@ public class CargoBay implements Serializable {
     }
 
     /**
-     * If room to add that quantity, increment the size and the quantity of the specified good
+     * Add as many goods as possible up to specified quantity
      * @param goodName The good to be stored in the cargo bay
-     * @param quantity The quantity of the good to be stored in the cargo bay
-     * @return The number of goods successfully added
+     * @param quantity The quantity to be ideally stored in the cargo bay
+     * @return The number of goods added
      */
     public int addTradeGood(String goodName, int quantity) {
         if ((quantity + currentSize) > capacity) {
@@ -51,29 +51,18 @@ public class CargoBay implements Serializable {
     }
 
     /**
-     * Returns whether the cargo bay can remove a given quantity
-     * @param quantity The quantity to be potentially removed
-     * @return Whether or not the cargo bay can afford to lose this new quantity
-     */
-    private boolean canRemoveQuantity(int quantity) {
-        return (currentSize - quantity) >= 0;
-    }
-
-    /**
-     * Remove X of them, where X is as many goods as possible up to specified quantity
+     * Remove as many goods as possible up to specified quantity
      * @param goodName The good to be removed from the cargo bay
-     * @param quantity The quantity to be removed from the cargo bay
-     * @return Whether or not it was able to removed that quantity of the good
+     * @param quantity The quantity to be ideally removed from the cargo bay
+     * @return The number of goods removed
      */
-    public boolean removeTradeGood(String goodName, int quantity) {
-        boolean removed = false;
-        if (canRemoveQuantity(quantity)) {
-            removed = true;
-            currentSize -= quantity;
-            int oldNum = goods.get(goodName);
-            goods.replace(goodName, oldNum - quantity);
+    public int removeTradeGood(String goodName, int quantity) {
+        if (quantity > goods.get(goodName)) {
+            quantity = goods.get(goodName);
         }
-        return removed;
+        currentSize -= quantity;
+        goods.replace(goodName, goods.get(goodName) - quantity);
+        return quantity;
     }
 
     public HashMap<String, Integer> getGoods() {

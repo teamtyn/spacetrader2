@@ -153,7 +153,7 @@ public class MarketController implements Initializable, ControlledScreen {
      * @param good The good to be sold
      */
     public void sell(TradeGood good) {
-        if (player.getShip().removeTradeGood(good.type.name, 1)) {
+        if (player.getShip().removeTradeGood(good.type.name, 1) > 0) {
             player.setMoney(player.getMoney() + good.getPrice());
             market.changeQuantity(good, 1);
         }

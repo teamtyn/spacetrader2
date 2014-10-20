@@ -249,7 +249,7 @@ public class Ship implements Serializable {
         return cargoBay.addTradeGood(goodName, quantity);
     }
 
-    public boolean removeTradeGood(String goodName, int quantity) {
+    public int removeTradeGood(String goodName, int quantity) {
         return cargoBay.removeTradeGood(goodName, quantity);
     }
 

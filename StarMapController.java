@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import spacetrader.items.CargoBay;
 import spacetrader.market.MarketPlace;
 import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
@@ -24,20 +25,19 @@ import spacetrader.ui.Point;
  */
 public class StarMapController implements ControlledScreen {
     @FXML private Pane systemPane;
-    @FXML private Pane shipDataPane;
     @FXML private Label fuelLabel;
     @FXML private Label rangeLabel;
     @FXML private Label hullLabel;
     @FXML private Label dialogueField;
+    @FXML private Label dayLabel;
     @FXML private Rectangle playerRectangle;
     @FXML private Text playerText;
     @FXML private Button backButton;
-    @FXML private Button viewPlayerCardButton;
     
     private ScreensController parentController;
     private StarSystem[] systems;
     private Player player;
-    public static MarketPlace marketSetup;
+    public static MarketPlace market;
 
     @Override
     public String toString() {
@@ -268,7 +268,7 @@ public class StarMapController implements ControlledScreen {
         // Button to go to the market
         Button marketButton = new Button("BUY THINGS");
         marketButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent MouseEvent) -> {
-            MarketPlace market = new MarketPlace(planet);
+            market = new MarketPlace(planet);
             if (ScreensController.isInitialized("Market")) {
                 ((MarketController)ScreensController.getController("Market")).display();
             }
@@ -293,13 +293,6 @@ public class StarMapController implements ControlledScreen {
         playerText.setFill(Color.WHITE);
         systemPane.getChildren().add(playerRectangle);
         systemPane.getChildren().add(playerText);
-    }
-
-    /**
-     * 
-     */
-    private void showPlayerCard() {
-        // TODO
     }
 
     /**
@@ -336,6 +329,9 @@ public class StarMapController implements ControlledScreen {
                 player.getPlanet().hasPlayer = false;
             }
 
+            GameModel.setDay(GameModel.getDay() + 5);
+            dayLabel.setText(Integer.toString(GameModel.getDay()));
+
             // System you are traveling to has player
             system.hasPlayer = true;
             // Set system to target system and null planet.  Travel to planet later
@@ -348,9 +344,6 @@ public class StarMapController implements ControlledScreen {
         }
     }
 
-    // TODO: Animations?
-    // TODO: Random Encounters (pirates / police)?
-    // TODO: Here or model?
     /**
      * Method for the player to travel to a given planet
      * @param planet The planet to be traveled to
@@ -363,18 +356,66 @@ public class StarMapController implements ControlledScreen {
             player.getPlanet().hasPlayer = false;
         }
 
+        GameModel.setDay(GameModel.getDay() + 1);
+        dayLabel.setText(Integer.toString(GameModel.getDay()));
+        randomEvents();
+
         // Planet you are traveling to has player
         planet.hasPlayer = true;
         player.setPlanet(planet);
         viewPlanet(planet, system);
     }
 
+    /**
+     * Prints random events to the dialogueField of StarMap
+     */
+    private void randomEvents() {
+        int rand = GameModel.getRandom().nextInt(12);
+        CargoBay myBay = player.getShip().getCargoBay();
+        if (rand == 0) {
+            int stolen = 100;
+            stolen -= 10 * myBay.getGoods().get("Firearms");
+            if (stolen < 0) {
+                stolen = 0;
+            }
+            stolen = player.attemptToSubtractMoney(stolen);
+            dialogueField.setText("Pirate attack! They got away with " + stolen + " coins!");
+        } else if (rand == 1) {
+            if (myBay.removeTradeGood("Narcotics", myBay.getGoods().get("Narcotics")) > 0) {
+                dialogueField.setText("Police Raid! They confiscated all of your narcotics!");
+            }
+        } else if (rand == 2) {
+            if (myBay.removeTradeGood("Narcotics", 1) > 0) {
+                dialogueField.setText("You had a relapse! You used some of your narcotics!");
+            }
+        } else if (rand == 3) {
+            dialogueField.setText("A fellow trader lends you 10 coins as a sign of good will!");
+            player.addMoney(10);
+        } else if (rand == 4) {
+            int lostFood = 5;
+            if (lostFood > myBay.getGoods().get("Food")) {
+                lostFood = myBay.getGoods().get("Food");
+            }
+            if (lostFood != 0) {
+                dialogueField.setText("You spiraled into a deep depression and tried to eat"
+                                    + " your way out of it! You have lost " + lostFood + " food!");
+            }
+        } else if (rand == 5) {
+            if ((myBay.getGoods().get("Robots") > 1) && (myBay.addTradeGood("Robots", 1) > 0)) {
+                dialogueField.setText("You taught your robots how to love, but maybe"
+                                        + " a little too well! You have gained 1 robot!");
+            }
+        } else {
+            dialogueField.setText("");
+        }
+    }
+
     @FXML
     private void viewPlayerCardButtonAction(ActionEvent event) {
-        System.out.println("Viewing player card now.");
-        showPlayerCard();
+        // TODO
+        //parentController.setScreen("PlayerCard");
     }
-    
+
     @Override
     public void lazyInitialize() {
         systems = GameModel.getSystems();
@@ -385,6 +426,7 @@ public class StarMapController implements ControlledScreen {
         fuelLabel.setText(Double.toString(player.getShip().getFuel()));
         rangeLabel.setText(Integer.toString(player.getShip().getRange()));
         hullLabel.setText(Integer.toString(player.getShip().getHull()));
+        dayLabel.setText(Integer.toString(GameModel.getDay()));
         viewUniverse();
     }
 

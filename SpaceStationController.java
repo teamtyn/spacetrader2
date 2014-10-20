@@ -235,7 +235,7 @@ public class SpaceStationController implements Initializable, ControlledScreen {
     @FXML
     private void viewPlayerCardButtonAction(ActionEvent event) {
         // TODO
-        System.out.println("Viewing player card.");
+        //parentController.setScreen("PlayerCard");
     }
 
     @FXML

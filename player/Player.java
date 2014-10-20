@@ -29,12 +29,24 @@ public class Player implements Serializable {
     public void setMoney(int money) {
         this.money = money;
     }
-    
+
     // Subtract specified amount of money
     public void subtractMoney(int money) {
         this.money -= money;
     }
-    
+
+    // Subtracts as much money as it can
+    public int attemptToSubtractMoney(int money) {
+        int removed = money;
+        if (money > this.money) {
+            removed = this.money;
+            this.money = 0;
+        } else {
+            this.money -= money;
+        }
+        return removed;
+    }
+
     // Add specified amount of money
     public void addMoney(int money) {
         this.money += money;
