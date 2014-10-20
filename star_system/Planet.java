@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javafx.scene.paint.Color;
 import spacetrader.GameModel;
 import spacetrader.market.MarketPlace;
+import spacetrader.ui.SerializableColor;
 
 /**
  * Planet is defined by its government, resource level, circumstance, and tech level
@@ -29,7 +30,7 @@ public class Planet implements Serializable {
     private ResourceLevel resourceLevel;
     private TechLevel techLevel;
     private final MarketPlace market;
-    private final Color color;
+    private final SerializableColor color;
     private final int size;
     public boolean hasPlayer;
 
@@ -38,7 +39,9 @@ public class Planet implements Serializable {
         techLevel = TechLevel.values()[GameModel.getRandom().nextInt(TechLevel.values().length)];
         circumstance = new Circumstance();
         size = GameModel.getRandom().nextInt(5) + 1;
-        color = Color.rgb(GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256), GameModel.getRandom().nextInt(256)); // TODO: Josh make fancier
+        color = new SerializableColor(Color.rgb(GameModel.getRandom().nextInt(256),
+                GameModel.getRandom().nextInt(256),
+                GameModel.getRandom().nextInt(256))); // TODO: Josh make fancier
         orbitDistance = GameModel.getRandom().nextInt(30) + 20; // Distance between planet and star, TODO: need to ensure orbits are unique
         government = new Government();
         name = PlanetNames.getName(government);
@@ -51,7 +54,7 @@ public class Planet implements Serializable {
     }
     
     public Color getColor() {
-        return color;
+        return color.getColor();
     }
 
     public int getOrbitDistance(){

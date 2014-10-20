@@ -2,6 +2,7 @@ package spacetrader.items;
 
 import java.io.Serializable;
 import javafx.scene.paint.Color;
+import spacetrader.ui.SerializableColor;
 
 /**
  * Ship class, what the player travels around and transports cargo in
@@ -44,7 +45,7 @@ public class Ship implements Serializable {
         private int cargoBaySlots;
         private final double fuelEfficiency;
         private final int cost;
-        private final Color color;
+        private final SerializableColor color;
 
         ShipType(int hullStrength, double fuelCapacity, int gadgetSlots, int shieldSlots, int weaponSlots, int cargoBaySlots, double fuelEfficiency, int cost, Color color) {
             this.hullStrength = hullStrength;
@@ -55,10 +56,10 @@ public class Ship implements Serializable {
             this.cargoBaySlots = cargoBaySlots;
             this.fuelEfficiency = fuelEfficiency;
             this.cost = cost;
-            this.color = color;
+            this.color = new SerializableColor(color);
         }
         public Color getColor() {
-            return color;
+            return color.getColor();
         }
         public int getCost() {
             return cost;

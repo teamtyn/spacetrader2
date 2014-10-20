@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import spacetrader.GameModel;
+import spacetrader.ui.SerializableColor;
 
 /**
  * StarSystem contains an array of planets, and resides at some coordinates
@@ -13,7 +14,7 @@ public class StarSystem implements Serializable {
     private final String name;
     private final Point2D coordinates;
     private final Planet[] planets;
-    private final Color color;
+    private final SerializableColor color;
     public boolean hasPlayer;
 
     public StarSystem(String name, Point2D coordinates) {
@@ -25,7 +26,10 @@ public class StarSystem implements Serializable {
             planets[i] = new Planet();
         }
         planets[GameModel.getRandom().nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
-        color = Color.rgb(GameModel.getRandom().nextInt(56) + 200, GameModel.getRandom().nextInt(106) + 150, GameModel.getRandom().nextInt(25));
+        color = new SerializableColor(Color.rgb(
+                GameModel.getRandom().nextInt(56) + 200,
+                GameModel.getRandom().nextInt(106) + 150,
+                GameModel.getRandom().nextInt(25)));
     }
 
     public String getName() {
@@ -37,7 +41,7 @@ public class StarSystem implements Serializable {
     }
     
     public Color getColor(){
-        return color;
+        return color.getColor();
     }
 
     public Planet destroyPlanet(int i) {
