@@ -93,6 +93,7 @@ public class TradeGood implements Serializable {
         public int ttp;
         public int basePrice;
         // All set to 10 for now
+        // TODO: Be able to change quantities
         public int baseQuantity;
         public int ipl;
         public int var;

@@ -370,7 +370,8 @@ public class StarMapController implements ControlledScreen {
      * Prints random events to the dialogueField of StarMap
      */
     private void randomEvents() {
-        int rand = GameModel.getRandom().nextInt(12);
+        // Increase parameter to decrease frequency, never go below 6
+        int rand = GameModel.getRandom().nextInt(6);
         CargoBay myBay = player.getShip().getCargoBay();
         if (rand == 0) {
             int stolen = 100;
@@ -383,10 +384,14 @@ public class StarMapController implements ControlledScreen {
         } else if (rand == 1) {
             if (myBay.removeTradeGood("Narcotics", myBay.getGoods().get("Narcotics")) > 0) {
                 dialogueField.setText("Police Raid! They confiscated all of your narcotics!");
+            } else {
+                dialogueField.setText("");
             }
         } else if (rand == 2) {
             if (myBay.removeTradeGood("Narcotics", 1) > 0) {
                 dialogueField.setText("You had a relapse! You used some of your narcotics!");
+            } else {
+                dialogueField.setText("");
             }
         } else if (rand == 3) {
             dialogueField.setText("A fellow trader lends you 10 coins as a sign of good will!");
@@ -399,11 +404,15 @@ public class StarMapController implements ControlledScreen {
             if (lostFood != 0) {
                 dialogueField.setText("You spiraled into a deep depression and tried to eat"
                                     + " your way out of it! You have lost " + lostFood + " food!");
+            } else {
+                dialogueField.setText("");
             }
         } else if (rand == 5) {
             if ((myBay.getGoods().get("Robots") > 1) && (myBay.addTradeGood("Robots", 1) > 0)) {
                 dialogueField.setText("You taught your robots how to love, but maybe"
                                         + " a little too well! You have gained 1 robot!");
+            } else {
+                dialogueField.setText("");
             }
         } else {
             dialogueField.setText("");

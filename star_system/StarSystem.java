@@ -25,6 +25,7 @@ public class StarSystem implements Serializable {
         for (int i = 0; i < planets.length; i++) {
             planets[i] = new Planet();
         }
+        // TODO: REMOVE THIS. Leaving in for now because fixing it before demo 7 isn't worth it. -Ryan
         planets[GameModel.getRandom().nextInt(planets.length-1)].setTechLevel(Planet.TechLevel.HIGHTECH);
         color = new SerializableColor(Color.rgb(
                 GameModel.getRandom().nextInt(56) + 200,
