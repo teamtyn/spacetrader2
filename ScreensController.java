@@ -41,6 +41,7 @@
 
 package spacetrader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
@@ -142,6 +143,12 @@ public class ScreensController extends StackPane {
                             fadeIn.play();
                 }, new KeyValue(opacity, 0.0)));
                 fade.play();
+                try {
+                    GameModel.save(new ByteArrayOutputStream());
+                } catch (java.io.IOException e) {
+                    System.err.println("Test game save failed.");
+                    e.printStackTrace();
+                }
             } else {
                 setOpacity(0.0);
                 controller.lazyInitialize();
