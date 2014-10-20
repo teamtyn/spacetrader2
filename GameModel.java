@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import javafx.geometry.Point2D;
 import spacetrader.player.Player;
 import spacetrader.star_system.StarSystem;
 import spacetrader.star_system.StarSystemNames;
+import spacetrader.ui.Point;
 
 /**
  * Acts as the singleton for the game, notably holding the universal player
@@ -73,10 +73,10 @@ public class GameModel implements Serializable {
 
     private StarSystem[] generateSystems() {
         StarSystem[] generatedSystems = new StarSystem[random.nextInt(5) + 7];
-        List<Point2D> positions = new ArrayList<>();
+        List<Point> positions = new ArrayList<>();
         for (int x = 100; x <= 860; x += 190) {
             for (int y = 200; y <= 500; y += 150) {
-                positions.add(new Point2D(x + random.nextInt(100) - 50, y + random.nextInt(100) - 50));
+                positions.add(new Point(x + random.nextInt(100) - 50, y + random.nextInt(100) - 50));
             }
         }
         Collections.shuffle(positions, random);

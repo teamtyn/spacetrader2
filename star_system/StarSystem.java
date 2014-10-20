@@ -1,9 +1,9 @@
 package spacetrader.star_system;
 
 import java.io.Serializable;
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import spacetrader.GameModel;
+import spacetrader.ui.Point;
 import spacetrader.ui.SerializableColor;
 
 /**
@@ -12,12 +12,12 @@ import spacetrader.ui.SerializableColor;
  */
 public class StarSystem implements Serializable {
     private final String name;
-    private final Point2D coordinates;
+    private final Point coordinates;
     private final Planet[] planets;
     private final SerializableColor color;
     public boolean hasPlayer;
 
-    public StarSystem(String name, Point2D coordinates) {
+    public StarSystem(String name, Point coordinates) {
         this.name = name;
         this.coordinates = coordinates;
         hasPlayer = false;
@@ -53,7 +53,7 @@ public class StarSystem implements Serializable {
         return dead;
     }
 
-    public Point2D getCoordinates() {
+    public Point getCoordinates() {
         return coordinates;
     }
 

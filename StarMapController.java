@@ -2,7 +2,6 @@ package spacetrader;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +16,7 @@ import spacetrader.player.Player;
 import spacetrader.star_system.Planet;
 import spacetrader.star_system.Planet.TechLevel;
 import spacetrader.star_system.StarSystem;
+import spacetrader.ui.Point;
 
 /**
  * FXML Controller for the generation of the universe
@@ -62,7 +62,7 @@ public class StarMapController implements ControlledScreen {
         // If the player doesn't have a system or planet, just draw them somewhere
         // TODO: Randomize start location or pick a noob spot
         if (player.getSystem() == null && player.getPlanet() == null) {
-            player.setCoordinates(new Point2D(100, 100));
+            player.setCoordinates(new Point(100, 100));
             drawPlayer(player.getX(), player.getY());
         }
 
@@ -78,7 +78,7 @@ public class StarMapController implements ControlledScreen {
 
             // If player is in this system, draw them
             if (system.hasPlayer && player.getPlanet() == null) {
-                player.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
+                player.setCoordinates(new Point(system.getCoordinateX(), system.getCoordinateY()));
                 drawPlayer(player.getX() - 50, player.getY() - 25);
             }
 
@@ -138,7 +138,7 @@ public class StarMapController implements ControlledScreen {
         
         // If the player is in the system, but has not traveled to a planet yet, draw player at arbitrary point
         if (system.hasPlayer && player.getPlanet() == null) {
-            player.setCoordinates(new Point2D(100, 100));
+            player.setCoordinates(new Point(100, 100));
             drawPlayer(player.getX(), player.getY());
         }
 
@@ -343,7 +343,7 @@ public class StarMapController implements ControlledScreen {
             player.setPlanet(null);
 
             // Set new player coordinates, only currently used for distance calculations from system to system
-            player.setCoordinates(new Point2D(system.getCoordinateX(), system.getCoordinateY()));
+            player.setCoordinates(new Point(system.getCoordinateX(), system.getCoordinateY()));
             viewSystem(system);
         }
     }
@@ -380,7 +380,7 @@ public class StarMapController implements ControlledScreen {
         systems = GameModel.getSystems();
         player = GameModel.getPlayer();
         player.setSystem(systems[0]);
-        player.setCoordinates(new Point2D(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
+        player.setCoordinates(new Point(systems[0].getCoordinateX(), systems[0].getCoordinateY()));
         systems[0].hasPlayer = true;
         fuelLabel.setText(Double.toString(player.getShip().getFuel()));
         rangeLabel.setText(Integer.toString(player.getShip().getRange()));

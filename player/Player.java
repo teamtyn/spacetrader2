@@ -3,15 +3,15 @@ package spacetrader.player;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.geometry.Point2D;
 import spacetrader.items.*;
 import spacetrader.star_system.*;
+import spacetrader.ui.Point;
 
 public class Player implements Serializable {
     private String name;
     private List<Skill> skills;
     // Used to determine player's location in the universe as a whole
-    private Point2D coord;
+    private Point coord;
     private StarSystem system;
     private Planet planet;
     private Ship ship;
@@ -20,7 +20,7 @@ public class Player implements Serializable {
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
-        coord = new Point2D(0, 0);
+        coord = new Point(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
         money = 10000;
     }
@@ -64,7 +64,7 @@ public class Player implements Serializable {
     }
     
     // Setter for coordinates
-    public void setCoordinates(Point2D newLoc) {
+    public void setCoordinates(Point newLoc) {
         coord = newLoc;
     }
     
@@ -106,7 +106,7 @@ public class Player implements Serializable {
     }
 
     // Getter for coordinates
-    public Point2D getCoordinates() {
+    public Point getCoordinates() {
         return coord;
     }
 
