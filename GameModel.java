@@ -1,5 +1,10 @@
 package spacetrader;
 
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +33,18 @@ public class GameModel implements Serializable {
     
     public static void initialize() {
         state = new GameModel();
+    }
+    
+    public static void load(InputStream in) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream objectIn = new ObjectInputStream(in)) {
+            state = GameModel.class.cast(objectIn.readObject());
+        }
+    }
+    
+    public static void save(OutputStream out) throws IOException {
+        try (ObjectOutputStream objectOut = new ObjectOutputStream(out)) {
+            objectOut.writeObject(state);
+        }
     }
 
     public static void setPlayer(Player player) {
