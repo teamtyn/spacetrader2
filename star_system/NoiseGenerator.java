@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
  * @author Administrator
  */
 public class NoiseGenerator {
-    public enum NoiseMode {NONE, SQUARE, CUBE};
+    public enum NoiseMode {NONE, SQUARE, CUBE, ABS};
     
     private static final double F3 = 1.0/3.0;
     private static final double G3 = 1.0/6.0;
@@ -239,12 +239,20 @@ public class NoiseGenerator {
                         break;
                     case CUBE: noiseBuffer[j][i] = 0.5f * (1 + (float) Math.pow(noiseBuffer[j][i], 3));
                         break;
+                    case ABS: noiseBuffer[j][i] = (float) Math.abs(noiseBuffer[j][i]);
                 }
             }
         }
     }
     
-    public Image getDiffuse(int scaleFactor) {
+    public Image getDiffuse() {
+        int scaleFactor;
+        if (width * height >= 500000) {
+            scaleFactor = 2;
+        } else {
+            scaleFactor = 1;
+        }
+        
         int widthScaled = (int) Math.ceil((double)width / scaleFactor);
         int heightScaled = (int) Math.ceil((double)height / scaleFactor); 
         WritableImage img = new WritableImage(widthScaled, heightScaled);
@@ -258,6 +266,9 @@ public class NoiseGenerator {
     }
     
     public Image getNormal(double intensity) {
+        if (width * height < 500000) {
+            return null;
+        }
         WritableImage img = new WritableImage(width, height);
         PixelWriter writer = img.getPixelWriter();
         for (int j = 0; j < height; j++) {
@@ -282,22 +293,7 @@ public class NoiseGenerator {
         }
         return img;
     }
-    
-    public Image getIllum(double intensity, double threshold) {
-        WritableImage img = new WritableImage(width, height);
-        PixelWriter writer = img.getPixelWriter();
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                double value = 0;
-                if (noiseBuffer[j][i] <= threshold) {
-                    value = intensity * (noiseBuffer[j][i] / threshold);
-                }
-                writer.setColor(i, j, Color.color(value, value, value));
-            }
-        }
-        return img;
-    }
-    
+
     private static class Grad {
         double x, y, z;
 

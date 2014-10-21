@@ -124,14 +124,12 @@ public class StarSystemView extends Sphere {
         }
     }
     
-//    public void setServiceExecutor() {
-//        for (PlanetView planet : planetViews) {
-//            planet.setServiceExecutor(exe);
-//        }
-//    }
-    
     public void updateTextures(int width, int height) {
-        ExecutorService es = Executors.newSingleThreadExecutor();
+        ExecutorService es = Executors.newSingleThreadExecutor((Runnable runnable) -> {
+            Thread thread = Executors.defaultThreadFactory().newThread(runnable);
+            thread.setDaemon(true);
+            return thread;
+        });
         for (PlanetView planet : planetViews) {
             planet.updateTextures(width, height, es);
         }

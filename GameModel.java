@@ -59,6 +59,9 @@ public class GameModel {
         for (int i = 0; i < systems.length; i++) {
             systems[i] = new StarSystem(StarSystemNames.getName(), positions.remove(0));
         }
+        player.setSystem(systems[0]);
+        player.setPlanet(player.getSystem().getPlanets()[0]);
+        player.addKnownPlanet(player.getPlanet());
     }
     
 }

@@ -76,6 +76,12 @@ public class StarSystem {
     public double getCoordinateY() {
         return coordinates.getY();
     }
+    
+    public double getSystemDistance(StarSystem other) {
+        double dx = other.getCoordinateX() - coordinates.getX();
+        double dy = other.getCoordinateY() - coordinates.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 
     @Override
     public String toString() {

@@ -194,13 +194,17 @@ public class Ship {
     public double getFuel() {
         return fuel;
     }
-    public int getRange() {
-        return (int)(fuel * type.fuelEfficiency);
+    
+    public double getFuelEfficiency() {
+        return type.fuelEfficiency;
+    }
+    public double getRange() {
+        return fuel * type.fuelEfficiency;
     }
 
     // Other functionality
 
-    public boolean travelDistance(int distance) {
+    public boolean travelDistance(double distance) {
         boolean success = false;
         if (distance <= getRange()) {
             fuel = Math.round(fuel - distance / type.fuelEfficiency);

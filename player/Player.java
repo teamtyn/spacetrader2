@@ -3,12 +3,14 @@ package spacetrader.player;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
+import spacetrader.GameModel;
 import spacetrader.items.*;
 import spacetrader.star_system.*;
 
 public class Player {
     private String name;
     private List<Skill> skills;
+    private List<Planet> knownPlanets;
     // Used to determine player's location in the universe as a whole
     private Point2D playerCoord;
     private StarSystem system;
@@ -18,6 +20,7 @@ public class Player {
     public Player() {
         name = "NoName";
         skills = new ArrayList<>();
+        knownPlanets = new ArrayList<>();
         playerCoord = new Point2D(0, 0);
         ship = new Ship(Ship.ShipType.Gnat, null, null);
     }
@@ -50,11 +53,11 @@ public class Player {
         playerCoord = newLoc;
     }
     
-    public void setPlayerSystem(StarSystem system) {
+    public void setSystem(StarSystem system) {
         this.system = system;
     }
     
-    public void setPlayerPlanet(Planet planet) {
+    public void setPlanet(Planet planet) {
         this.planet = planet;
     }
 
@@ -94,11 +97,11 @@ public class Player {
         return playerCoord.getY();
     }
     
-    public StarSystem getPlayerSystem() {
+    public StarSystem getSystem() {
         return system;
     }
     
-    public Planet getPlayerPlanet() {
+    public Planet getPlanet() {
         return planet;
     }
 
@@ -110,5 +113,13 @@ public class Player {
             }
         }
         return null;
+    }
+    
+    public boolean knowsPlanet(Planet planet) {
+        return knownPlanets.contains(planet);
+    }
+    
+    public void addKnownPlanet(Planet planet) {
+        knownPlanets.add(planet);
     }
 }

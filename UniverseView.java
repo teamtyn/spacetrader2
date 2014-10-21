@@ -26,6 +26,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.CullFace;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
@@ -53,6 +54,7 @@ public class UniverseView {
     private final Xform baseXform;
     private final PerspectiveCamera camera;
     private final Sphere highlight;
+    private final Box updater;
 
     public UniverseView() {
         Group root = new Group();
@@ -74,13 +76,23 @@ public class UniverseView {
         camera.setFarClip(10000);
         subScene.setCamera(camera);
         
+        updater = new Box(1,1,1);
+        updater.setTranslateX(200000);
+        Timeline update = new Timeline(new KeyFrame(Duration.seconds(0), new KeyValue(updater.rotateProperty(), 0)), new KeyFrame(Duration.seconds(1), new KeyValue(updater.rotateProperty(),360)));
+        update.setCycleCount(Timeline.INDEFINITE);
+        update.play();
+        
         highlight = new Sphere();
         highlight.setMaterial(new PhongMaterial(Color.WHITE));
         highlight.setCullFace(CullFace.FRONT);
         NO_SHADE.getScope().add(highlight);
         highlight.setVisible(false);
+        highlight.setCache(false);
         
-        root.getChildren().addAll(NO_SHADE, AMBIENT, highlight);
+        
+        
+        
+        root.getChildren().addAll(NO_SHADE, AMBIENT, highlight, updater);
         buildCamera(root);
         buildSystems(root);
         buildSkybox(root);
@@ -175,7 +187,6 @@ public class UniverseView {
         StarSystem[] systems = GameModel.getGameModel().getSystems();
         for (StarSystem system : systems) {
             StarSystemView systemView = new StarSystemView(system);
-//            systemView.setServiceExecutor(null);
             root.getChildren().add(systemView.getSystemXform());
             systemViews.add(systemView);
         }

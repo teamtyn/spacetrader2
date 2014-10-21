@@ -7,42 +7,28 @@
 package spacetrader;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
-import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
-import spacetrader.star_system.Planet;
+import spacetrader.player.Player;
 import spacetrader.star_system.PlanetView;
-import spacetrader.star_system.StarSystem;
 import spacetrader.star_system.StarSystemView;
 
 /**
@@ -55,18 +41,23 @@ public class UniverseMapController extends AnimationTimer implements Initializab
     public static final int UNIVERSE_WIDTH = 900;
     public static final int UNIVERSE_HEIGHT = 600;
     
-    //private int scope;
-    //private IntegerProperty scope;
-    
     private Sphere highlighted;
     private StarSystemView selectedSystem;
     private PlanetView selectedPlanet;
     private ScreensController parentController;
     private UniverseView universeView;
     private SubScene subScene;
-    //private PerspectiveCamera camera;
+    
     @FXML private Pane subScenePane;
-    //@FXML private ImageView test;
+    @FXML private Pane infoPane;
+    @FXML private Label systemField;
+    @FXML private Label distanceField;
+    @FXML private Label fuelCostField;
+    @FXML private Label planetField;
+    @FXML private Label governmentField;
+    @FXML private Label techLevelField;
+    @FXML private Label environmentField;
+    @FXML private Button travelButton;
     
     double mousePosX;
     double mousePosY;
@@ -80,125 +71,16 @@ public class UniverseMapController extends AnimationTimer implements Initializab
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        infoPane.setTranslateY(193);
+        travelButton.translateYProperty().bind(infoPane.translateYProperty());
+        
         universeView = new UniverseView();
         subScene = universeView.getSubScene();
         subScenePane.getChildren().add(subScene);
-        //camera = universeView.getCamera();
-        //scope = new SimpleIntegerProperty(0);
-        //initScope();
+        //flashCamera();
         handleMouse();
         start();
     }
-    
-    /*public void initScope() {
-        scope.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (newValue.intValue() == 0) {
-                    ArrayList<KeyValue> universeKeyValues = new ArrayList<>();
-                    universeKeyValues.add(
-                        new KeyValue(camera.translateZProperty(), -2000));
-                    universeKeyValues.add(
-                        new KeyValue(universeView.getTopXform().rx.angleProperty(), 0));
-                    universeKeyValues.add(
-                        new KeyValue(universeView.getTopXform().ry.angleProperty(), 0));
-                    if (selectedSystem != null) {
-                        for (PlanetView planetView : selectedSystem.getPlanetViews()) {
-                            universeKeyValues.add(
-                                new KeyValue(planetView.getAxisXform().t.xProperty(), 0));
-                            universeKeyValues.add(
-                                new KeyValue(planetView.getAxisXform().s.xProperty(), 0));
-                            universeKeyValues.add(
-                                new KeyValue(planetView.getAxisXform().s.yProperty(), 0));
-                            universeKeyValues.add(
-                                new KeyValue(planetView.getAxisXform().s.zProperty(), 0));
-                        }
-                    }
-                    Timeline toUniverseView = new Timeline(
-                        new KeyFrame(Duration.seconds(2), "Universe View Transition", (ActionEvent e) -> {
-                            //Do nothing.
-                        }, universeKeyValues
-                    ));
-                    toUniverseView.play();
-                } else if (newValue.intValue() == 1) {
-                    universeView.getTopXform().rz.angleProperty().unbind();
-                    selectedSystem.getLight().setLightOn(true);
-                    ArrayList<KeyValue> systemKeyValues = new ArrayList<>();
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getTopXform().t.xProperty(),
-                            selectedSystem.getSystem().getCoordinateX(), Interpolator.EASE_OUT));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getTopXform().t.yProperty(),
-                            selectedSystem.getSystem().getCoordinateY(), Interpolator.EASE_OUT));
-                    systemKeyValues.add(
-                        new KeyValue(camera.translateZProperty(),
-                            -200, Interpolator.EASE_OUT));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getTopXform().rx.angleProperty(),
-                            selectedSystem.getSystemXform().rx.getAngle()));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getTopXform().ry.angleProperty(),
-                            selectedSystem.getSystemXform().ry.getAngle()));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().t.xProperty(), 0));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().rx.angleProperty(), 0));
-                    systemKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().ry.angleProperty(), 0));
-                    for (PlanetView planetView : selectedSystem.getPlanetViews()) {
-                        systemKeyValues.add(
-                            new KeyValue(planetView.getAxisXform().t.xProperty(),
-                                planetView.getPlanet().getOrbitDistance()));
-                        systemKeyValues.add(
-                            new KeyValue(planetView.getAxisXform().s.xProperty(), 1));
-                        systemKeyValues.add(
-                            new KeyValue(planetView.getAxisXform().s.yProperty(), 1));
-                        systemKeyValues.add(
-                            new KeyValue(planetView.getAxisXform().s.zProperty(), 1));
-                    }
-                    Timeline toSystemView = new Timeline(
-                        new KeyFrame(Duration.seconds(2), "System View Transition", (ActionEvent e) -> {
-                            //Do nothing.
-                        }, systemKeyValues
-                    ));
-                    toSystemView.play();
-                } else if (newValue.intValue() == 2) {
-                    DoubleProperty angleOffset = new SimpleDoubleProperty(universeView.getTopXform().rz.getAngle() -
-                        selectedPlanet.getOrbitXform().rz.getAngle());
-                    universeView.getTopXform().rz.angleProperty().bind(selectedPlanet.getOrbitXform().rz.angleProperty().add(angleOffset));
-                    ArrayList<KeyValue> planetKeyValues = new ArrayList<>();
-                    planetKeyValues.add(
-                        new KeyValue(angleOffset, 0));
-                    planetKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().rx.angleProperty(), -100));
-                    planetKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().ry.angleProperty(), 0));
-                    planetKeyValues.add(
-                        new KeyValue(universeView.getBaseXform().t.xProperty(), selectedPlanet.getAxisXform().t.getX()));
-                    planetKeyValues.add(    
-                        new KeyValue(camera.translateZProperty(), -30));
-//                    for (PlanetView planetView : selectedSystem.getPlanetViews()) {
-//                        if (planetView != selectedPlanet) {
-//                            planetKeyValues.add(
-//                                new KeyValue(planetView.getAxisXform().t.xProperty(), 0));
-////                            planetKeyValues.add(
-////                                new KeyValue(planetView.getAxisXform().s.xProperty(), 0));
-////                            planetKeyValues.add(
-////                                new KeyValue(planetView.getAxisXform().s.yProperty(), 0));
-////                            planetKeyValues.add(
-////                                new KeyValue(planetView.getAxisXform().s.zProperty(), 0));
-//                        }
-//                    }
-                    Timeline toPlanetView = new Timeline(
-                        new KeyFrame(Duration.seconds(2), "Planet View Transition", (ActionEvent e) -> {
-                            //Do nothing.
-                        }, planetKeyValues
-                    ));
-                    toPlanetView.play();
-                }
-            }
-        });
-    }*/
     
     @Override
     public void handle(long now) {
@@ -232,15 +114,18 @@ public class UniverseMapController extends AnimationTimer implements Initializab
                     if (selectedPlanet == null) {
                         if (system != selectedSystem) {
                             setHighlighted(system);
+                            showSystemInfo(system);
                         }
                     } else if (system == selectedSystem) {
                         setHighlighted(system);
+                        showSystemInfo(system);
                     }
                 } else if (intersect instanceof PlanetView) {
                     PlanetView planet = (PlanetView) intersect;
                     if (selectedSystem != null && selectedPlanet == null) {
                         if (selectedSystem.containsPlanet(planet)) {
                             setHighlighted(planet);
+                            showPlanetInfo(planet);
                         }
                     }
                 }
@@ -250,6 +135,15 @@ public class UniverseMapController extends AnimationTimer implements Initializab
         EventHandler<MouseEvent> bodyDeselect = (MouseEvent event) -> {
             highlighted = null;
             universeView.getHighlight().setVisible(false);
+            if (selectedPlanet == null) {
+                if (selectedSystem == null) {
+                    hideInfo();
+                } else {
+                    showSystemInfo(selectedSystem);
+                }
+            } else {
+                showPlanetInfo(selectedPlanet);
+            }
         };
         
         for (StarSystemView systemView : universeView.getSystemViews()) {
@@ -297,28 +191,6 @@ public class UniverseMapController extends AnimationTimer implements Initializab
                         }
                     }
                 }
-////                if (scope.get() <= 1) {
-////                    if (pickResult.getIntersectedNode() instanceof StarSystemView) {
-////                       selectedSystem = (StarSystemView) pickResult.getIntersectedNode();
-////                       System.out.println(scope.get());
-////                       scope.set(1);
-////                       System.out.println(scope.get());
-////                    }
-////                }
-////                if (scope.get() == 1) {
-////                    if (selectedSystem.getPlanetViews().contains(pickResult.getIntersectedNode())) {
-////                        selectedPlanet = (PlanetView) pickResult.getIntersectedNode();
-////                        Image img = ((PhongMaterial)selectedPlanet.getMaterial()).getDiffuseMap();
-////                        test.setImage(img);
-////                        System.out.println(test.getImage());
-////                        scope.set(2);
-////                    }
-////                } else if (scope.get() == 2) {
-////                    if (pickResult.getIntersectedNode() == selectedSystem) {
-////                        selectedPlanet = null;
-////                        scope.set(1);
-////                    }
-////                }
             }
         });
         
@@ -348,163 +220,76 @@ public class UniverseMapController extends AnimationTimer implements Initializab
         });
     }
     
-    /*public void handleMouse() {
-        SubScene subScene = universeView.getSubScene();
-        HashMap<Sphere, StarSystem> starMap = universeView.getStarMap();
-        HashMap<Sphere, Planet> planetMap = universeView.getPlanetMap();
-        PerspectiveCamera camera = universeView.getCamera();
-        Sphere highlight = universeView.getHighlight();
+    public void flashCamera() {
+        Timeline hideInfo = new Timeline(
+            new KeyFrame(Duration.seconds(0.1),
+                new KeyValue(universeView.getTopXform().rx.angleProperty(), 45)
+            )
+        );
+        hideInfo.play();
+    }
+    
+    public void hideInfo() {
+        Timeline hideInfo = new Timeline(
+            new KeyFrame(Duration.seconds(0.1),
+                new KeyValue(infoPane.translateYProperty(), 193)
+            )
+        );
+        hideInfo.play();
+    }
+    
+    public void showSystemInfo(StarSystemView system) {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(4);
         
-        EventHandler<MouseEvent> bodySelect;
-        bodySelect = (MouseEvent event) -> {
-            PickResult pickResult = event.getPickResult();
-            if (pickResult != null && pickResult.getIntersectedNode() instanceof Sphere) {
-                StarSystem system = starMap.get((Sphere) pickResult.getIntersectedNode());
-                if (system != null && system != selectedSystem) {
-                    Sphere star = (Sphere) pickResult.getIntersectedNode();
-                    universeView.getHighlight().setRadius(1.2 * star.getRadius());
-//                    highlight.setTranslateX(starMap.get(star).getCoordinateX());
-//                    highlight.setTranslateY(starMap.get(star).getCoordinateY());
-//                    highlight.setTranslateZ(0);
-                    highlighted = star;
-                    highlight.setVisible(true);
-                }
-                if (scope == 1) {
-                    Planet p = planetMap.get((Sphere) pickResult.getIntersectedNode());
-                    if (p != null && p != selectedPlanet && Arrays.asList(selectedSystem.getPlanets()).contains(p)) {
-                        Sphere planet = (Sphere) pickResult.getIntersectedNode();
-                        highlight.setRadius(1.2 * planet.getRadius());
-//                        highlight.setTranslateX(planet.getLocalToSceneTransform().getTx());
-//                        highlight.setTranslateY(planet.getLocalToSceneTransform().getTy());
-//                        highlight.setTranslateZ(planet.getLocalToSceneTransform().getTz());
-                        highlighted = planet;
-                        highlight.setVisible(true);
-                    }
-                }
-            }
-        };
+        travelButton.setDisable(true);
         
-        EventHandler<MouseEvent> bodyDeselect = event -> {
-                highlighted = null;
-                highlight.setVisible(false);
-        };
+        Player player = GameModel.getGameModel().getPlayer();
+        double distance = player.getSystem().getSystemDistance(system.getSystem());
+        double fuelCost = distance / player.getShip().getFuelEfficiency();
         
-        for (Sphere star : starMap.keySet()) {
-                star.setOnMouseEntered(bodySelect);
-                star.setOnMouseExited(bodyDeselect);
+        systemField.setText(system.getSystem().getName());
+        distanceField.setText(nf.format(distance) + " pc");
+        fuelCostField.setText(nf.format(fuelCost) + " gallons");
+        Timeline systemInfo = new Timeline(
+            new KeyFrame(Duration.seconds(0.1),
+                new KeyValue(infoPane.translateYProperty(), 128)
+            )
+        );
+        systemInfo.play();
+    }
+    
+    public void showPlanetInfo(PlanetView planet) {
+        Player player = GameModel.getGameModel().getPlayer();
+        
+        if (planet == selectedPlanet) {
+            travelButton.setDisable(false);
         }
-        for (Sphere planet : planetMap.keySet()) {
-                planet.setOnMouseEntered(bodySelect);
-                planet.setOnMouseExited(bodyDeselect);
+        if (player.getPlanet() == planet.getPlanet()) {
+            travelButton.setText("To Surface");
+        } else {
+            travelButton.setText("Travel");
         }
         
-        subScene.setOnMousePressed((MouseEvent event) -> {
-            mousePosX = event.getSceneX();
-            mousePosY = event.getSceneY();
-            
-            PickResult pickResult = event.getPickResult();
-            if (pickResult != null && pickResult.getIntersectedNode() instanceof Sphere) {
-                StarSystem system = starMap.get((Sphere) pickResult.getIntersectedNode());
-                if (system != null && system != selectedSystem) {
-                    highlight.setVisible(false);
-                    selectedSystem = system;
-                    universeView.getLightMap().get(selectedSystem).setLightOn(true);
-                    scope = 3;
-
-                    Xform cameraXformTop = (Xform) camera.getParent().getParent();
-                    Xform cameraXformBottom = (Xform) camera.getParent();
-                    Xform planetsXform = (Xform) universeView.getSystemMap().get(selectedSystem).get(0).getParent().getParent();
-                    ArrayList<KeyValue> systemViewValues = new ArrayList<>();
-                    systemViewValues.add(new KeyValue(cameraXformTop.t.xProperty(),
-                        selectedSystem.getCoordinateX(), Interpolator.EASE_OUT));
-                    systemViewValues.add(new KeyValue(cameraXformTop.t.yProperty(),
-                        selectedSystem.getCoordinateY(), Interpolator.EASE_OUT));
-                    systemViewValues.add(new KeyValue(camera.translateZProperty(),
-                        -200, Interpolator.EASE_OUT));
-                    systemViewValues.add(new KeyValue(cameraXformTop.rx.angleProperty(),
-                        planetsXform.rx.getAngle()));
-                    systemViewValues.add(new KeyValue(cameraXformTop.ry.angleProperty(),
-                        planetsXform.ry.getAngle()));
-                    systemViewValues.add(new KeyValue(cameraXformBottom.rx.angleProperty(), 0));
-                    systemViewValues.add(new KeyValue(cameraXformBottom.ry.angleProperty(), 0));
-                    for (Sphere planet : universeView.getSystemMap().get(selectedSystem)) {
-                        systemViewValues.add(new KeyValue(planet.translateXProperty(), universeView.getPlanetMap().get(planet).getOrbitDistance()));
-                    }
-                    Timeline toSystemView = new Timeline(
-                        new KeyFrame(Duration.seconds(2), "systemView", (ActionEvent e) -> {
-                            scope = 1;
-                        }, systemViewValues
-                    ));
-                    toSystemView.play();
-                }
-                if (scope == 1) {
-                    Planet p = planetMap.get((Sphere) pickResult.getIntersectedNode());
-                    if (p != null && Arrays.asList(selectedSystem.getPlanets()).contains(p)) {
-                        highlight.setVisible(false);
-                        selectedPlanet = p;
-                        scope = 3;
-                        
-                        Xform cameraXformTop = (Xform) camera.getParent().getParent();
-                        Xform cameraXformBottom = (Xform) camera.getParent();
-                        Xform planetXform = (Xform) pickResult.getIntersectedNode().getParent();
-                        Xform planetsXform = (Xform) planetXform.getParent();
-                        DoubleProperty angleOffset = new SimpleDoubleProperty(cameraXformTop.rz.getAngle() - planetXform.rz.getAngle());
-                        cameraXformTop.rz.angleProperty().bind(planetXform.rz.angleProperty().add(angleOffset));
-                        Timeline toPlanetView = new Timeline(
-                            new KeyFrame(Duration.seconds(2), (ActionEvent e) -> {
-                                scope = 2;
-                            },
-                            new KeyValue(angleOffset, 0),
-                            //new KeyValue(cameraXformTop.rx.angleProperty(), planetsXform.rx.getAngle()),
-                            //new KeyValue(cameraXformTop.ry.angleProperty(), planetsXform.ry.getAngle()),
-                            new KeyValue(cameraXformBottom.rx.angleProperty(), -90),
-                            new KeyValue(cameraXformBottom.ry.angleProperty(), 0),
-                            new KeyValue(cameraXformBottom.translateXProperty(), pickResult.getIntersectedNode().getTranslateX()),
-                            new KeyValue(camera.translateZProperty(), -30))
-                        );
-                        toPlanetView.play();
-                    }
-                }
-            }
-        });
+        if (player.knowsPlanet(planet.getPlanet())) {
+            planetField.setText(planet.getPlanet().getName());
+            governmentField.setText("" + planet.getPlanet().getGovernment());
+            techLevelField.setText("" + planet.getPlanet().getTechLevel());
+            environmentField.setText("" + planet.getPlanet().getResourceLevel());
+        } else {
+            planetField.setText("Unknown");
+            governmentField.setText("Unknown");
+            techLevelField.setText("Unknown");
+            environmentField.setText("Unknown");
+        }    
         
-        subScene.setOnMouseDragged((MouseEvent event) -> {
-            double mouseOldX = mousePosX;
-            double mouseOldY = mousePosY;
-            mousePosX = event.getSceneX();
-            mousePosY = event.getSceneY();
-            //cameraVelocityX = (event.getSceneX() - mousePosX) / 5;// - mouseOldX) / 5;
-            //cameraVelocityY = (event.getSceneY() - mousePosY) / 5;//mousePosY - mouseOldY) / 5;
-            
-            if (scope == 0) {
-                Xform cameraXform = (Xform) camera.getParent().getParent();
-                cameraXform.setTx(cameraXform.t.getX() + camera.getTranslateZ() * (mousePosX - mouseOldX)/1000);
-                cameraXform.setTy(cameraXform.t.getY() + camera.getTranslateZ() * (mousePosY - mouseOldY)/1000);
-            }
-           
-            if (scope == 1) {
-                Xform cameraXform = (Xform) camera.getParent();
-                cameraXform.setRy(cameraXform.ry.getAngle() + (mousePosX - mouseOldX)/2);
-                cameraXform.setRx(cameraXform.rx.getAngle() - (mousePosY - mouseOldY)/2);
-            }
-            
-            if (scope == 2) {
-                Xform cameraXform = (Xform) camera.getParent();
-                cameraXform.setRz(cameraXform.rz.getAngle() - (mousePosX - mouseOldX)/2);
-                //cameraXform.setRz(cameraXform.rz.getAngle() - (mousePosY - mouseOldY)/2);
-            }
-        });
-        
-        subScene.setOnMouseReleased((MouseEvent event) -> {
-            cameraVelocityX = 0;
-            cameraVelocityY = 0;
-        });
-        
-        subScene.setOnScroll((ScrollEvent event) -> {
-            System.out.println(event.getDeltaY());
-            camera.setTranslateZ(camera.getTranslateZ() + event.getDeltaY()/2);
-        });
-    }*/
+        Timeline planetInfo = new Timeline(
+            new KeyFrame(Duration.seconds(0.1),
+                new KeyValue(infoPane.translateYProperty(), 0)
+            )
+        );
+        planetInfo.play();
+    }
 
     @Override
     public void setScreenParent(ScreensController parentController) {

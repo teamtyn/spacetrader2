@@ -43,7 +43,7 @@ public class Planet {
         this.orbitDistance = orbitDistance;
         size = 2 * random.nextDouble() + 1;
         orbitSpeed = Math.sqrt(1/(20 * orbitDistance));
-        axialTilt = 360 * random.nextDouble();
+        axialTilt = 45 * random.nextDouble();
         
         
         government = new Government();

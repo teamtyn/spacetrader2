@@ -6,7 +6,6 @@
 
 package spacetrader.star_system;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,18 +14,14 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import spacetrader.Xform;
+import spacetrader.star_system.ColorGradient.ColorScheme;
 import spacetrader.star_system.NoiseGenerator.NoiseMode;
 
 /**
@@ -41,8 +36,6 @@ public class PlanetView extends Sphere {
     private final GenerateNoiseService generateNoise;
     private final GenerateDiffuseService generateDiffuse;
     private final GenerateNormalService generateNormal;
-    private final GenerateIllumService generateIllum;
-    
     
     public PlanetView(Planet planet) {
         super(planet.getSize());
@@ -56,30 +49,21 @@ public class PlanetView extends Sphere {
         PhongMaterial material = new PhongMaterial();
         setMaterial(material);
         
-        ColorGradient colors = new ColorGradient(Color.rgb(0,47,100), Color.WHITE);
-        colors.addColor(Color.rgb(13,87,140), 0.11f);
-        colors.addColor(Color.rgb(52,217,187), 0.13f);
-        colors.addColor(Color.rgb(235,221,162), 0.15f);
-        colors.addColor(Color.rgb(185,199,129), 0.17f);
-        colors.addColor(Color.rgb(49,99,33), 0.25f);
-        colors.addColor(Color.rgb(50,56,48), 0.75f);
-        colors.addColor(Color.rgb(136,145,121), 0.85f);
-        
-        noise = new NoiseGenerator(r.nextLong(), 0.5, 1, 2, 0.5, 10, NoiseMode.SQUARE, colors);
+        ColorScheme[] colorSchemes = ColorScheme.values();
+        ColorGradient colors = new ColorGradient(0.05f, colorSchemes[r.nextInt(colorSchemes.length)]);
+        noise = new NoiseGenerator(r.nextLong(), 0.5, 1, 2, 0.5, 15, NoiseMode.SQUARE, colors);
         noise.initNoiseBuffer(100, 50);
         noise.addOctaves();
-        material.setDiffuseMap(noise.getDiffuse(1));
+        material.setDiffuseMap(noise.getDiffuse());
         noise.clearBuffer();
         
         generateNoise = new GenerateNoiseService();
         generateDiffuse = new GenerateDiffuseService();
         generateNormal = new GenerateNormalService();
-        generateIllum = new GenerateIllumService();
-        //generateNoise.includeIllum = true;
         initTextures(material);
         
         setRotationAxis(Rotate.Y_AXIS);
-        axisXform.setRotate(planet.getAxialTilt(), 0, 0);//360 * r.nextDouble());
+        axisXform.setRotate(90 + planet.getAxialTilt(), 0, 360 * r.nextDouble());
         orbitXform.setRz(360 * r.nextDouble());
         
         axisXform.getChildren().add(this);
@@ -147,82 +131,51 @@ public class PlanetView extends Sphere {
     }
     
     private void initTextures(PhongMaterial material) {
-//        generateNoise.setOnSucceeded((WorkerStateEvent t) -> {
-//            generateDiffuse.restart();
-//            if (generateNoise.includeNormal) {
-//                generateNormal.restart();
-//            }
-//            if (generateNoise.includeIllum) {
-//                generateIllum.restart();
-//            }
-//        });
-        
         generateDiffuse.setOnSucceeded((WorkerStateEvent t) -> {
             material.setDiffuseMap((Image)t.getSource().getValue());
-            if (!generateNormal.isRunning() && !generateIllum.isRunning()) {
+            generateDiffuse.setExecutor(null);
+            if (!generateNormal.isRunning()) {
                 noise.clearBuffer();
             }
         });
         
         generateNormal.setOnSucceeded((WorkerStateEvent t) -> {
             material.setBumpMap((Image)t.getSource().getValue());
-            if (!generateDiffuse.isRunning() && !generateIllum.isRunning()) {
+            generateNormal.setExecutor(null);
+            if (!generateDiffuse.isRunning()) {
                 noise.clearBuffer();
             }
         });
-        
-        generateIllum.setOnSucceeded((WorkerStateEvent t) -> {
-            material.setSelfIlluminationMap((Image)t.getSource().getValue());
-            if (!generateDiffuse.isRunning() && !generateNormal.isRunning()) {
-                noise.clearBuffer();
-            }
-        });
-    }
-    
-    public void setServiceExecutor(ExecutorService exe) {
-        generateNoise.setExecutor(exe);
-        generateDiffuse.setExecutor(exe);
-        generateNormal.setExecutor(exe);
-        generateIllum.setExecutor(exe);
     }
     
     public void updateTextures(int width, int height, ExecutorService es) {
+        generateNoise.cancel();
+        generateDiffuse.cancel();
+        generateNormal.cancel();
+        
         ExecutorService execute;
         if (es == null) {
-            execute = Executors.newSingleThreadExecutor();
+            execute = Executors.newSingleThreadExecutor((Runnable runnable) -> {
+                Thread thread = Executors.defaultThreadFactory().newThread(runnable);
+                thread.setDaemon(true);
+                return thread;
+            });
         } else {
             execute = es;
         }
         
-        generateNoise.cancel();
-        generateDiffuse.cancel();
-        generateNormal.cancel();
-        generateIllum.cancel();
-        
         generateNoise.setExecutor(execute);
         generateDiffuse.setExecutor(execute);
         generateNormal.setExecutor(execute);
-        generateIllum.setExecutor(execute);
         
         generateNoise.width = width;
         generateNoise.height = height;
         generateNormal.intensity = 7;
-        generateIllum.intensity = 0.5;
-        generateIllum.threshold = 0.15;
-        generateNoise.includeNormal = width * height >= 500000;
-        if (generateNoise.includeNormal) {
-            generateDiffuse.scaleFactor = 2;
-        } else {
-            generateDiffuse.scaleFactor = 1;
-        }
+
         generateNoise.restart();
         generateDiffuse.restart();
-        if (generateNoise.includeNormal) {
-            generateNormal.restart();
-        }
-        if (generateNoise.includeIllum) {
-            generateIllum.restart();
-        }
+        generateNormal.restart();
+        
         if (es == null) {
             execute.shutdown();
         }
@@ -234,8 +187,6 @@ public class PlanetView extends Sphere {
     }
     
     private class GenerateNoiseService extends Service<Void>{
-        boolean includeNormal;
-        boolean includeIllum;
         int width;
         int height;
 
@@ -263,23 +214,15 @@ public class PlanetView extends Sphere {
     }
     
     private class GenerateDiffuseService extends Service<Image> {
-        int scaleFactor;
-        
         @Override
         protected Task<Image> createTask() {
-            return new GenerateDiffuseTask(scaleFactor);
+            return new GenerateDiffuseTask();
         }
         
         private class GenerateDiffuseTask extends Task<Image> {
-            private final int scaleFactor;
-            
-            public GenerateDiffuseTask(int sF) {
-                scaleFactor = sF;
-            }
-
             @Override
             protected Image call() throws Exception {
-                return noise.getDiffuse(scaleFactor);
+                return noise.getDiffuse();
             }
         }
     }
@@ -302,33 +245,7 @@ public class PlanetView extends Sphere {
 
             @Override
             protected Image call() throws Exception {
-                System.out.println("Executing");
                 return noise.getNormal(intensity);
-            }
-        }
-    }
-    
-    private class GenerateIllumService extends Service<Image> {
-        double intensity;
-        double threshold;
-        
-        @Override
-        protected Task<Image> createTask() {
-            return new GenerateIllumTask(intensity, threshold);
-        }
-        
-        private class GenerateIllumTask extends Task<Image> {
-            private final double intensity;
-            private final double threshold;
-            
-            public GenerateIllumTask(double i, double t) {
-                intensity = i;
-                threshold = t;
-            }
-
-            @Override
-            protected Image call() throws Exception {
-                return noise.getIllum(intensity, threshold);
             }
         }
     }
