@@ -39,7 +39,7 @@
  * 
  */ 
 
-package spacetrader;
+package spacetrader2;
 
 import java.util.HashMap;
 import javafx.animation.KeyFrame;

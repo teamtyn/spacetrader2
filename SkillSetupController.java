@@ -1,7 +1,6 @@
-package spacetrader;
+package spacetrader2;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 
-import spacetrader.player.*;
+import spacetrader2.player.*;
 
 /**
  * FXML Controller class

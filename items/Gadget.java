@@ -1,4 +1,4 @@
-package spacetrader.items;
+package spacetrader2.items;
 
 /**
  *

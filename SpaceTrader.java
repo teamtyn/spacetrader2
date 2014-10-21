@@ -1,17 +1,16 @@
-package spacetrader;
+package spacetrader2;
 
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import spacetrader.star_system.StarSystemNames;
 
 /**
  * @author TYN
  * @version 1.0
  */
 public class SpaceTrader extends Application {
-    
+
     public static final int SCREEN_WIDTH = 960;
     public static final int SCREEN_HEIGHT = 720;
 
@@ -25,7 +24,6 @@ public class SpaceTrader extends Application {
         //mainContainer.loadScreen("UniverseMap", "UniverseMap.fxml");
         mainContainer.setScreen("Menu");
 
-        System.out.println(mainContainer);
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
 

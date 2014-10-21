@@ -1,11 +1,12 @@
-package spacetrader.player;
+package spacetrader2.player;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
-import spacetrader.GameModel;
-import spacetrader.items.*;
-import spacetrader.star_system.*;
+import spacetrader2.items.*;
+import spacetrader2.star_system.Planet;
+import spacetrader2.star_system.StarSystem;
+
 
 public class Player {
     private String name;

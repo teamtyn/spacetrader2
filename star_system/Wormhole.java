@@ -1,4 +1,4 @@
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 /**
  * Wormhole, currently does not work, from one StarSystem to another

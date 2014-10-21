@@ -1,6 +1,7 @@
-package spacetrader.market;
+package spacetrader2.market;
 
-import spacetrader.star_system.*;
+import spacetrader2.star_system.Government;
+import spacetrader2.star_system.Planet;
 
 /**
  * 

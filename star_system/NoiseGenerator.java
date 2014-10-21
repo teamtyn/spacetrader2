@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 import java.util.Arrays;
 import java.util.Random;

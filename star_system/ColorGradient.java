@@ -1,13 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package spacetrader2.star_system;
 
-package spacetrader.star_system;
-
-import static java.util.Arrays.asList;
-import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;

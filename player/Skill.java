@@ -1,4 +1,4 @@
-package spacetrader.player;
+package spacetrader2.player;
 
 public class Skill {
     private String type;

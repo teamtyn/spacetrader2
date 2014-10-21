@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package spacetrader;
+package spacetrader2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -18,11 +10,9 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.PointLight;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.effect.Bloom;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -31,13 +21,11 @@ import javafx.scene.shape.CullFace;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import spacetrader.Xform.RotateOrder;
-import spacetrader.star_system.Planet;
-import spacetrader.star_system.PlanetView;
-import spacetrader.star_system.StarSystem;
-import spacetrader.star_system.StarSystemView;
+import spacetrader2.Xform.RotateOrder;
+import spacetrader2.star_system.PlanetView;
+import spacetrader2.star_system.StarSystem;
+import spacetrader2.star_system.StarSystemView;
 
 /**
  *

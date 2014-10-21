@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -20,9 +20,9 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import spacetrader.Xform;
-import spacetrader.star_system.ColorGradient.ColorScheme;
-import spacetrader.star_system.NoiseGenerator.NoiseMode;
+import spacetrader2.Xform;
+import spacetrader2.star_system.ColorGradient.ColorScheme;
+import spacetrader2.star_system.NoiseGenerator.NoiseMode;
 
 /**
  *

@@ -1,4 +1,4 @@
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 import java.util.Random;
 import javafx.geometry.Point2D;
@@ -51,7 +51,7 @@ public class StarSystem {
             double offset = (planets.length - i != 0) ? remDist / (2 * (planets.length - i)) : remDist / 2;
             double distance = minDist + size + offset + (offset / 3) * random.nextGaussian();
             minDist += 2 * offset + size;
-            remDist -= 2 * offset + size; 
+            remDist -= 2 * offset + size;
             planets[i] = new Planet(distance);
         }
     }

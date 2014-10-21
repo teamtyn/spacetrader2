@@ -1,4 +1,4 @@
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 import java.util.HashMap;
 import java.util.Random;

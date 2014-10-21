@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package spacetrader;
+package spacetrader2;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -27,9 +21,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
-import spacetrader.player.Player;
-import spacetrader.star_system.PlanetView;
-import spacetrader.star_system.StarSystemView;
+import spacetrader2.player.Player;
+import spacetrader2.star_system.PlanetView;
+import spacetrader2.star_system.StarSystemView;
 
 /**
  * FXML Controller class

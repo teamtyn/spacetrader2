@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package spacetrader.star_system;
+package spacetrader2.star_system;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,9 +14,9 @@ import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
-import spacetrader.UniverseView;
-import spacetrader.Xform;
-import spacetrader.Xform.RotateOrder;
+import spacetrader2.UniverseView;
+import spacetrader2.Xform;
+import spacetrader2.Xform.RotateOrder;
 
 /**
  *
